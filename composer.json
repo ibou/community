@@ -13,7 +13,7 @@
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/orm-pack": "*",
+        "symfony/orm-pack": "^1.0",
         "symfony/process": "*",
         "symfony/security-bundle": "*",
         "symfony/serializer-pack": "*",
@@ -21,9 +21,12 @@
         "symfony/twig-bundle": "*",
         "symfony/validator": "*",
         "symfony/web-link": "*",
+        "symfony/webpack-encore-pack": "^1.0",
         "symfony/yaml": "*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.0",
+        "sensiolabs/security-checker": "^5.0",
         "symfony/debug-pack": "*",
         "symfony/dotenv": "*",
         "symfony/maker-bundle": "^1.0",
@@ -58,7 +61,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"
