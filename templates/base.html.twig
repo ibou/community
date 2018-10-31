@@ -9,7 +9,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Symfony Demo application{% endblock %}</title> 
+    <title>{% block title %}Symfony Demo application{% endblock %}</title>
     {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
     {% endblock %}
@@ -21,41 +21,38 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
 
     {% block header %}
     <header>
-        <div class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar navbar-expand-lg navbar-dark bg-primary" role="navigation">
             <div class="container">
                 <div class="navbar-header col-md-3 col-lg-2">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="{{ path('homepage') }}">
                         Community
                     </a>
-
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Menu</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+                        aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
+
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-
                         {% block header_navigation_links %}
                         <li>
                             <a href="#">
-                                <i class="fa fa-home" aria-hidden="true"></i> Home
+                                <i class="fa fa-home" aria-hidden="true"></i> {{ 'menu.homepage'|trans }}
                             </a>
                         </li>
 
                         {% if is_granted('ROLE_ADMIN') %}
                         <li>
                             <a href="#">
-                                <i class="fa fa-lock" aria-hidden="true"></i> Admin
+                                <i class="fa fa-lock" aria-hidden="true"></i> {{ 'menu.admin'|trans }}
                             </a>
                         </li>
                         {% endif %}
                         {% endblock %}
 
                         <li>
-                            <a href="#"> <i class="fa fa-search"></i> Search</a>
+                            <a href="#"> <i class="fa fa-search"></i> {{ 'menu.search'|trans }}</a>
                         </li>
 
                         {% if app.user %}
@@ -64,25 +61,24 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                                 id="user">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <span class="caret"></span>
-                                <span class="sr-only">{{ app.user.firstname }} - {{ app.user.lastname }}</span>
+                                <span class="sr-only">{{ app.user.firstname }}</span>
                             </a>
                             <ul class="dropdown-menu user" role="menu" aria-labelledby="user">
                                 <li>
-                                    <a href="">
-                                        <i class="fa fa-edit" aria-hidden="true"></i> un
+                                    <a href="{{ path('user_edit') }}">
+                                        <i class="fa fa-edit" aria-hidden="true"></i> {{ 'menu.user'|trans }}
                                     </a>
                                 </li>
                                 <li class="divider"></li>
                                 <li>
                                     <a href="{{ path('security_logout') }}">
-                                        <i class="fa fa-sign-out" aria-hidden="true"></i> deux
+                                        <i class="fa fa-sign-out" aria-hidden="true"></i> {{ 'menu.logout'|trans }}
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         {% endif %}
 
-               
                     </ul>
                 </div>
             </div>
@@ -100,7 +96,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
             </div>
 
             <div id="sidebar" class="col-sm-3">
-                {% block sidebar %} 
+                {% block sidebar %}
                 {% endblock %}
             </div>
         </div>
@@ -135,7 +131,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
 
     {% block javascripts %}
     <script src="{{ asset('build/js/app.js') }}"></script>
-    {% endblock %} 
+    {% endblock %}
 </body>
 
 </html>

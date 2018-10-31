@@ -10,7 +10,13 @@
  
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // var $ = require('jquery');
-// import $ from 'jquery'; 
+// import $ from 'jquery';  
+import 'bootstrap/js/dist/tooltip';
+import 'bootstrap/js/dist/alert';
+import 'bootstrap/js/dist/collapse';
+import 'bootstrap/js/dist/dropdown';
+import 'bootstrap/js/dist/modal';
+ 
 // require('bootstrap/js/dist/tooltip');
 // require('bootstrap/js/dist/popover');
 $(document).ready(function () {

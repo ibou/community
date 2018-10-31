@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-class UserType extends AbstractType
+class RegisterUserType extends AbstractType
 {
 
  public function buildForm(FormBuilderInterface $builder, array $options)
@@ -22,7 +22,16 @@ class UserType extends AbstractType
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
             ->add('email', EmailType::class)
-            ->add('username', TextType::class) 
+            ->add('username', TextType::class)
+            ->add('plainPassword', RepeatedType::class, array(
+                'type' => PasswordType::class,
+                'first_options'  => array('label' => 'Password'),
+                'second_options' => array('label' => 'Repeat Password'),
+            ))
+            //  ->add('termsAccepted', CheckboxType::class, array(
+            //     'mapped' => false,
+            //     'constraints' => new IsTrue(),
+            // ))
         ;
     }
 
@@ -35,7 +44,7 @@ class UserType extends AbstractType
             'csrf_field_name' => '_token',
             // an arbitrary string used to generate the value of the token
             // using a different string for each form improves its security
-            'csrf_token_id'   => 'user_type',
+            'csrf_token_id'   => 'register_type',
         ]);
     }
 }

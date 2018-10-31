@@ -12,10 +12,12 @@
             {{ form_row(form.email) }}
             {{ form_row(form.plainPassword.first) }}
             {{ form_row(form.plainPassword.second) }}
-{{ form_row(form.termsAccepted,{label_attr: {class: 'radio-custom'} }) }}
+            {{ form_widget(form._token) }}
+             
+            {# {{ form_row(form.termsAccepted,{label_attr: {class: 'radio-custom'} }) }} #}
         </div>
     </div>
 </div>
 <button type="submit" class="btn btn-primary">Register!</button>
-{{ form_end(form) }}
+ 
 {% endblock %}

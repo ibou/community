@@ -2,7 +2,8 @@
 
 {% block title %}Log in!{% endblock %}
 
-{% block body %}
+{% block body_id 'blog_post_show' %}
+{% block main %}
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -28,9 +29,6 @@
         </label>
     </div>
    
-
-<a class="fa fa-edit"  href="">
-        Sign in
-    </a>
+<button type="submit" class="btn btn-success">Log In</button> 
 </form>
 {% endblock %}
