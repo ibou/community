@@ -21,6 +21,7 @@ class RegisterUserType extends AbstractType
         $builder
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
+            ->add('lastname', TextType::class)
             ->add('email', EmailType::class)
             ->add('username', TextType::class)
             ->add('plainPassword', RepeatedType::class, array(

@@ -31,11 +31,11 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                         aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                </div> 
+                </div>
                 <ul class="nav navbar-nav navbar-right">
                     {% block header_navigation_links %}
                     <li>
-                        <a href="#" class="nav-link">
+                        <a href="{{ path('homepage') }}" class="nav-link">
                             <i class="fa fa-home" aria-hidden="true"></i> {{ 'menu.homepage'|trans }}
                         </a>
                     </li>
@@ -107,7 +107,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                             {% endfor %}
                         </ul>
                     </li>
-                </ul> 
+                </ul>
             </div>
         </div>
     </header>
@@ -124,6 +124,13 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
 
             <div id="sidebar" class="col-sm-3">
                 {% block sidebar %}
+                {{
+                render_esi(controller('Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController::templateAction',
+                {
+                'template': 'default/about.html.twig',
+                'sharedAge': 600,
+                '_locale': app.request.locale
+                })) }}
                 {% endblock %}
             </div>
         </div>

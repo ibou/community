@@ -96,3 +96,7 @@ help.more_information: 'Pour plus d''informations, consultez la <a href="https:/
 info.change_password: 'Après avoir modifié votre mot de passe, vous serez déconnecté de l''application.'
 menu.login: Connexion
 menu.sign.in: __menu.sign.in
+login.account.title: 'Déjà membre'
+login.account.connect: 'Je me connect'
+new.account.title: 'Nouvel utilisateur'
+new.account.create: 'J''enregistre mon compte'

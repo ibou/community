@@ -2,6 +2,26 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="action.remember_me">
+                <source>action.remember_me</source>
+                <target>Se Souvenir de moi</target>
+            </trans-unit>
+            <trans-unit id="login.account.title">
+                <source>login.account.title</source>
+                <target>Déjà membre</target>
+            </trans-unit>
+            <trans-unit id="login.account.connect">
+                <source>login.account.connect</source>
+                <target>Je me connect</target>
+            </trans-unit>
+            <trans-unit id="new.account.title">
+                <source>new.account.title</source>
+                <target>Nouvel utilisateur</target>
+            </trans-unit>
+            <trans-unit id="new.account.create">
+                <source>new.account.create</source>
+                <target>J'enregistre mon compte</target>
+            </trans-unit>
             <trans-unit id="note">
                 <source>note</source>
                 <target>NOTE</target>

@@ -4,4 +4,4 @@ homepage:
     requirements:
         _locale: '%app_locales%'
     defaults: 
-        _locale: '%locale%' 
+        _locale: '%locale%'  

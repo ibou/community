@@ -99,3 +99,7 @@ rss.title: 'Symfony Demo blog'
 rss.description: 'Most recent posts published on the Symfony Demo blog'
 menu.login: Connection
 menu.sign.in: __menu.sign.in
+login.account.title: 'I already have an account'
+login.account.connect: 'Sign In'
+new.account.title: 'New user'
+new.account.create: 'Sign up'
