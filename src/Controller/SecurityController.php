@@ -2,10 +2,18 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\User;
+use App\Event\UserEvent;
+use App\Entity\PasswordReset;
+use App\Form\PasswordResetType;
+use App\Security\Link\GenerateLink;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 
 class SecurityController extends AbstractController
 {
@@ -33,5 +41,111 @@ class SecurityController extends AbstractController
     public function logout(): void
     {
         // throw new \Exception('This should never be reached!');
+    }
+
+      /**
+     * @Route("/login/reset-password", name="resetpassword")
+     */
+    public function resetPassword(Request $request, \Swift_Mailer $mailer, EventDispatcherInterface $dispatcher, GenerateLink $glink)
+    {
+        // Check if user is logged and redirect to home page
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_document_new');
+        }
+
+        $PasswordReset = new PasswordReset();
+        $form = $this->createForm(PasswordResetType::class, $PasswordReset);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email = $form['email']->getData();
+            $protocol = $request->isSecure() ? 'https://' : 'http://';
+            $hostName = $protocol.$request->getHttpHost();
+            $resetUrl = $glink->generateResetPasswordLink($hostName, $email, 'PT01H');
+            
+            if ($resetUrl) {
+
+                $UserRepositroy = $this->getDoctrine()->getRepository(User::class);
+                $user = $UserRepositroy->findOneBy([
+                    'email'=>$email
+                    ]
+                );
+ 
+             $mailContent = [
+                'subject' => 'Communuty: Reset password',
+                'fromEmail' => 'community@comdesk.com',
+                'fromName' => 'Exchanges ideas ! ',
+                'toEmail' => $user->getEmail(),
+                'toName' => $user->getFirstname() . ' ' . $user->getLastname(),
+                'view' => $this->renderView(
+                    'email/resetPassword.html.twig',
+                    ['url' => $resetUrl, 'username' => $user->getFirstname() . ' ' . $user->getLastname()]
+                ),
+            ];
+ 
+            //Création de l'événement new user
+            $event = new UserEvent($user, $mailContent);
+            $dispatcher->dispatch(UserEvent::EMAIL_RESET_PASSWORD, $event);
+ 
+            $this->addFlash('success', "Un email de récuperation a été envoyé a votre adresse email :  (id:" . $user->getId() . ") : " . $user->getFirstname() . " " . $user->getEmail());
+                return $this->redirectToRoute('app_login');
+            } else {
+                $this->addFlash('warning', "Email {$email} n'existe pas dans community");
+            }
+        }
+        return $this->render(
+            'security/resetPassword.html.twig',
+            array('form' => $form->createView())
+        );
+    }
+
+    /**
+     * @Route("/login/reset-password-checker", name="resetpasswordchecker")
+     */
+    public function passwordResetCheck(Request $request)
+    {
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_document_new');
+        }
+        return true;
+        // $CustomerRepository = $this->getDoctrine()->getRepository(User::class);
+        // $PasswordResetRepository = $this->getDoctrine()->getRepository('AppBundle:PasswordReset');
+        // $em = $this->getDoctrine()->getManager();
+        // //Verification of email and selector and token
+        // $selector = $request->query->get('selector');
+        // $token = $request->query->get('validator');
+        // $PasswordReset = new PasswordReset();
+        // $form = $this->createForm(PasswordResetType::class, $PasswordReset);
+        // $form->handleRequest($request);
+
+        // $resetPasswordObjet = $PasswordResetRepository->findOneBy(array('selector' => $selector, 'token' => $token));
+        // if (count($resetPasswordObjet) > 0) {
+        //     $dataTimeNow = new \DateTime('NOW');
+        //     if ($resetPasswordObjet->getExpires() > $dataTimeNow) {
+        //         $data = array('selector' => $selector, 'token' => $token);
+        //         if ($form->isSubmitted() && $form->isValid()) {
+        //             $customer = $CustomerRepository->findOneBy(array('email' => $resetPasswordObjet->getEmail()));
+        //             $newPassword = $form['newPassword']->getData();
+        //             // Get Current user object
+        //             $encoder = $this->encoder;
+        //             $encodedPassword = $encoder->encodePassword($newPassword, $customer->getSalt());
+        //             $customer->setPassword($encodedPassword);
+        //             $em->persist($customer);
+        //             $em->remove($resetPasswordObjet);
+        //             $em->flush();
+        //             $this->addFlash('success', "Votre mote de passe a été changé avec succès");
+        //             return $this->redirectToRoute('login');
+        //         }
+        //         return $this->render(
+        //             'security/resetPassword.html.twig',
+        //             array('data' => $data, 'form' => $form->createView())
+        //         );
+        //     } else {
+        //         $this->addFlash('warning', "Lien expiré");
+        //     }
+        // } else {
+        //     $this->addFlash('warning', "Ce lien n'est plus valable");
+        // }
+        return $this->redirectToRoute('login');
     }
 }

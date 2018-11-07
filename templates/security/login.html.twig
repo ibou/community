@@ -4,48 +4,64 @@
 
 {% block body_id 'login_auth' %}
 {% block main %}
+
+
+
+
 <form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <div class="row">
+        <div class="col-sm-10">
+            {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-<h1 class="h3 mb-3 font-weight-normal">{{ 'title.login'|trans }}</h1>
-<label for="inputEmail" class="sr-only">{{ 'label.username'|trans }}</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-<label for="inputPassword" class="sr-only">{{ 'label.password'|trans }}</label>
+            <h1 class="h3 mb-3 font-weight-normal">{{ 'title.login'|trans }}</h1>
+            <label for="inputEmail" class="sr-only">{{ 'label.username'|trans }}</label>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
+                placeholder="Email" required autofocus>
+            <label for="inputPassword" class="sr-only">{{ 'label.password'|trans }}</label>
 
-    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"
+                required>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    
-        {# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html #}
-
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> {{ 'action.remember_me'|trans }}
-        </label>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        </div>
     </div>
-   
-<button type="submit" class="btn btn-primary">
-    <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
-</button>
+
+    {# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+    See https://symfony.com/doc/current/security/remember_me.html #}
+    <div class="row">
+        <div class="col-sm-7 checkbox">
+            <label>
+                <input type="checkbox" name="_remember_me"> {{ 'action.remember_me'|trans }}
+            </label>
+        </div>
+
+        <div class="col-sm-3 text-right">
+            <a href="{{ path('resetpassword') }}">{{'password.forgotten'|trans}} ?</a>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
+    </button>
+</form>
+
+
+
 
 {% endblock %}
 
-{% block sidebar %} 
-    <div class="card">
-        <div class="card-header">
-            {{ 'new.account.title'|trans }} ?
-        </div>
-        <div class="card-body">  
-                <a href="{{path('user_registration')}}"> 
-                    {{ 'new.account.create'|trans }}
-                </a> 
-        </div> 
-    </div> 
+{% block sidebar %}
+<div class="card">
+    <div class="card-header">
+        {{ 'new.account.title'|trans }} ?
+    </div>
+    <div class="card-body">
+        <a href="{{path('user_registration')}}">
+            {{ 'new.account.create'|trans }}
+        </a>
+    </div>
+</div>
 {{ parent() }}
 {% endblock %}
