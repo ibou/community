@@ -6,13 +6,16 @@ use App\Entity\User;
 use App\Event\UserEvent;
 use App\Entity\PasswordReset;
 use App\Form\PasswordResetType;
+use App\Repository\UserRepository;
 use App\Security\Link\GenerateLink;
+use App\Repository\PasswordResetRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 class SecurityController extends AbstractController
@@ -46,7 +49,7 @@ class SecurityController extends AbstractController
       /**
      * @Route("/login/reset-password", name="resetpassword")
      */
-    public function resetPassword(Request $request, \Swift_Mailer $mailer, EventDispatcherInterface $dispatcher, GenerateLink $glink)
+    public function resetPassword(Request $request, UserRepository $UserRepositroy, \Swift_Mailer $mailer, EventDispatcherInterface $dispatcher, GenerateLink $glink)
     {
         // Check if user is logged and redirect to home page
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -60,12 +63,11 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form['email']->getData();
             $protocol = $request->isSecure() ? 'https://' : 'http://';
-            $hostName = $protocol.$request->getHttpHost();
+            $locale = $request->getLocale();
+            $hostName = $protocol.$request->getHttpHost()."/".$locale; 
             $resetUrl = $glink->generateResetPasswordLink($hostName, $email, 'PT01H');
             
-            if ($resetUrl) {
-
-                $UserRepositroy = $this->getDoctrine()->getRepository(User::class);
+            if ($resetUrl) { 
                 $user = $UserRepositroy->findOneBy([
                     'email'=>$email
                     ]
@@ -87,9 +89,9 @@ class SecurityController extends AbstractController
             $event = new UserEvent($user, $mailContent);
             $dispatcher->dispatch(UserEvent::EMAIL_RESET_PASSWORD, $event);
  
-            $this->addFlash('success', "Un email de récuperation a été envoyé a votre adresse email :  (id:" . $user->getId() . ") : " . $user->getFirstname() . " " . $user->getEmail());
-                return $this->redirectToRoute('app_login');
-            } else {
+            $this->addFlash('success', "Un email de récuperation a été envoyé a votre adresse email : " . $user->getFirstname() . " " . $user->getEmail());
+              return $this->redirectToRoute('app_login');
+            } else { 
                 $this->addFlash('warning', "Email {$email} n'existe pas dans community");
             }
         }
@@ -102,50 +104,52 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login/reset-password-checker", name="resetpasswordchecker")
      */
-    public function passwordResetCheck(Request $request)
+    public function passwordResetCheck(Request $request, UserRepository $userRepos, PasswordResetRepository $passwordRepos, UserPasswordEncoderInterface $encoder) :Response
     {
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('app_document_new');
-        }
-        return true;
-        // $CustomerRepository = $this->getDoctrine()->getRepository(User::class);
-        // $PasswordResetRepository = $this->getDoctrine()->getRepository('AppBundle:PasswordReset');
-        // $em = $this->getDoctrine()->getManager();
-        // //Verification of email and selector and token
-        // $selector = $request->query->get('selector');
-        // $token = $request->query->get('validator');
-        // $PasswordReset = new PasswordReset();
-        // $form = $this->createForm(PasswordResetType::class, $PasswordReset);
-        // $form->handleRequest($request);
+            return $this->redirectToRoute('homepage');
+        }  
+        $em = $this->getDoctrine()->getManager();
+        //Verification of email and selector and token
+        $selector = $request->query->get('selector');
+        $token = $request->query->get('validator');
+        $PasswordReset = new PasswordReset();
+        $form = $this->createForm(PasswordResetType::class, $PasswordReset);
+        $form->handleRequest($request);
 
-        // $resetPasswordObjet = $PasswordResetRepository->findOneBy(array('selector' => $selector, 'token' => $token));
-        // if (count($resetPasswordObjet) > 0) {
-        //     $dataTimeNow = new \DateTime('NOW');
-        //     if ($resetPasswordObjet->getExpires() > $dataTimeNow) {
-        //         $data = array('selector' => $selector, 'token' => $token);
-        //         if ($form->isSubmitted() && $form->isValid()) {
-        //             $customer = $CustomerRepository->findOneBy(array('email' => $resetPasswordObjet->getEmail()));
-        //             $newPassword = $form['newPassword']->getData();
-        //             // Get Current user object
-        //             $encoder = $this->encoder;
-        //             $encodedPassword = $encoder->encodePassword($newPassword, $customer->getSalt());
-        //             $customer->setPassword($encodedPassword);
-        //             $em->persist($customer);
-        //             $em->remove($resetPasswordObjet);
-        //             $em->flush();
-        //             $this->addFlash('success', "Votre mote de passe a été changé avec succès");
-        //             return $this->redirectToRoute('login');
-        //         }
-        //         return $this->render(
-        //             'security/resetPassword.html.twig',
-        //             array('data' => $data, 'form' => $form->createView())
-        //         );
-        //     } else {
-        //         $this->addFlash('warning', "Lien expiré");
-        //     }
-        // } else {
-        //     $this->addFlash('warning', "Ce lien n'est plus valable");
-        // }
-        return $this->redirectToRoute('login');
+        $resetPasswordObjet = $passwordRepos->findOneBy([
+            'selector' => $selector, 
+            'token' => $token
+            ]);
+        if (count((array)$resetPasswordObjet) > 0) {
+            $dataTimeNow = new \DateTime('NOW');
+            if ($resetPasswordObjet->getExpires() > $dataTimeNow) {
+                $data = array('selector' => $selector, 'token' => $token);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $user = $userRepos->findOneBy([
+                        'email' => $resetPasswordObjet->getEmail()
+                        ]);
+                    $newPassword = $form['newPassword']->getData();
+                    // Get Current user object
+
+                    $user->setPassword($encoder->encodePassword($user, $form->get('newPassword')->getData()));
+   
+                    $em->persist($user);
+                    $em->remove($resetPasswordObjet);
+                    $em->flush();
+                    $this->addFlash('success', "Votre mote de passe a été changé avec succès");
+                    return $this->redirectToRoute('app_login');
+                }
+                return $this->render(
+                    'security/resetPassword.html.twig',
+                    array('data' => $data, 'form' => $form->createView())
+                );
+            } else {
+                $this->addFlash('warning', "Lien expiré");
+            }
+        } else {
+            $this->addFlash('warning', "Ce lien n'est plus valable");
+        }
+        return $this->redirectToRoute('app_login');
     }
 }

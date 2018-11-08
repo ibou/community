@@ -42,7 +42,7 @@ class UserSubscriber implements EventSubscriberInterface
             ->setTo($mailContent['toEmail'], $mailContent['toName'])
             ->setBody($mailContent['view'], 'text/html');
         $this->mailer->send($message);
-        $this->logger->info("Un email de récuperation a été envoyé a votre adresse email :  (id:" . $user->getId() . ") : " . $user->getFirstname() . " " . $user->getEmail());
+        $this->logger->info("MAILDEV MESSAGE Un email de récuperation a été envoyé a votre adresse email :  (id:" . $user->getId() . ") : " . $user->getFirstname() . " " . $user->getEmail());
     }
 
   
