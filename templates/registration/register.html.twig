@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-sm-12">
         {{ form_start(form) }}
-        <div class="form-row">
+        {# <div class="form-row">
             <div class="col">
                 {{ form_label(form.firstname) }}
                 {{ form_widget(form.firstname, {'attr': {'class':
@@ -18,7 +18,7 @@
                 {{ form_widget(form.lastname, {'attr': {'class': 'form-control','placeholder':'label.user.lastname'}})
                 }}
             </div>
-        </div>
+        </div> #}
 
         {{ form_row(form.username) }}
         {{ form_row(form.email) }}

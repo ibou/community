@@ -5,7 +5,20 @@
 {% block main %}
 <h1>{{ 'title.edit_user'|trans }}</h1>
 
+
 {{ form_start(form) }}
+<div class="form-row">
+    <div class="col">
+        {{ form_label(form.firstname) }}
+        {{ form_widget(form.firstname, {'attr': {'class':
+        'form-control','placeholder':'tape.label.user.firstname'}}) }}
+    </div>
+    <div class="col">
+        {{ form_label(form.lastname) }}
+        {{ form_widget(form.lastname, {'attr': {'class': 'form-control','placeholder':'tape.label.user.lastname'}})
+        }}
+    </div>
+</div>
 {{ form_widget(form) }}
 
 <button type="submit" class="btn btn-primary">

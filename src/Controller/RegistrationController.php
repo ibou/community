@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\Events;
 use App\Form\UserType;
 use App\Form\RegisterUserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -16,7 +19,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="user_registration")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, EventDispatcherInterface $eventDispatcher)
     {
         // 1) build the form
         $user = new User();
@@ -29,18 +32,16 @@ class RegistrationController extends AbstractController
             // 3) Encode the password (you could also do this via Doctrine listener)
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
-            // dd($user->getPlainPassword(),$request->request,$user);
- 
-            // die;
-            // 4) save the User!
+             
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
        
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
-
+            //On déclenche l'event
+            $event = new GenericEvent($user);
+            $eventDispatcher->dispatch(Events::USER_REGISTERED, $event);
+            $this->addFlash('success', "Compte créé avec succès");
             return $this->redirectToRoute('app_login');
         } 
         return $this->render(
