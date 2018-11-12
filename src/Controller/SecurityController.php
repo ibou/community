@@ -12,6 +12,7 @@ use App\Repository\PasswordResetRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -49,7 +50,7 @@ class SecurityController extends AbstractController
       /**
      * @Route("/login/reset-password", name="resetpassword")
      */
-    public function resetPassword(Request $request, UserRepository $UserRepositroy, \Swift_Mailer $mailer, EventDispatcherInterface $dispatcher, GenerateLink $glink)
+    public function resetPassword(Request $request,TranslatorInterface $translator, UserRepository $UserRepositroy, \Swift_Mailer $mailer, EventDispatcherInterface $dispatcher, GenerateLink $glink)
     {
         // Check if user is logged and redirect to home page
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -88,11 +89,12 @@ class SecurityController extends AbstractController
             //Création de l'événement new user
             $event = new UserEvent($user, $mailContent);
             $dispatcher->dispatch(UserEvent::EMAIL_RESET_PASSWORD, $event);
- 
-            $this->addFlash('success', "Un email de récuperation a été envoyé a votre adresse email : " . $user->getFirstname() . " " . $user->getEmail());
+            $message = $translator->trans('flash.email.reset.sent'); 
+            $this->addFlash('success', "{$message} : " . $user->getEmail());
               return $this->redirectToRoute('app_login');
             } else { 
-                $this->addFlash('warning', "Email {$email} n'existe pas dans community");
+                $message = $translator->trans('flash.not.exist.email');
+                $this->addFlash('warning', "Email {$email} {$message} ");
             }
         }
         return $this->render(

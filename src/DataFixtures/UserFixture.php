@@ -42,9 +42,10 @@ class UserFixture extends Fixture
     {
         return [
             // $userData = [$fname, $lname, $username, $password, $email, $roles];
-            ['Ibrahima','DIALLO', 'ibou888', 'coucou', 'iboudiallo@symfony.com', ['ROLE_ADMIN']],
-            ['Tom ','Reynold', 'tom_admin', 'kitten', 'tom_admin@symfony.com', ['ROLE_ADMIN']],
-            ['John ','Reynold', 'john_user', 'kitten', 'john_user@symfony.com', ['ROLE_USER']],
+            ['Super','Admin', 'admin', 'coucou', 'iboudiallo@symfony.com', ['ROLE_SUPER_ADMIN']],
+            ['Ibrahima','DIALLO', 'ibou888', 'coucou', 'iboudiallo84@gmail.com', ['ROLE_ADMIN']],
+            ['Tom','Reynold', 'tom_admin', 'kitten', 'tom_admin@symfony.com', ['ROLE_ADMIN']],
+            ['John','Reynold', 'john_user', 'kitten', 'john_user@symfony.com', ['ROLE_USER']],
         ];
     }
 }

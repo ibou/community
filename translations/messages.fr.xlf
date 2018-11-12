@@ -2,10 +2,27 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="password.forgotten">
+                <source>password.forgotten</source>
+                <target>Mot de passe oublié</target>
+            </trans-unit>
+            <trans-unit id="flash.not.exist.email">
+                <source>flash.not.exist.email</source>
+                <target>n'existe pas dans notre base</target>
+            </trans-unit>
+            <trans-unit id="flash.email.reset.sent">
+                <source>flash.email.reset.sent</source>
+                <target>Un email de récuperation a été envoyé à votre adresse email</target>
+            </trans-unit>
+            <trans-unit id="title.reset.password">
+                <source>title.reset.password</source>
+                <target>Récupétation de mot de passe oublié</target>
+            </trans-unit>
             <trans-unit id="action.remember_me">
                 <source>action.remember_me</source>
                 <target>Se Souvenir de moi</target>
             </trans-unit>
+ 
             <trans-unit id="login.account.title">
                 <source>login.account.title</source>
                 <target>Déjà membre</target>

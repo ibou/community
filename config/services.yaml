@@ -39,3 +39,6 @@ services:
     App\EventSubscriber\RegistrationNotifySubscriber:
         # le nom de la variable que l'on utilisera dans le service
         $sender: '%app.notifications.email_sender%'     
+    # App\EventListener\LoginListener:
+    #     tags:
+    #         - { name: 'kernel.event_listener', event: 'security.interactive_login' }        

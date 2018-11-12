@@ -24,7 +24,11 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
-     * @Assert\Email()
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
+     * @Assert\Email(strict=true, message="incorrect format email")
      */
 
     private $email;
@@ -66,6 +70,16 @@ class User implements UserInterface
     /**
      */
     private $plainPassword;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastlogin;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $logincount;
 
     public function __construct()
     {
@@ -202,6 +216,42 @@ class User implements UserInterface
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getLastlogin(): ?\DateTimeInterface
+    {
+        return $this->lastlogin;
+    }
+
+    public function setLastlogin(?\DateTimeInterface $lastlogin): self
+    {
+        $this->lastlogin = $lastlogin;
+
+        return $this;
+    }
+
+    public function getLogincount(): ?int
+    {
+        return $this->logincount;
+    }
+
+    public function setLogincount(?int $logincount): self
+    {
+        $this->logincount = $logincount;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Customer
+     */
+    public function incrementLoginCount()
+    {
+        $this->setLoginCount($this->getLogincount() + 1);
 
         return $this;
     }

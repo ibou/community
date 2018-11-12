@@ -1,19 +1,13 @@
-menu.search: Search
-menu.user: Account
-menu.logout: Logout
-menu.choose_language: 'Choose language'
-menu.homepage: Homepage
-menu.admin: Backend
-mit_license: 'MIT License'
-title.edit_user: 'Edit user'
-action.save: 'Save changes'
-action.change_password: 'Change password'
-title.change_password: 'Change password'
-info.change_password: 'After changing your password, you will be logged out of the application.'
-action.edit_user: 'Edit user'
+flash.not.exist.email: 'not exist in our database'
+action.remember_me: 'Remember me'
+login.account.title: 'I already have an account'
+login.account.connect: 'Sign In'
+new.account.title: 'New user'
+new.account.create: 'Sign up'
 note: NOTE
 tip: TIP
 not_available: 'Not available'
+mit_license: 'MIT License'
 http_error.name: 'Error %status_code%'
 http_error.description: 'There was an unknown error (HTTP %status_code%) that prevented to complete your request.'
 http_error.suggestion: 'Try loading this page again in some minutes or <a href="%url%">go back to the homepage</a>.'
@@ -32,24 +26,29 @@ title.post_list: 'Post List'
 title.edit_post: 'Edit post #%id%'
 title.add_comment: 'Add a comment'
 title.comment_error: 'There was an error publishing your comment'
+title.edit_user: 'Edit user'
+title.change_password: 'Change password'
 action.show: Show
 action.show_post: 'Show post'
 action.show_code: 'Show code'
 action.edit: Edit
 action.edit_post: 'Edit post'
+action.save: 'Save changes'
 action.delete_post: 'Delete post'
 delete_post_modal.title: 'Are you sure you want to delete this post?'
 delete_post_modal.body: 'This action cannot be undone.'
 label.delete_post: 'Delete post'
 label.cancel: Cancel
-label.create_post: 'Create post'
 action.create_post: 'Create a new post'
+label.create_post: 'Create post'
 label.save_and_create_new: 'Save and create new'
 action.back_to_list: 'Back to the post list'
 action.publish_comment: 'Publish comment'
 action.sign_in: 'Sign in'
 action.browse_app: 'Browse application'
 action.browse_admin: 'Browse backend'
+action.edit_user: 'Edit user'
+action.change_password: 'Change password'
 label.title: Title
 label.author: Author
 label.author_email: 'Author email'
@@ -69,8 +68,16 @@ label.actions: Actions
 title.post_new: 'Post creation'
 action.edit_contents: 'Edit contents'
 menu.toggle_nav: 'Toggle navigation'
+menu.choose_language: 'Choose language'
 menu.post_list: 'Post list'
 menu.back_to_blog: 'Back to blog'
+menu.homepage: Homepage
+menu.admin: Backend
+menu.user: Account
+menu.logout: Logout
+menu.login: Connection
+menu.rss: 'Blog Posts RSS'
+menu.search: Search
 post.to_publish_a_comment: 'to publish a comment'
 post.num_comments: '{count, plural, one {# comment} other {# comments}}'
 post.commented_on: 'commented on'
@@ -94,12 +101,9 @@ help.role_admin: administrator
 help.reload_fixtures: 'If these users don''t work, reload application fixtures by running this command from the terminal:'
 help.add_user: 'If you want to create new users, run this other command:'
 help.more_information: 'For more information, check out the <a href="https://symfony.com/doc">Symfony doc</a>.'
-menu.rss: 'Blog Posts RSS'
+info.change_password: 'After changing your password, you will be logged out of the application.'
 rss.title: 'Symfony Demo blog'
 rss.description: 'Most recent posts published on the Symfony Demo blog'
-menu.login: Connection
-menu.sign.in: __menu.sign.in
-login.account.title: 'I already have an account'
-login.account.connect: 'Sign In'
-new.account.title: 'New user'
-new.account.create: 'Sign up'
+title.reset.password: 'Forgottend password'
+password.forgotten: 'Password forgotten'
+flash.email.reset.sent: 'An email has been sent to your adress email'

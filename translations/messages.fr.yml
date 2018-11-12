@@ -1,3 +1,9 @@
+flash.not.exist.email: 'n''existe pas dans notre base'
+action.remember_me: 'Se Souvenir de moi'
+login.account.title: 'Déjà membre'
+login.account.connect: 'Je me connect'
+new.account.title: 'Nouvel utilisateur'
+new.account.create: 'J''enregistre mon compte'
 note: NOTE
 tip: ASTUCE
 not_available: Indisponible
@@ -69,6 +75,7 @@ menu.homepage: Accueil
 menu.admin: Admin
 menu.user: Compte
 menu.logout: Déconnexion
+menu.login: Connexion
 menu.search: Recherche
 post.to_publish_a_comment: 'pour publier un commentaire'
 post.num_comments: '{count, plural, one {# commentaire} other {# commentaires}}'
@@ -94,9 +101,6 @@ help.reload_fixtures: 'Si ces utilisateurs ne fonctionnent pas, rechargez les fi
 help.add_user: 'Si vous voulez créer de nouveaux utilisateurs, exécutez cette autre commande :'
 help.more_information: 'Pour plus d''informations, consultez la <a href="https://symfony.com/doc">documentation de Symfony</a>.'
 info.change_password: 'Après avoir modifié votre mot de passe, vous serez déconnecté de l''application.'
-menu.login: Connexion
-menu.sign.in: __menu.sign.in
-login.account.title: 'Déjà membre'
-login.account.connect: 'Je me connect'
-new.account.title: 'Nouvel utilisateur'
-new.account.create: 'J''enregistre mon compte'
+title.reset.password: 'Récupétation de mot de passe oublié'
+password.forgotten: 'Mot de passe oublié'
+flash.email.reset.sent: 'Un email de récuperation a été envoyé à votre adresse email'
