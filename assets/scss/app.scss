@@ -1,13 +1,27 @@
 $web-font-path: 'data:text/css;base64,';
 
-@import "../../node_modules/bootswatch/dist/flatly/variables"; 
+@import "../../node_modules/bootswatch/dist/sandstone/variables"; 
 @import '../../node_modules/bootstrap/scss/bootstrap';
-@import "../../node_modules/bootswatch/dist/flatly/bootswatch";
+@import "../../node_modules/bootswatch/dist/sandstone/bootswatch";
 @import "../../node_modules/font-awesome/scss/font-awesome.scss";
 @import "../../node_modules/highlight.js/styles/solarized-light.css";
 
 /* Basic styles
    ------------------------------------------------------------------------- */
+   .navbar-nav {
+       flex-direction: row;
+   }
+
+   .nav-link {
+       padding-right: .5rem !important;
+       padding-left: .5rem !important;
+   }
+
+   /* Fixes dropdown menus placed on the right side */
+   .ml-auto .dropdown-menu {
+       left: auto !important;
+       right: 0px;
+   }
 p,
 ul,
 ol {
@@ -47,7 +61,7 @@ i {
 .m-b-0 {
     margin-bottom: 0
 }
-
+ 
 /* Page elements
    ------------------------------------------------------------------------- */
 body {
