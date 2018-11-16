@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/login", name="security_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -91,7 +91,7 @@ class SecurityController extends AbstractController
             $dispatcher->dispatch(UserEvent::EMAIL_RESET_PASSWORD, $event);
             $message = $translator->trans('flash.email.reset.sent'); 
             $this->addFlash('success', "{$message} : " . $user->getEmail());
-              return $this->redirectToRoute('app_login');
+              return $this->redirectToRoute('security_login');
             } else { 
                 $message = $translator->trans('flash.not.exist.email');
                 $this->addFlash('warning', "Email {$email} {$message} ");
@@ -140,7 +140,7 @@ class SecurityController extends AbstractController
                     $em->remove($resetPasswordObjet);
                     $em->flush();
                     $this->addFlash('success', "Votre mote de passe a été changé avec succès");
-                    return $this->redirectToRoute('app_login');
+                    return $this->redirectToRoute('security_login');
                 }
                 return $this->render(
                     'security/resetPassword.html.twig',
@@ -152,6 +152,6 @@ class SecurityController extends AbstractController
         } else {
             $this->addFlash('warning', "Ce lien n'est plus valable");
         }
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('security_login');
     }
 }

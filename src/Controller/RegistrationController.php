@@ -42,7 +42,7 @@ class RegistrationController extends AbstractController
             $event = new GenericEvent($user);
             $eventDispatcher->dispatch(Events::USER_REGISTERED, $event);
             $this->addFlash('success', "Compte créé avec succès");
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('security_login');
         } 
         return $this->render(
             'registration/register.html.twig',

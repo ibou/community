@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post
 {
+      public const NUM_ITEMS = 10;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -54,7 +55,7 @@ class Post
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
      * @ORM\JoinTable(name="post_tag")
      * @ORM\OrderBy({"name": "ASC"})
-     * @Assert\Count(max="3", maxMessage="post.too_many_tags")
+     * @Assert\Count(max="4", maxMessage="post.too_many_tags")
      */
     private $tags;
 

@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'blog_post_show' %}
+
+{% block main %}
+<h1>{{ post.title }}</h1>
+
+<p class="post-metadata">
+    <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium', null,
+        'UTC') }}</span>
+    <span class="metadata"><i class="fa fa-user"></i> {{ post.author.firstname ~' '~post.author.lastname}}</span>
+</p>
+
+{{ post.content }}
+
+{{ include('post/_post_tags.html.twig') }}
+
+<div id="post-add-comment" class="well">
+    {# The 'IS_AUTHENTICATED_FULLY' role ensures that the user has entered
+    his/her credentials (login + password) during this session. If he/she
+    is automatically logged via the 'Remember Me' functionality, he/she won't
+    be able to add a comment.
+    See
+    https://symfony.com/doc/current/security/remember_me.html#forcing-the-user-to-re-authenticate-before-accessing-certain-resources
+    #}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {{ render(controller('App\\Controller\\BlogController::commentForm', {'id': post.id})) }}
+    {% else %}
+    <p>
+
+        <a class="btn btn-primary" href="{{ path('security_login', {'redirect_to': app.request.pathInfo}) }}">
+            <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
+        </a>
+        {{ 'post.to_publish_a_comment'|trans }}
+    </p>
+    {% endif %}
+</div>
+
+<h3>
+    <i class="fa fa-comments" aria-hidden="true"></i> {{ post.comments|length ~' '~'post.num_comments'|trans }}
+
+</h3>
+
+{% for comment in post.comments %}
+<div class="row post-comment">
+    <a name="comment_{{ comment.id }}"></a>
+    <h4 class="col-sm-12">
+        <span style="color:brown">{{ post.author.firstname ~' '~post.author.lastname}}</span> {{
+        'post.commented_on'|trans }}
+        {# it's not mandatory to set the timezone in localizeddate(). This is done to
+        avoid errors when the 'intl' PHP extension is not available and the application
+        is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+        {{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
+    </h4>
+</div>
+<div class="row post-comment">
+    <div class="col-sm-12">
+        {{ comment.content }}
+    </div>
+</div>
+<div class="row new-comment">
+<div class="col-sm-10 offset-sm-1" style="vertical-align: middle">
+        <textarea name="comment_{{comment.id}}" cols="30" rows="1" id="comment_{{comment.id}}" placeholder="{{'label.addComment'|trans}}..."></textarea>
+        <input type="submit" value="Comment !" class="btn btn-primary">
+    </div>
+</div>
+<hr>
+{% else %}
+
+<div class="post-comment">
+    <p>{{ 'post.no_comments'|trans }}</p>
+</div>
+
+{% endfor %}
+{% endblock %}
+
+{% block sidebar %}
+{% if is_granted('edit', post) %}
+<div class="section">
+    <a class="btn btn-lg btn-block btn-success" href="{{ path('admin_post_edit', {id: post.id}) }}">
+        <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit_post'|trans }}
+    </a>
+</div>
+{% endif %}
+
+{# the parent() function includes the contents defined by the parent template
+('base.html.twig') for this block ('sidebar'). This is a very convenient way
+to share common contents in different templates #}
+{{ parent() }}
+
+{% endblock %}

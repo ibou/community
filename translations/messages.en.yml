@@ -79,7 +79,7 @@ menu.login: Connection
 menu.rss: 'Blog Posts RSS'
 menu.search: Search
 post.to_publish_a_comment: 'to publish a comment'
-post.num_comments: '{count, plural, one {# comment} other {# comments}}'
+post.num_comments: comment(s)
 post.commented_on: 'commented on'
 post.no_comments: 'Be the first to comment on this post.'
 post.no_posts_found: 'No posts found.'
