@@ -33,13 +33,23 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                     </button>
                 </div>
                 <div class="navbar-collapse collapse">
-                     <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto">
+
                         {% block header_navigation_links %}
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li>
+                            <a href="{{ path('post_index') }}" class="nav-link">
+                                <i class="fa fa-home" aria-hidden="true"></i> {{ 'menu.homepage'|trans }}
+                            </a>
+                        </li>
+                        
+                        {% else%}
                         <li>
                             <a href="{{ path('homepage') }}" class="nav-link">
                                 <i class="fa fa-home" aria-hidden="true"></i> {{ 'menu.homepage'|trans }}
                             </a>
                         </li>
+                        {% endif %} 
 
                         {% if is_granted('ROLE_ADMIN') %}
                         <li>

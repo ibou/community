@@ -11,6 +11,7 @@
     <span class="metadata"><i class="fa fa-user"></i> {{ post.author.firstname ~' '~post.author.lastname}}</span>
 </p>
 
+
 {{ post.content }}
 
 {{ include('post/_post_tags.html.twig') }}
@@ -24,7 +25,7 @@
     https://symfony.com/doc/current/security/remember_me.html#forcing-the-user-to-re-authenticate-before-accessing-certain-resources
     #}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    {{ render(controller('App\\Controller\\BlogController::commentForm', {'id': post.id})) }}
+
     {% else %}
     <p>
 
@@ -41,7 +42,8 @@
 
 </h3>
 
-{% for comment in post.comments %}
+{% for comment in post.comments|reverse %}
+
 <div class="row post-comment">
     <a name="comment_{{ comment.id }}"></a>
     <h4 class="col-sm-12">
@@ -58,12 +60,13 @@
         {{ comment.content }}
     </div>
 </div>
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <div class="row new-comment">
-<div class="col-sm-10 offset-sm-1" style="vertical-align: middle">
-        <textarea name="comment_{{comment.id}}" cols="30" rows="1" id="comment_{{comment.id}}" placeholder="{{'label.addComment'|trans}}..."></textarea>
-        <input type="submit" value="Comment !" class="btn btn-primary">
+    <div class="col-sm-10" style="vertical-align: middle;margin-left: 13px;">
+        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id})) }}
     </div>
-</div>
+</div>  
+{% endif %}
 <hr>
 {% else %}
 

@@ -99,7 +99,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $this->entityManager->flush();
          $this->logger->info("Log In: User #" . $user->getId() . " count success loggin " . $user->getLoginCount());
         
-        return new RedirectResponse($this->router->generate('user_edit'));
+         return new RedirectResponse($this->router->generate('user_edit'));
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
