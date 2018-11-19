@@ -205,4 +205,14 @@ class Post
 
         return $this;
     }
+
+     public function getCommentsLevelOne(): ?self
+    {
+        foreach ($this->comments as  $comment) {
+            if($comment->getParent() !== null){
+                $this->removeComment($comment);
+            }
+        } 
+         return $this;
+    }
 }

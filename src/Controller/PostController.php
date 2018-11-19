@@ -45,7 +45,7 @@ class PostController extends AbstractController
      */
     public function postShow(Post $post): Response
     {
-
+ 
          return $this->render('post/post_show.html.twig', [
             'post' => $post
         ]);
@@ -59,12 +59,13 @@ class PostController extends AbstractController
      * The "id" of the Post is passed in and then turned into a Post object
      * automatically by the ParamConverter.
      */
-    public function commentForm(Post $post): Response
+    public function commentForm(Post $post, Comment $comment = null): Response
     {
         $form = $this->createForm(CommentType::class);
-
+         
         return $this->render('post/_comment_form.html.twig', [
             'post' => $post,
+            'comment' => $comment,
             'form' => $form->createView(),
         ]);
     }
@@ -84,11 +85,21 @@ public function commentNew(Request $request, Post $post, EventDispatcherInterfac
         $comment = new Comment();
         $comment->setAuthor($this->getUser());
         $post->addComment($comment);
-
+        
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $parent_id = $request->request->get('parent');
+            $parent = null;
+             foreach ($post->getComments() as $parentComment) { 
+                 if(!!$parent_id && $parent_id == $parentComment->getId()){  
+                    $parent = $parentComment;
+                   $comment->setParent($parent);
+                    break;
+                 }
+             } 
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();

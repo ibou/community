@@ -41,31 +41,66 @@
     <i class="fa fa-comments" aria-hidden="true"></i> {{ post.comments|length ~' '~'post.num_comments'|trans }}
 
 </h3>
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-{% for comment in post.comments|reverse %}
-
-<div class="row post-comment">
-    <a name="comment_{{ comment.id }}"></a>
-    <h4 class="col-sm-12">
-        <span style="color:brown">{{ post.author.firstname ~' '~post.author.lastname}}</span> {{
-        'post.commented_on'|trans }}
-        {# it's not mandatory to set the timezone in localizeddate(). This is done to
-        avoid errors when the 'intl' PHP extension is not available and the application
-        is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
-        {{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
-    </h4>
-</div>
-<div class="row post-comment">
-    <div class="col-sm-12">
-        {{ comment.content }}
+<div class="row new-comment">
+    <div class="col-sm-12" style="vertical-align: middle;margin: 13px;clear:both;">
+        Main::Comments
+        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id,'parent': null})) }}
     </div>
+</div>
+{% endif %}
+<hr>
+
+{% for comment in post.getCommentsLevelOne.comments|reverse %}
+
+
+
+<div class="parentComment">
+    <div class="row post-comment">
+        <a name="comment_{{ comment.id }}"></a>
+        <h4 class="col-sm-12">
+            <span style="color:brown">{{ post.author.firstname ~' '~post.author.lastname}}</span> {{
+            'post.commented_on'|trans }}
+            {# it's not mandatory to set the timezone in localizeddate(). This is done to
+            avoid errors when the 'intl' PHP extension is not available and the application
+            is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+            {{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
+        </h4>
+    </div>
+    <div class="row post-comment">
+        <div class="col-sm-12">
+            {{ comment.content }}
+        </div>
+    </div>
+    {% for child in comment.children %}
+    <div class="childComment" style="margin-left: 25px; color: rgb(118, 133, 133)">
+       Reply : <div class="row">
+            <a name="comment_{{ child.id }}"></a>
+            <h4 class="col-sm-12">
+                <span style="color:brown">{{ post.author.firstname ~' '~post.author.lastname}}</span> {{
+                'post.commented_on'|trans }}
+                {# it's not mandatory to set the timezone in localizeddate(). This is done to
+                avoid errors when the 'intl' PHP extension is not available and the application
+                is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+                {{ child.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
+            </h4>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {{ child.content }}
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
 </div>
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <div class="row new-comment">
-    <div class="col-sm-10" style="vertical-align: middle;margin-left: 13px;">
-        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id})) }}
+    <div class="col-sm-10" style="vertical-align: middle;margin: 13px;clear:both;">
+        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id,'comment': comment.id})) }}
     </div>
-</div>  
+</div>
 {% endif %}
 <hr>
 {% else %}
