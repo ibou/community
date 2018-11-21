@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
+use Elastica\Query;
 use App\Entity\Post;
+use Elastica\Client;
 use App\Entity\Comment;
 use App\Form\CommentType;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\MultiMatch;
 use App\Repository\TagRepository;
 use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -125,6 +130,38 @@ public function commentNew(Request $request, Post $post, EventDispatcherInterfac
         //     'post' => $post,
         //     'form' => $form->createView(),
         // ]);
+    }
+
+    /**
+     * @Route("/search", name="post_search")
+     * @Method("GET")
+     */
+    public function search(Request $request, Client $client): Response
+    {
+        if (!$request->isXmlHttpRequest()) { 
+            return $this->render('post/search.html.twig');
+        }
+
+        $query = $request->query->get('q', '');
+        $limit = $request->query->get('l', 10);
+
+        $match = new MultiMatch();
+        $match->setQuery($query);
+        $match->setFields(["title^4", "tags", "content", "author"]);
+
+        $bool = new BoolQuery();
+        $bool->addMust($match);
+
+        $elasticaQuery = new Query($bool);
+        $elasticaQuery->setSize($limit);
+
+        $foundPosts = $client->getIndex('community')->search($elasticaQuery);
+        $results = [];
+        foreach ($foundPosts as $post) {
+            $results[] = $post->getSource();
+        }
+ 
+        return $this->json($results);
     }
 
 

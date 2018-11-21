@@ -53,7 +53,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                         {% endblock %}
 
                         <li>
-                            <a href="#" class="nav-link"> <i class="fa fa-search"></i> {{ 'menu.search'|trans }}</a>
+                            <a href="{{ path('post_search') }}" class="nav-link"> <i class="fa fa-search"></i> {{ 'menu.search'|trans }}</a>
                         </li>
 
                         <li class="dropdown">
