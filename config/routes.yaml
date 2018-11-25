@@ -1,0 +1,7 @@
+homepage:
+    path: /{_locale}
+    controller: App\Controller\HomeController::index
+    requirements:
+        _locale: '%app_locales%'
+    defaults: 
+        _locale: '%locale%'  

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'homepage' %}
+
+{#
+the homepage is a special page which displays neither a header nor a footer.
+this is done with the 'trick' of defining empty Twig blocks without any content
+#}
+{% block title %} TOJKE {% endblock title %}
+{% block footer %}{% endblock %}
+{% block main %}
+
+<div class="row">
+    <div class="col-sm-6">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi eaque soluta ipsam at alias delectus
+            cupiditate libero quo ipsa! Sed et quam magnam eius provident temporibus! Doloremque dolor quae totam?</p>
+        <p>Doloremque maxime optio ex culpa sunt corrupti qui, harum totam dolor natus numquam facere nisi nulla
+            repellendus amet ipsa tempora rerum, consequuntur eum a. Ratione ullam architecto magni doloribus
+            molestiae!</p>
+        <p>Dolor nam excepturi reiciendis repellendus, quis quasi optio provident dolorem neque? Enim est repellat
+            asperiores nulla explicabo facilis alias iure sequi reiciendis unde dicta vitae corporis, magnam fugit
+            perferendis atque?</p>
+    </div>
+    <div class="col-sm-6">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi eaque soluta ipsam at alias delectus
+            cupiditate libero quo ipsa! Sed et quam magnam eius provident temporibus! Doloremque dolor quae totam?</p>
+        <p>Doloremque maxime optio ex culpa sunt corrupti qui, harum totam dolor natus numquam facere nisi nulla
+            repellendus amet ipsa tempora rerum, consequuntur eum a. Ratione ullam architecto magni doloribus
+            molestiae!</p>
+        <p>Dolor nam excepturi reiciendis repellendus, quis quasi optio provident dolorem neque? Enim est repellat
+            asperiores nulla explicabo facilis alias iure sequi reiciendis unde dicta vitae corporis, magnam fugit
+            perferendis atque?</p>
+    </div>
+</div>
+{% endblock %}
+{% block sidebar %}
+{{ parent() }}
+{% endblock %}

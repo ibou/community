@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Hello !{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-sm-12">
+        {{ form_start(form) }}
+        {# <div class="form-row">
+            <div class="col">
+                {{ form_label(form.firstname) }}
+                {{ form_widget(form.firstname, {'attr': {'class':
+                'form-control','placeholder':'label.user.firstname'}}) }}
+            </div>
+            <div class="col"> 
+                {{ form_label(form.lastname) }}
+                {{ form_widget(form.lastname, {'attr': {'class': 'form-control','placeholder':'label.user.lastname'}})
+                }}
+            </div>
+        </div> #}
+
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword.first) }}
+        {{ form_row(form.plainPassword.second) }}
+        {{ form_widget(form._token) }}
+
+        {# {{ form_row(form.termsAccepted,{label_attr: {class: 'radio-custom'} }) }} #}
+    </div>
+</div>
+<button type="submit" class="btn btn-primary">Register!</button>
+
+{% endblock %}
+{% block sidebar %}
+<div class="card">
+    <div class="card-header">
+        {{ 'login.account.title'|trans }} ?
+    </div>
+    <div class="card-body">
+        <a href="{{path('security_login')}}">
+            {{ 'login.account.connect'|trans }}
+        </a>
+    </div>
+</div>
+{{ parent() }}
+{% endblock %}

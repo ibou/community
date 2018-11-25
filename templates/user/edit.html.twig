@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'user_edit' %}
+
+{% block main %}
+<h1>{{ 'title.edit_user'|trans }}</h1>
+
+
+{{ form_start(form) }}
+<div class="form-row">
+    <div class="col">
+        {{ form_label(form.firstname) }}
+        {{ form_widget(form.firstname, {'attr': {'class':
+        'form-control','placeholder':'tape.label.user.firstname'}}) }}
+    </div>
+    <div class="col">
+        {{ form_label(form.lastname) }}
+        {{ form_widget(form.lastname, {'attr': {'class': 'form-control','placeholder':'tape.label.user.lastname'}})
+        }}
+    </div>
+</div>
+{{ form_widget(form) }}
+
+<button type="submit" class="btn btn-primary">
+    <i class="fa fa-save" aria-hidden="true"></i> {{ 'action.save'|trans }}
+</button>
+{{ form_end(form) }}
+{% endblock %}
+
+{% block sidebar %}
+<div class="section">
+    <a href="{{ path('user_change_password') }}" class="btn btn-lg btn-block btn-danger">
+        <i class="fa fa-lock" aria-hidden="true"></i> {{ 'action.change_password'|trans }}
+    </a>
+</div>
+
+{{ parent() }}
+ 
+{% endblock %}
