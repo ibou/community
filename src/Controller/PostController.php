@@ -28,13 +28,13 @@ class PostController extends AbstractController
      * @Route("", defaults={"page": "1"}, methods={"GET"}, name="post_index")
      * @Route("/page/{page<[1-9]\d*>}", defaults={"_format"="html"}, methods={"GET"}, name="post_index_paginated")
      */
-    public function index(Request $request, int $page, PostRepository $posts, TagRepository $tags): Response
+    public function index(Request $request, int $page, PostRepository $posts, TagRepository $tags) : Response
     {
         $tag = null;
-        if($request->query->has('tag')){
+        if ($request->query->has('tag')) {
             $tag = $tags->findOneBy(['name' => $request->query->get('tag')]);
         }
-        $lastest = $posts->findLatest($page, $tag); 
+        $lastest = $posts->findLatest($page, $tag);
         return $this->render('post/index.html.twig', [
             'posts' => $lastest
         ]);
@@ -48,15 +48,15 @@ class PostController extends AbstractController
      * value given in the route.
      * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html
      */
-    public function postShow(Post $post): Response
+    public function postShow(Post $post) : Response
     {
- 
-         return $this->render('post/post_show.html.twig', [
+
+        return $this->render('post/post_show.html.twig', [
             'post' => $post
         ]);
     }
 
- /**
+    /**
      * This controller is called directly via the render() function in the
      * blog/post_show.html.twig template. That's why it's not needed to define
      * a route name for it.
@@ -64,19 +64,20 @@ class PostController extends AbstractController
      * The "id" of the Post is passed in and then turned into a Post object
      * automatically by the ParamConverter.
      */
-    public function commentForm(Post $post, Comment $comment = null): Response
+    public function commentForm(Request $request, Post $post, Comment $comment = null) : Response
     {
         $form = $this->createForm(CommentType::class);
-         
+
         return $this->render('post/_comment_form.html.twig', [
             'post' => $post,
             'comment' => $comment,
+            'parent_id' => $request->attributes->get('p_id'),
             'form' => $form->createView(),
         ]);
     }
 
 
-        /**
+    /**
      * @Route("/comment/{postSlug}/new", methods={"POST"}, name="comment_new")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @ParamConverter("post", options={"mapping": {"postSlug": "slug"}})
@@ -85,26 +86,25 @@ class PostController extends AbstractController
      * (postSlug) doesn't match any of the Doctrine entity properties (slug).
      * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html#doctrine-converter
      */
-public function commentNew(Request $request, Post $post, EventDispatcherInterface $eventDispatcher): Response
+    public function commentNew(Request $request, Post $post, EventDispatcherInterface $eventDispatcher) : Response
     {
         $comment = new Comment();
         $comment->setAuthor($this->getUser());
         $post->addComment($comment);
-        
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $parent_id = $request->request->get('parent');
             $parent = null;
-             foreach ($post->getComments() as $parentComment) { 
-                 if(!!$parent_id && $parent_id == $parentComment->getId()){  
+            foreach ($post->getComments() as $parentComment) {
+                if (!!$parent_id && $parent_id == $parentComment->getId()) {
                     $parent = $parentComment;
-                   $comment->setParent($parent);
+                    $comment->setParent($parent);
                     break;
-                 }
-             } 
+                }
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
@@ -136,9 +136,9 @@ public function commentNew(Request $request, Post $post, EventDispatcherInterfac
      * @Route("/search", name="post_search")
      * @Method("GET")
      */
-    public function search(Request $request, Client $client): Response
+    public function search(Request $request, Client $client) : Response
     {
-        if (!$request->isXmlHttpRequest()) { 
+        if (!$request->isXmlHttpRequest()) {
             return $this->render('post/search.html.twig');
         }
 
@@ -160,7 +160,7 @@ public function commentNew(Request $request, Post $post, EventDispatcherInterfac
         foreach ($foundPosts as $post) {
             $results[] = $post->getSource();
         }
- 
+
         return $this->json($results);
     }
 
