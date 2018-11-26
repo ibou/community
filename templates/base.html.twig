@@ -32,17 +32,16 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
+
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav ml-auto">
 
-                        {% block header_navigation_links %} 
+                        {% block header_navigation_links %}
                         <li>
                             <a href="{{ path('post_index') }}" class="nav-link">
                                 <i class="fa fa-home" aria-hidden="true"></i> {{ 'menu.homepage'|trans }}
                             </a>
-                        </li>
-                          
-
+                        </li> 
                         {% if is_granted('ROLE_ADMIN') %}
                         <li>
                             <a href="{{ path('admin') }}" class="nav-link">
@@ -50,10 +49,11 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                             </a>
                         </li>
                         {% endif %}
-                        {% endblock %}
+
 
                         <li>
-                            <a href="{{ path('post_search') }}" class="nav-link"> <i class="fa fa-search"></i> {{ 'menu.search'|trans }}</a>
+                            <a href="{{ path('post_search') }}" class="nav-link"> <i class="fa fa-search"></i> {{
+                                'menu.search'|trans }}</a>
                         </li>
 
                         <li class="dropdown">
@@ -110,6 +110,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                                 {% endfor %}
                             </ul>
                         </li>
+                        {% endblock %}
                     </ul>
                 </div>
             </div>
@@ -162,6 +163,11 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                         </a>
                     </p>
                 </div>
+            <div class="float-right">
+                <a href="{{ path('home_contact') }}" class="nav-link">
+                    <i class="fa fa-envelope" aria-hidden="true"></i> {{ 'menu.contact'|trans }}
+                </a>
+            </div>
             </div>
         </div>
     </footer>
