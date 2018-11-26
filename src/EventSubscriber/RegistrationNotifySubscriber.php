@@ -14,12 +14,16 @@ class RegistrationNotifySubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $sender;
+    private $template;
+    private $app_hostname;
  
-    public function __construct(\Swift_Mailer $mailer, $sender)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $template, $sender, $app_hostname)
     {
         // On injecte notre expediteur et la classe pour envoyer des mails
         $this->mailer = $mailer;
+        $this->template = $template;
         $this->sender = $sender;
+        $this->app_hostname = $app_hostname;
     }
  
     public static function getSubscribedEvents(): array
@@ -34,15 +38,20 @@ class RegistrationNotifySubscriber implements EventSubscriberInterface
     {
         /** @var User $user */
         $user = $event->getSubject();
- 
-        $subject = "Bienvenue {$user->getUsername()} ! ";
-        $body = "Bienvenue {$user->getUsername()} dans notre community";
+        $mailContent = $event->getArguments(); 
+        $subject = "Bienvenue {$user->getUsername()} ! "; 
   
         $message = (new \Swift_Message())
             ->setSubject($subject)
             ->setTo($user->getEmail(),$user->getUsername())
             ->setFrom($this->sender, 'Service Community')
-            ->setBody($body, 'text/html')
+            ->setBody($this->template->render(
+                'email/registration.html.twig',
+                [
+                    'url' => $mailContent['path'],
+                    'username' => $user->getUsername(), 
+                ]
+            ), 'text/html')
         ;
  
         $this->mailer->send($message);

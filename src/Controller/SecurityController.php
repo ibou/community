@@ -75,7 +75,7 @@ class SecurityController extends AbstractController
                 );
  
              $mailContent = [
-                'subject' => 'Communuty: Reset password',
+                'subject' => 'Community: Reset password',
                 'fromEmail' => 'community@comdesk.com',
                 'fromName' => 'Exchanges ideas ! ',
                 'toEmail' => $user->getEmail(),

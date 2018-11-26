@@ -45,7 +45,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
 
                         {% if is_granted('ROLE_ADMIN') %}
                         <li>
-                            <a href="#" class="nav-link">
+                            <a href="{{ path('admin') }}" class="nav-link">
                                 <i class="fa fa-lock" aria-hidden="true"></i> {{ 'menu.admin'|trans }}
                             </a>
                         </li>

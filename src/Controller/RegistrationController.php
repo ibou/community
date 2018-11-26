@@ -38,8 +38,12 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
        
+            $args = [
+                'path' => $this->getParameter('app.hostname').''.$this->generateUrl('security_login'),
+            ]; 
             //On déclenche l'event
             $event = new GenericEvent($user);
+            $event->setArguments($args);
             $eventDispatcher->dispatch(Events::USER_REGISTERED, $event);
             $this->addFlash('success', "Compte créé avec succès");
             return $this->redirectToRoute('security_login');
