@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
-
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('build/js/login.js') }}"></script>
+{% endblock %}
 {% block title %}Log in!{% endblock %}
 
 {% block body_id 'login_auth' %}
 {% block main %}
+<style>
 
+</style>
 
 
 
@@ -17,12 +22,24 @@
 
             <h1 class="h3 mb-3 font-weight-normal">{{ 'title.login'|trans }}</h1>
             <label for="inputEmail" class="sr-only">{{ 'label.username'|trans }}</label>
-            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
-                placeholder="Email" required autofocus>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+                </div>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
+                    placeholder="Email" required autofocus>
+            </div>
             <label for="inputPassword" class="sr-only">{{ 'label.password'|trans }}</label>
-
-            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"
-                required>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                </div>
+                <input type="password" name="password" id="password-field" class="form-control" placeholder="Password"
+                    required>
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></i></span>
+                </div>
+            </div>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         </div>
