@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Elasticsearch;
 
 use App\Entity\Post;
@@ -34,7 +35,7 @@ class ArticleIndexer
                 'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),
                 'date' => $post->getPublishedAt()->format('M d, Y'),
             ],
-            "articles" // Types are deprecated, to be removed in Elastic 7
+            'article' // Types are deprecated, to be removed in Elastic 7
         );
     }
 

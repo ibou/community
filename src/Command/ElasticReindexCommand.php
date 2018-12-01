@@ -5,9 +5,7 @@ namespace App\Command;
 use App\Elasticsearch\ArticleIndexer;
 use App\Elasticsearch\IndexBuilder;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -18,6 +16,12 @@ class ElasticReindexCommand extends Command
     private $indexBuilder;
     private $articleIndexer;
 
+    /**
+     * __construct.
+     *
+     * @param mixed $indexBuilder
+     * @param mixed $articleIndexer
+     */
     public function __construct(IndexBuilder $indexBuilder, ArticleIndexer $articleIndexer)
     {
         $this->indexBuilder = $indexBuilder;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Elasticsearch;
 
 use Elastica\Client;
@@ -15,13 +16,13 @@ class IndexBuilder
 
     public function create()
     {
-        // We name our index "blog"
+        // We name our index "community"
         $index = $this->client->getIndex('community');
 
         $settings = Yaml::parse(
-          file_get_contents(
-            __DIR__.'/../../config/elasticsearch_index_community.yaml'
-          )
+            file_get_contents(
+                __DIR__.'/../../config/elasticsearch_index_community.yaml'
+            )
         );
 
         // We build our index settings and mapping
