@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    
+ 
     public function index()
     {
          
@@ -15,4 +15,5 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+ 
 }

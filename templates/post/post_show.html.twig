@@ -45,8 +45,8 @@
 
 <div class="row new-comment">
     <div class="col-sm-12" style="vertical-align: middle;margin: 13px;clear:both;">
-        Main::Comments
-        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id,'parent': null})) }}
+        Main::Comments !!!
+        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id,'p_id': null})) }}
     </div>
 </div>
 {% endif %}
@@ -75,7 +75,7 @@
     </div>
     {% for child in comment.children %}
     <div class="childComment" style="margin-left: 25px; color: rgb(118, 133, 133)">
-       Reply : <div class="row">
+        Reply : <div class="row">
             <a name="comment_{{ child.id }}"></a>
             <h4 class="col-sm-12">
                 <span style="color:brown">{{ post.author.firstname ~' '~post.author.lastname}}</span> {{
@@ -98,7 +98,7 @@
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <div class="row new-comment">
     <div class="col-sm-10" style="vertical-align: middle;margin: 13px;clear:both;">
-        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id,'comment': comment.id})) }}
+        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id,'p_id': comment.id})) }}
     </div>
 </div>
 {% endif %}

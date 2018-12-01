@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'contact-us' %}
+
+{% block main %}
+<h1>{{ 'label.contact.us'|trans }}</h1>
+<div class="row">
+    <div class="col-md-10">
+        {{ form_start(form) }}
+
+        <div class="form-row">
+
+            <div class="col">
+                {{ form_label(form.name) }}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-user bigicon"></i></span>
+                    </div>
+                    {{ form_widget(form.name, {'attr': {'class':
+                    'form-control','placeholder':'tape.label.user.lastname'}}) }}
+                </div>
+            </div>
+            <div class="col">
+                {{ form_label(form.email) }}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-envelope bigicon"></i></span>
+                    </div>
+                    {{ form_widget(form.email, {'attr': {'class':
+                    'form-control','placeholder':'tape.label.user.email'}})
+                    }}
+                </div>
+
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                {{ form_label(form.subject) }}
+                {{ form_widget(form.subject, {'attr': {'class':
+                'form-control','placeholder':'tape.label.user.subject'}}) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                {{ form_label(form.content) }}
+                {{ form_widget(form.content, {'attr': {'class':
+                'form-control','placeholder':'tape.label.user.content', 'rows': 5}}) }}
+            </div>
+        </div>
+{{ form_widget(form._token) }}
+<button type="submit" class="btn btn-primary">
+    <i class="fa fa-send" aria-hidden="true"></i> {{ 'action.validate'|trans }}
+</button>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+{{ parent() }}
+
+{% endblock %}

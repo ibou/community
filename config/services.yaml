@@ -8,6 +8,7 @@ parameters:
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|fr
     app.notifications.email_sender: service.community@waxtanbi.fr
+    app.hostname: 'http://localhost:8000'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -38,7 +39,8 @@ services:
     # please note that last definitions always *replace* previous ones
     App\EventSubscriber\RegistrationNotifySubscriber:
         # le nom de la variable que l'on utilisera dans le service
-        $sender: '%app.notifications.email_sender%'     
+        $sender: '%app.notifications.email_sender%'      
+        $app_hostname: '%app.hostname%'     
     # App\EventListener\LoginListener:
     #     tags:
     #         - { name: 'kernel.event_listener', event: 'security.interactive_login' }      

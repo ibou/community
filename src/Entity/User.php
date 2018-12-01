@@ -24,7 +24,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=100, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email(
      *     message = "The email '{{ value }}' is not a valid email.",
@@ -43,24 +43,24 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string",nullable=true) 
+     * @ORM\Column(type="string",nullable=true,  length   = 80)
      */
     private $firstname;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string",nullable=true) 
+     * @ORM\Column(type="string",nullable=true, length   = 80)
      */
     private $lastname;
 
      /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true) 
-     * @Assert\NotBlank()     *  
+     * @ORM\Column(type="string", unique=true, length   = 80)
+     * @Assert\NotBlank()     *
      */
-    
+
     private $username;
 
     /**
@@ -116,7 +116,7 @@ class User implements UserInterface
 
         return $this;
     }
- 
+
 
     /**
      * @see UserInterface
@@ -196,7 +196,7 @@ class User implements UserInterface
 
     /**
      * Get the value of username
-     */ 
+     */
     public function getUsername()
     {
         return $this->username;
@@ -206,7 +206,7 @@ class User implements UserInterface
      * Set the value of username
      *
      * @return  self
-     */ 
+     */
     public function setUsername($username)
     {
         $this->username = $username;
@@ -216,7 +216,7 @@ class User implements UserInterface
 
     /**
      * Get the value of plainPassword
-     */ 
+     */
     public function getPlainPassword()
     {
         return $this->plainPassword;
@@ -226,7 +226,7 @@ class User implements UserInterface
      * Set the value of plainPassword
      *
      * @return  self
-     */ 
+     */
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
