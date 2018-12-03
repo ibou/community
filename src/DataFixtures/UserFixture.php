@@ -10,21 +10,23 @@ use App\Entity\Comment;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Entity\PostLike;
 
 class UserFixture extends Fixture
 {
-      private $passwordEncoder;
+    private $passwordEncoder;
+
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
+
     public function load(ObjectManager $manager)
-    { 
-        $this->loadUsers($manager); 
+    {
+        $this->loadUsers($manager);
         $this->loadTags($manager);
         $this->loadPosts($manager);
     }
-        
 
     private function loadUsers(ObjectManager $manager)
     {
@@ -44,7 +46,7 @@ class UserFixture extends Fixture
         $manager->flush();
     }
 
-        private function loadTags(ObjectManager $manager)
+    private function loadTags(ObjectManager $manager)
     {
         foreach ($this->getTagData() as $index => $name) {
             $tag = new Tag();
@@ -57,7 +59,7 @@ class UserFixture extends Fixture
         $manager->flush();
     }
 
-     private function getTagData(): array
+    private function getTagData(): array
     {
         return [
             'lorem',
@@ -71,28 +73,39 @@ class UserFixture extends Fixture
             'pariatur',
         ];
     }
+
     private function loadPosts(ObjectManager $manager)
     {
         foreach ($this->getPostData() as [$title, $slug,  $content, $publishedAt, $author, $tags]) {
             $post = new Post();
             $post->setTitle($title);
-            $post->setSlug($slug); 
+            $post->setSlug($slug);
             $post->setContent($content);
             $post->setPublishedAt($publishedAt);
             $post->setAuthor($author);
             $post->addTag(...$tags);
 
+            for ($i = 0; $i < 2; ++$i) {
+                $like = new PostLike();
+                $like->setPost($post);
+                if (0 === $i % 2) {
+                    $like->setUser($this->getReference('ibou888'));
+                } else {
+                    $like->setUser($this->getReference('john_user'));
+                }
+                $manager->persist($like);
+            }
+
             foreach (range(1, 5) as $i) {
                 $comment = new Comment();
-                if(0 === $i%2)
-                {
+                if (0 === $i % 2) {
                     $comment->setAuthor($this->getReference('ibou888'));
-                }else{
+                } else {
                     $comment->setAuthor($this->getReference('john_user'));
                 }
                 $comment->setContent($this->getRandomText(random_int(255, 512)));
                 $comment->setPublishedAt(new \DateTime('now + '.$i.'seconds'));
-
+                $comment->setParent(null);
                 $post->addComment($comment);
             }
 
@@ -101,20 +114,21 @@ class UserFixture extends Fixture
 
         $manager->flush();
     }
-        private function getUserData(): array
+
+    private function getUserData(): array
     {
         return [
             // $userData = [$fname, $lname, $username, $password, $email, $roles];
-            ['Super','Admin', 'admin', 'coucou', 'iboudiallo@symfony.com', ['ROLE_SUPER_ADMIN']],
-            ['Ibrahima','DIALLO', 'ibou888', 'coucou', 'iboudiallo84@gmail.com', ['ROLE_ADMIN']],
-            ['Jane ','Doe', 'jane_admin', 'kitten', 'jane_admin@symfony.com', ['ROLE_ADMIN']],
-            ['Tom','Reynold', 'tom_admin', 'kitten', 'tom_admin@symfony.com', ['ROLE_ADMIN']],
-            ['John','J. Claude', 'john_user', 'kitten', 'john_user@symfony.com', ['ROLE_USER']],
-            ['Allen','Benerice', 'benericee', 'kitten', 'allenben@symfony.com', ['ROLE_USER']],
+            ['Super', 'Admin', 'admin', 'coucou', 'iboudiallo@symfony.com', ['ROLE_SUPER_ADMIN']],
+            ['Ibrahima', 'DIALLO', 'ibou888', 'coucou', 'iboudiallo84@gmail.com', ['ROLE_ADMIN']],
+            ['Jane ', 'Doe', 'jane_admin', 'kitten', 'jane_admin@symfony.com', ['ROLE_ADMIN']],
+            ['Tom', 'Reynold', 'tom_admin', 'kitten', 'tom_admin@symfony.com', ['ROLE_ADMIN']],
+            ['John', 'J. Claude', 'john_user', 'kitten', 'john_user@symfony.com', ['ROLE_USER']],
+            ['Allen', 'Benerice', 'benericee', 'kitten', 'allenben@symfony.com', ['ROLE_USER']],
         ];
     }
 
-     private function getPostData()
+    private function getPostData()
     {
         $posts = [];
         foreach ($this->getPhrases() as $i => $title) {

@@ -46,7 +46,6 @@ class ElasticReindexCommand extends Command
         $io->success('Index created!');
 
         $this->articleIndexer->indexAllDocuments($index->getName());
-
         $io->success('Index populated and ready!');
     }
 }

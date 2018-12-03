@@ -19,13 +19,14 @@ Encore
      */
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/login', './assets/js/login.js')
+    .addEntry('js/comments_likes', './assets/js/comments_likes.js')
     .addEntry('js/search', './assets/js/search.js')
-    .addStyleEntry('css/app', ['./assets/scss/app.scss','./assets/scss/admin.scss'])
+    .addStyleEntry('css/app', ['./assets/scss/app.scss', './assets/scss/admin.scss'])
     // .addStyleEntry('css/admin', ['./assets/scss/admin.scss'])
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
-    
+
     /*
      * FEATURE CONFIG
      *
@@ -47,7 +48,6 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     .autoProvidejQuery()
-;
+    ;
 
 module.exports = Encore.getWebpackConfig();
- 

@@ -1,8 +1,25 @@
 {% extends 'base.html.twig' %}
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('build/js/comments_likes.js') }}"></script>
+{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    .fa {
+        cursor: pointer;
+        user-select: none;
+    }
 
+    .fa:hover {
+        color: darkblue;
+    }
+</style>
+{% endblock %}
 {% block body_id 'blog_post_show' %}
 
 {% block main %}
+
 <h1>{{ post.title }}</h1>
 
 <p class="post-metadata">
@@ -11,10 +28,21 @@
     <span class="metadata"><i class="fa fa-user"></i> {{ post.author.firstname ~' '~post.author.lastname}}</span>
 </p>
 
-
 {{ post.content }}
 
 {{ include('post/_post_tags.html.twig') }}
+<hr>
+<a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
+
+    {% if(app.user and post.isLikedByUser(app.user)) %}
+    <i class="fa fa-thumbs-down"></i>
+    {% else %}
+    <i class="fa fa-thumbs-up"></i>
+    {% endif %}
+    <span class="js-likes">{{post.likes | length}}</span>
+    <span class="js-label">J'aime</span>
+</a>
+
 
 <div id="post-add-comment" class="well">
     {# The 'IS_AUTHENTICATED_FULLY' role ensures that the user has entered
@@ -60,7 +88,7 @@
     <div class="row post-comment">
         <a name="comment_{{ comment.id }}"></a>
         <h4 class="col-sm-12">
-            <span style="color:brown">{{ post.author.firstname ~' '~post.author.lastname}}</span> {{
+            <span style="color:brown">{{ comment.author.firstname ~' '~comment.author.lastname}}</span> {{
             'post.commented_on'|trans }}
             {# it's not mandatory to set the timezone in localizeddate(). This is done to
             avoid errors when the 'intl' PHP extension is not available and the application
@@ -78,7 +106,8 @@
         Reply : <div class="row">
             <a name="comment_{{ child.id }}"></a>
             <h4 class="col-sm-12">
-                <span style="color:brown">{{ post.author.firstname ~' '~post.author.lastname}}</span> {{
+                <span style="color:brown">{{ child.author.firstname ~' '~child.author.lastname}} ---{{child.author.id}}
+                </span> {{
                 'post.commented_on'|trans }}
                 {# it's not mandatory to set the timezone in localizeddate(). This is done to
                 avoid errors when the 'intl' PHP extension is not available and the application

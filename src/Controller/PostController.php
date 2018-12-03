@@ -2,23 +2,27 @@
 
 namespace App\Controller;
 
-use Elastica\Query;
-use App\Entity\Post;
-use Elastica\Client;
 use App\Entity\Comment;
+use App\Entity\Post;
 use App\Form\CommentType;
+use App\Repository\PostLikeRepository;
+use App\Repository\PostRepository;
+use App\Repository\TagRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Elastica\Client;
+use Elastica\Query;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\MultiMatch;
-use App\Repository\TagRepository;
-use App\Repository\PostRepository;
+use Proxies\__CG__\App\Entity\PostLike;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 /**
  * @Route("/posts")
  */
@@ -28,15 +32,16 @@ class PostController extends AbstractController
      * @Route("", defaults={"page": "1"}, methods={"GET"}, name="post_index")
      * @Route("/page/{page<[1-9]\d*>}", defaults={"_format"="html"}, methods={"GET"}, name="post_index_paginated")
      */
-    public function index(Request $request, int $page, PostRepository $posts, TagRepository $tags) : Response
+    public function index(Request $request, int $page, PostRepository $posts, TagRepository $tags): Response
     {
         $tag = null;
         if ($request->query->has('tag')) {
             $tag = $tags->findOneBy(['name' => $request->query->get('tag')]);
         }
         $lastest = $posts->findLatest($page, $tag);
+
         return $this->render('post/index.html.twig', [
-            'posts' => $lastest
+            'posts' => $lastest,
         ]);
     }
 
@@ -48,11 +53,10 @@ class PostController extends AbstractController
      * value given in the route.
      * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html
      */
-    public function postShow(Post $post) : Response
+    public function postShow(Post $post): Response
     {
-
         return $this->render('post/post_show.html.twig', [
-            'post' => $post
+            'post' => $post,
         ]);
     }
 
@@ -64,7 +68,7 @@ class PostController extends AbstractController
      * The "id" of the Post is passed in and then turned into a Post object
      * automatically by the ParamConverter.
      */
-    public function commentForm(Request $request, Post $post, Comment $comment = null) : Response
+    public function commentForm(Request $request, Post $post, Comment $comment = null): Response
     {
         $form = $this->createForm(CommentType::class);
 
@@ -76,7 +80,6 @@ class PostController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/comment/{postSlug}/new", methods={"POST"}, name="comment_new")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
@@ -86,7 +89,7 @@ class PostController extends AbstractController
      * (postSlug) doesn't match any of the Doctrine entity properties (slug).
      * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html#doctrine-converter
      */
-    public function commentNew(Request $request, Post $post, EventDispatcherInterface $eventDispatcher) : Response
+    public function commentNew(Request $request, Post $post, EventDispatcherInterface $eventDispatcher): Response
     {
         $comment = new Comment();
         $comment->setAuthor($this->getUser());
@@ -95,11 +98,10 @@ class PostController extends AbstractController
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $parent_id = $request->request->get('parent');
             $parent = null;
             foreach ($post->getComments() as $parentComment) {
-                if (!!$parent_id && $parent_id == $parentComment->getId()) {
+                if ((bool) $parent_id && $parent_id == $parentComment->getId()) {
                     $parent = $parentComment;
                     $comment->setParent($parent);
                     break;
@@ -125,6 +127,7 @@ class PostController extends AbstractController
 
             return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         }
+
         return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         // return $this->render('blog/comment_form_error.html.twig', [
         //     'post' => $post,
@@ -136,7 +139,7 @@ class PostController extends AbstractController
      * @Route("/search", name="post_search")
      * @Method("GET")
      */
-    public function search(Request $request, Client $client) : Response
+    public function search(Request $request, Client $client): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return $this->render('post/search.html.twig');
@@ -147,7 +150,7 @@ class PostController extends AbstractController
 
         $match = new MultiMatch();
         $match->setQuery($query);
-        $match->setFields(["title^4", "tags", "content", "author"]);
+        $match->setFields(['title^4', 'tags', 'content', 'author']);
 
         $bool = new BoolQuery();
         $bool->addMust($match);
@@ -164,5 +167,62 @@ class PostController extends AbstractController
         return $this->json($results);
     }
 
+    /**
+     * @Route("/getpost", name="getpost")
+     * @Method("GET")
+     */
+    public function getpost(Request $request)
+    {
+        $result = ['id' => 45, 'name' => 'Shuffle'];
 
+        return $this->json($result);
+    }
+
+    /**
+     * @Route("/{id}/like", name="post_like")
+     *
+     * @param Post               $post
+     * @param ObjectManager      $manager
+     * @param PostLikeRepository $likeRepos
+     *
+     * @return Response
+     */
+    public function like(Post $post, ObjectManager $manager, PostLikeRepository $likeRepos): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['code' => 200, 'message' => 'UnAuthorized'], 403);
+        }
+        if ($post->isLikedByUser($user)) {
+            $like = $likeRepos->findOneBy([
+                'user' => $user,
+                'post' => $post,
+            ]);
+            $manager->remove($like);
+            $manager->flush();
+
+            return $this->json([
+                'code' => 200,
+                'message' => 'Like supprimé',
+                'likes' => $likeRepos->count([
+                    'post' => $post,
+                ]),
+            ], 200);
+        }
+        $like = new PostLike();
+        $like->setPost($post)
+            ->setUser($user);
+
+        $manager->persist($like);
+        $manager->flush();
+
+        return $this->json([
+            'code' => 200,
+            'message' => 'Like ajouté avec succès',
+            'likes' => $likeRepos->count([
+                'post' => $post,
+            ]),
+        ], 200);
+    }
 }

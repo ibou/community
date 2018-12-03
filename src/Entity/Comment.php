@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\OrderBy;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -15,7 +14,7 @@ class Comment
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer") 
+     * @ORM\Column(type="integer")
      */
     private $id;
 
@@ -39,10 +38,11 @@ class Comment
      * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $post; 
+    private $post;
 
     /**
      * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children")
+     * @ORM\JoinColumn(nullable=true)     *
      */
     protected $parent;
 
@@ -98,7 +98,6 @@ class Comment
         return $this;
     }
 
-
     public function getPost(): ?Post
     {
         return $this->post;
@@ -153,9 +152,9 @@ class Comment
 
         return $this;
     }
+
     // public function __toString()
     // {
     //     return $this->content;
     // }
-
 }
