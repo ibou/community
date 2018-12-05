@@ -12,4 +12,6 @@ mappings:
                 analyzer: english
             summary: *en_text
             author: *en_text
+            tags: *en_text
             content: *en_text
+            comments: *en_text

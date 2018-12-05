@@ -62,15 +62,11 @@ class UserFixture extends Fixture
     private function getTagData(): array
     {
         return [
-            'lorem',
-            'ipsum',
-            'consectetur',
-            'adipiscing',
-            'incididunt',
-            'labore',
-            'voluptate',
-            'dolore',
-            'pariatur',
+            'programmeur',
+            'gestion',
+            'mathematique',
+            'physique',
+            'developpeur',
         ];
     }
 
@@ -83,7 +79,10 @@ class UserFixture extends Fixture
             $post->setContent($content);
             $post->setPublishedAt($publishedAt);
             $post->setAuthor($author);
-            $post->addTag(...$tags);
+
+            foreach ($tags as $tag) {
+                $post->addTag($tag);
+            }
 
             for ($i = 0; $i < 2; ++$i) {
                 $like = new PostLike();
@@ -239,7 +238,7 @@ MARKDOWN;
     {
         $tagNames = $this->getTagData();
         shuffle($tagNames);
-        $selectedTags = \array_slice($tagNames, 0, random_int(3, 4));
+        $selectedTags = \array_slice($tagNames, 0, random_int(1, 3));
 
         return array_map(function ($tagName) { return $this->getReference('tag-'.$tagName); }, $selectedTags);
     }

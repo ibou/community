@@ -150,7 +150,7 @@ class PostController extends AbstractController
 
         $match = new MultiMatch();
         $match->setQuery($query);
-        $match->setFields(['title^4', 'tags', 'content', 'author']);
+        $match->setFields(['title^4', 'tags', 'content', 'author', 'comments']);
 
         $bool = new BoolQuery();
         $bool->addMust($match);

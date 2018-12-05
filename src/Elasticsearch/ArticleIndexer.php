@@ -23,13 +23,27 @@ class ArticleIndexer
 
     public function buildDocument(Post $post)
     {
+        $tags = [];
+        $tag_string = '<p class="post-tags">';
+        foreach ($post->getTags() as $tag) {
+            $tags[] = $tag->getName();
+            $tag_string .= '<i class="fa fa-tag"></i>'.$tag->getName();
+        }
+        $tag_string .= '</p>';
+        $comments = [];
+        foreach ($post->getComments() as $comment) {
+            $comments[] = $comment->getContent();
+        }
+
         return new Document(
             $post->getId(), // Manually defined ID
             [
                 'title' => $post->getTitle(),
-                'tags' => $post->getTags(),
+                'tags' => $tags,
+                'tag' => $tag_string,
                 'author' => "{$post->getAuthor()->getFirstname()} - {$post->getAuthor()->getLastname()}",
                 'content' => $post->getContent(),
+                'comments' => $comments,
 
                 // Not indexed but needed for display
                 'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),

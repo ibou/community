@@ -30,21 +30,21 @@
     <p class="post-metadata">
         <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium', null,
             'UTC') }}</span>
-<span class="metadata"><i class="fa fa-user"></i> {{ post.author.firstname ~' '~post.author.lastname}}</span>
-    </p> 
+        <span class="metadata"><i class="fa fa-user"></i> {{ post.author.firstname ~' '~post.author.lastname}}</span>
+    </p>
     {{ include('post/_post_tags.html.twig') }}
- 
-<a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
 
-    {% if(app.user and post.isLikedByUser(app.user)) %}
-    <i class="fa fa-thumbs-down"></i>
-    {% else %}
-    <i class="fa fa-thumbs-up"></i>
-    {% endif %}
-    <span class="js-likes">{{post.likes | length}}</span>
-    <span class="js-label">J'aime</span>
-</a>
-<hr>
+    <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
+
+        {% if(app.user and post.isLikedByUser(app.user)) %}
+        <i class="fa fa-thumbs-down"></i>
+        {% else %}
+        <i class="fa fa-thumbs-up"></i>
+        {% endif %}
+        <span class="js-likes">{{post.likes | length}}</span>
+        <span class="js-label">J'aime</span>
+    </a>
+    <hr>
 </article>
 {% else %}
 <div class="well">{{ 'post.no_posts_found'|trans }}</div>
@@ -52,7 +52,7 @@
 
 {% if posts.haveToPaginate %}
 <div class="navigation text-center">
-{{ pagerfanta(posts, 'twitter_bootstrap4_translated', {routeName: 'post_index_paginated', routeParams:
+    {{ pagerfanta(posts, 'twitter_bootstrap4_translated', {routeName: 'post_index_paginated', routeParams:
     app.request.query.all}) }}
 </div>
 {% endif %}
@@ -60,5 +60,5 @@
 
 {% block sidebar %}
 {{ parent() }}
- 
+
 {% endblock %}
