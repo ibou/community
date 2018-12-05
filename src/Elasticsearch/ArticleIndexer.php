@@ -7,18 +7,21 @@ use App\Repository\PostRepository;
 use Elastica\Client;
 use Elastica\Document;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Psr\Log\LoggerInterface;
 
 class ArticleIndexer
 {
     private $client;
     private $postRepository;
     private $router;
+    private $logger;
 
-    public function __construct(Client $client, PostRepository $postRepository, UrlGeneratorInterface $router)
+    public function __construct(Client $client, PostRepository $postRepository, UrlGeneratorInterface $router, LoggerInterface $logger)
     {
         $this->client = $client;
         $this->postRepository = $postRepository;
         $this->router = $router;
+        $this->logger = $logger;
     }
 
     public function buildDocument(Post $post)
@@ -43,7 +46,7 @@ class ArticleIndexer
                 'tag' => $tag_string,
                 'author' => "{$post->getAuthor()->getFirstname()} - {$post->getAuthor()->getLastname()}",
                 'content' => $post->getContent(),
-                'comments' => $comments,
+                'comment' => $comments,
 
                 // Not indexed but needed for display
                 'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),
@@ -63,6 +66,7 @@ class ArticleIndexer
             $documents[] = $this->buildDocument($post);
         }
 
+        $this->logger->warning('ELASTIC SEARCH : DATA REINDEXED', $documents);
         $index->addDocuments($documents);
         $index->refresh();
     }
