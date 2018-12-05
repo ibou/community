@@ -46,7 +46,7 @@ class ArticleIndexer
                 'tag' => $tag_string,
                 'author' => "{$post->getAuthor()->getFirstname()} - {$post->getAuthor()->getLastname()}",
                 'content' => $post->getContent(),
-                'comment' => $comments,
+                'comments' => $comments,
 
                 // Not indexed but needed for display
                 'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),
@@ -66,7 +66,7 @@ class ArticleIndexer
             $documents[] = $this->buildDocument($post);
         }
 
-        $this->logger->warning('ELASTIC SEARCH : DATA REINDEXED', $documents);
+        //$this->logger->debug('ELASTIC SEARCH : DATA REINDEXED', $documents);
         $index->addDocuments($documents);
         $index->refresh();
     }
