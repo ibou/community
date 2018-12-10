@@ -157,8 +157,6 @@ class PostController extends AbstractController
 
         $elasticaQuery = new Query($bool);
         $elasticaQuery->setSize($limit);
-
-        dump($elasticaQuery);
         $foundPosts = $client->getIndex('community')->search($elasticaQuery);
         $results = [];
         foreach ($foundPosts as $post) {
