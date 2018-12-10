@@ -13,7 +13,7 @@ use Elastica\Client;
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\MultiMatch;
-use Proxies\__CG__\App\Entity\PostLike;
+use App\Entity\PostLike;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -158,6 +158,7 @@ class PostController extends AbstractController
         $elasticaQuery = new Query($bool);
         $elasticaQuery->setSize($limit);
 
+        dump($elasticaQuery);
         $foundPosts = $client->getIndex('community')->search($elasticaQuery);
         $results = [];
         foreach ($foundPosts as $post) {
