@@ -137,16 +137,22 @@ class PostController extends AbstractController
 
     /**
      * @Route("/search", name="post_search")
-     * @Method("GET")
      */
     public function search(Request $request, Client $client): Response
     {
-        if (!$request->isXmlHttpRequest()) {
-            return $this->render('post/search.html.twig');
-        }
+        return $this->render('post/search.html.twig',
+        ['results' => []]
+    );
+    }
 
+    /**
+     * @Route("/dosearch", name="post_search_query")
+     * @Method("GET")
+     */
+    public function doSearch(Request $request, Client $client): Response
+    {
         $query = $request->query->get('q', '');
-        $limit = $request->query->get('l', 10);
+        $limit = $request->query->get('l', 12);
 
         $match = new MultiMatch();
         $match->setQuery($query);
