@@ -16,6 +16,7 @@ const action = form.action;
 // const divresults = this.querySelector('div#results');
 var output = document.getElementById('output');
 console.log('Input action:', action);
+
 // Listen for keystroke events
 textInput.onkeyup = function (e) {
     const query = textInput.value
@@ -25,9 +26,25 @@ textInput.onkeyup = function (e) {
     .then(response => {
         console.log("RESR",response) 
         const items = response.data;
+        var html = "";
         // output.className = 'container';
-        output.innerHTML = response.data;
+        //output.innerHTML = response.data;
         
+//iterating through all the item one by one.
+     items.forEach(function(val) {
+        //getting all the keys in val (current array item)
+        var keys = Object.keys(val);
+        //assigning HTML string to the variable html
+        html += "<div class = 'cat'>";
+        //iterating through all the keys presented in val (current array item)
+        keys.forEach(function(key) {
+            //appending more HTML string with key and value aginst that key;
+            html += "<strong>" + key + "</strong>: " + val[key] + "<br>";
+        });
+        //final HTML sting is appending to close the DIV element.
+        html += "</div><br>";
+        });
+        output.innerHTML = html;
         
     })
     .catch(function (error) {
