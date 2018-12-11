@@ -36,10 +36,9 @@ $(function () {
 
                 items.forEach(function (val) {
                     var tags = val['tags'];
-                    //<div class="alert alert-dismissible alert-{{label}}">
-                    html += "<article class=post>";
-                    html += "<div class='alert alert-dismissible alert-light'>";
-                    html += "<button type='button' class='close' data-dismiss='alert'>&times;</button>";
+                     html += "<article class=post>";
+                    // html += "<div class='alert alert-dismissible alert-light'>";
+                    // html += "<button type='button' class='close' data-dismiss='alert'>&times;</button>";
                     html +="<h2><a href= " + val['url'] + "> " + val['title'] + "</a></h2>";
 
                     html += "<p class='post-metadata'>";
@@ -53,15 +52,15 @@ $(function () {
                     html += "<p class='post-tags'>";
                     tags.forEach(tag => {
                         var linkByTag = val['url_post']+"?tag="+tag;
-                        html += "<a href="+linkByTag+">";
+                        html += "<a href='"+linkByTag+"' class='label label-default'>";
                         html += "<i class='fa fa-tag'></i>" + tag;
                         html += "</a>";
                     });
                     html += '</p>';
                     html += "</div>";
 
-                    html += "</div>";
-                    html += "</article>";
+                    // html += "</div>";
+                     html += "</article>";
 
                 });
 

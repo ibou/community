@@ -252,26 +252,26 @@ body#login #login-users-help p .console {
 
 /* Page: 'Blog index'
    ------------------------------------------------------------------------- */
-body#blog_index #main h1,
-body#blog_index #main p {
+#main h1,
+#main p {
     margin-bottom: 0.5em
 }
 
-body#blog_index article.post {
+article.post {
     margin-bottom: 3em;
 }
 
-body#blog_index .post-metadata {
+.post-metadata, {
     font-size: 16px;
     margin-bottom: 8px;
 }
 
-body#blog_index .post-tags .label-default {
+.post-tags .label-default {
     background-color: #e9ecec;
     color: #6d8283;
 }
 
-body#blog_index .post-tags .label-default i {
+.post-tags .label-default i {
     color: #a3b2b2;
 }
 
