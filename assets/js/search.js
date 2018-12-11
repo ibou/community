@@ -4,62 +4,84 @@
 //     $('.search-field').instantSearch({
 //         delay: 100,
 //     });
-// }); 
-$(function() {
-const axios = require('axios');
-// Get the input box
-var textInput = document.getElementById('search-field');
-var form = document.getElementById('form-search');
-console.log(form.action)
+// });
+$(function () {
+    const axios = require('axios');
+    // Get the input box
+    var textInput = document.getElementById('search-field');
+    var form = document.getElementById('form-search');
+    const spanCountResult = this.querySelector('span.js-count-result');
+    console.log(form.action)
 
-const action = form.action;
-// const divresults = this.querySelector('div#results');
-var output = document.getElementById('output');
-console.log('Input action:', action);
+    const action = form.action;
+    // const divresults = this.querySelector('div#results');
+    var output = document.getElementById('output');
 
-// Listen for keystroke events
-textInput.onkeyup = function (e) {
-    const query = textInput.value
-    const url = action+'?q='+query
-    console.log('Input Value:', url);
-    axios.get(url) 
-    .then(response => {
-        console.log("RESR",response) 
-        const items = response.data;
-        var html = "";
-        // output.className = 'container';
-        //output.innerHTML = response.data;
-        
-//iterating through all the item one by one.
-     items.forEach(function(val) {
-        //getting all the keys in val (current array item)
-        var keys = Object.keys(val);
-        //assigning HTML string to the variable html
-        html += "<div class = 'cat'>";
-        //iterating through all the keys presented in val (current array item)
-        keys.forEach(function(key) {
-            //appending more HTML string with key and value aginst that key;
-            html += "<strong>" + key + "</strong>: " + val[key] + "<br>";
-        });
-        //final HTML sting is appending to close the DIV element.
-        html += "</div><br>";
-        });
-        output.innerHTML = html;
-        
-    })
-    .catch(function (error) {
-            // handle error
-            if(error.response.status === 403){
-                window.alert("No Result ");
-            }else{
-                window.alert("Une error s'est produite, re-essayer plustard ");
+    // Listen for keystroke events
+    textInput.onkeyup = function (e) {
+        const query = textInput.value
+        const url = action
+        axios.get(url, {
+            params: {
+                query: query,
+                limit: 20
             }
-            console.log("Error: ",error);
-          })
-          .then(function () {
-            // always executed
-          });
-          
+        })
+            .then(response => {
+                //console.log("RESR",response)
+                const items = response.data;
+                var html = "";
+                spanCountResult.textContent = response.data.length + ' résultat(s)';
+                //output.innerHTML = response.data;
 
-};
+                items.forEach(function (val) {
+                    var tags = val['tags'];
+                    //<div class="alert alert-dismissible alert-{{label}}">
+                    html += "<article class=post>";
+                    html += "<div class='alert alert-dismissible alert-light'>";
+                    html += "<button type='button' class='close' data-dismiss='alert'>&times;</button>";
+                    html +="<h2><a href= " + val['url'] + "> " + val['title'] + "</a></h2>";
+
+                    html += "<p class='post-metadata'>";
+                    html += "<span class='metadata'><i class='fa fa-calendar'></i>";
+                    html += val['publishedAt'];
+                    html += "</span>";
+                    html += "<span class='metadata'><i class='fa fa-user'></i>";
+                    html += val['author'];
+                    html += "</span>";
+                    html += "</p>";
+                    html += "<p class='post-tags'>";
+                    tags.forEach(tag => {
+                        var linkByTag = val['url_post']+"?tag="+tag;
+                        html += "<a href="+linkByTag+">";
+                        html += "<i class='fa fa-tag'></i>" + tag;
+                        html += "</a>";
+                    });
+                    html += '</p>';
+                    html += "</div>";
+
+                    html += "</div>";
+                    html += "</article>";
+
+                });
+
+                //output.className = 'contai';
+                output.innerHTML = html;
+
+            })
+            .catch(function (error) {
+                // handle error
+                if (error.response.status === 403) {
+                    window.alert("No Result ");
+                } else {
+                    window.alert("Une error s'est produite, re-essayer plustard ");
+                }
+                console.log("Error: ", error);
+            })
+            .then(function () {
+                // always executed
+            });
+
+
+    };
 });

@@ -50,7 +50,8 @@ class ArticleIndexer
 
                 // Not indexed but needed for display
                 'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),
-                'date' => $post->getPublishedAt()->format('M d, Y'),
+                'url_post' => $this->router->generate('post_index', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+                'publishedAt' => $post->getPublishedAt()->format('d M Y à H:i:s'),
             ],
             'article' // Types are deprecated, to be removed in Elastic 7
         );

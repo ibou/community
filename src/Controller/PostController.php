@@ -151,8 +151,8 @@ class PostController extends AbstractController
      */
     public function doSearch(Request $request, Client $client): Response
     {
-        $query = $request->query->get('q', '');
-        $limit = $request->query->get('l', 12);
+        $query = $request->query->get('query', '');
+        $limit = $request->query->get('limit', 15);
 
         $match = new MultiMatch();
         $match->setQuery($query);

@@ -10,7 +10,7 @@
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // var $ = require('jquery');
-// import $ from 'jquery';  
+// import $ from 'jquery';
 import 'bootstrap/js/dist/tooltip';
 import 'bootstrap/js/dist/alert';
 import 'bootstrap/js/dist/collapse';
@@ -20,6 +20,5 @@ import 'bootstrap/js/dist/modal';
 // require('bootstrap/js/dist/tooltip');
 // require('bootstrap/js/dist/popover');
 $(document).ready(function () {
-    console.log("Jquery is ready now !!");
+    console.log("Hello,", new Date());
 });
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js from logs ');

@@ -1,10 +1,11 @@
 $web-font-path: 'data:text/css;base64,';
 
-@import "../../node_modules/bootswatch/dist/sandstone/variables"; 
+@import "../../node_modules/bootswatch/dist/yeti/variables";
 @import '../../node_modules/bootstrap/scss/bootstrap';
-@import "../../node_modules/bootswatch/dist/sandstone/bootswatch";
+@import "../../node_modules/bootswatch/dist/yeti/bootswatch";
 @import "../../node_modules/font-awesome/scss/font-awesome.scss";
 @import "../../node_modules/highlight.js/styles/solarized-light.css";
+
 
 /* Basic styles
    ------------------------------------------------------------------------- */
@@ -61,13 +62,14 @@ i {
 .m-b-0 {
     margin-bottom: 0
 }
- 
+
 /* Page elements
    ------------------------------------------------------------------------- */
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh
+    min-height: 100vh ;
+    background: #fafafa;
 }
 
 header {
@@ -208,7 +210,7 @@ body#requirements_checker .panel li {
 /* Page: 'Homepage'
    ------------------------------------------------------------------------- */
 body#homepage {
-     
+
 }
 
 /* Page: 'Login'
