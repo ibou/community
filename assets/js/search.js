@@ -10,7 +10,7 @@ $(function () {
     // Get the input box
     var textInput = document.getElementById('search-field');
     var form = document.getElementById('form-search');
-    const spanCountResult = this.querySelector('span.js-count-result'); 
+    const spanCountResult = this.querySelector('span.js-count-result');
 
     const action = form.action;
     var output = document.getElementById('output');
@@ -19,7 +19,7 @@ $(function () {
     textInput.onkeyup = function (e) {
         const query = textInput.value;
         const url = action;
-        if(query.length < 4){ 
+        if(query.length < 4){
             output.innerHTML = "";
             spanCountResult.textContent = "...";
             return false;
@@ -27,13 +27,14 @@ $(function () {
             axios.get(url, {
                 params: {
                     query: query,
-                    limit: 20
+                    limit: 35
                 }
             })
             .then(response => {
                 const items = response.data;
                 var html = "";
-                spanCountResult.textContent = response.data.length + ' résultat(s)'; 
+                console.log(items)
+                spanCountResult.textContent = response.data.length + ' résultat(s)';
                 items.forEach(function (val) {
                     var tags = val['tags'];
                     html += "<article class=post>";
