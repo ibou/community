@@ -28,6 +28,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PostController extends AbstractController
 {
+    public function listTags(Request $request, TagRepository $tags): Response
+    {
+        $all = $tags->findAll();
+
+        return $this->render('post/side-tags.html.twig', [
+            'tags' => $all,
+        ]);
+    }
+
     /**
      * @Route("", defaults={"page": "1"}, methods={"GET"}, name="post_index")
      * @Route("/page/{page<[1-9]\d*>}", defaults={"_format"="html"}, methods={"GET"}, name="post_index_paginated")

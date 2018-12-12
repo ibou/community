@@ -347,7 +347,7 @@
             </trans-unit>
             <trans-unit id="post.commented_on">
                 <source>post.commented_on</source>
-                <target>commenté le</target>
+                <target>a commenté le</target>
             </trans-unit>
             <trans-unit id="post.no_comments">
                 <source>post.no_comments</source>

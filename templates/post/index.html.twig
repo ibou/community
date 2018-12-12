@@ -19,6 +19,8 @@
 {% block body_id 'blog_index' %}
 
 {% block main %}
+
+
 {% for post in posts %}
 <article class="post">
     <h2>
@@ -28,10 +30,16 @@
     </h2>
 
     <p class="post-metadata">
-        <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium', null,
+        <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium',
+            null,
             'UTC') }}</span>
         <span class="metadata"><i class="fa fa-user"></i> {{ post.author.firstname ~' '~post.author.lastname}}</span>
     </p>
+
+    {{ post.content|striptags|slice(0, 92) ~ "..."  }}
+    <a href="{{ path('post_show', {slug: post.slug}) }}">
+            (voir plus)
+        </a>
     {{ include('post/_post_tags.html.twig') }}
 
     <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
@@ -56,9 +64,17 @@
     app.request.query.all}) }}
 </div>
 {% endif %}
+
 {% endblock %}
 
 {% block sidebar %}
-{{ parent() }}
+{{ render_esi(controller('App\\Controller\\PostController::listTags', { 'maxPerPage': 5 })) }}
+
+{# {{render_esi(controller('Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController::templateAction',
+    {
+    'template': 'default/side-tags.html.twig',
+    'sharedAge': 600,
+    '_locale': app.request.locale
+    })) }} #}
 
 {% endblock %}
