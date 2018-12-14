@@ -2,62 +2,60 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\User;
 use App\Event\Events;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Psr\Log\LoggerInterface;
 
 /**
  * Envoi un mail de bienvenue à chaque creation d'un utilisateur.
  */
-class RegistrationNotifySubscriber implements EventSubscriberInterface
+class ContactNotifySubscriber implements EventSubscriberInterface
 {
     private $mailer;
-    private $sender;
     private $template;
-    private $app_hostname;
     private $logger;
+    private $sender;
+    private $receiver;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $template, LoggerInterface $logger, $sender, $app_hostname)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $template, LoggerInterface $logger, $sender, $receiver)
     {
-        // On injecte notre expediteur et la classe pour envoyer des mails
         $this->mailer = $mailer;
         $this->template = $template;
         $this->logger = $logger;
         $this->sender = $sender;
-        $this->app_hostname = $app_hostname;
+        $this->receiver = $receiver;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             // le nom de l'event et le nom de la fonction qui sera déclenché
-            Events::USER_REGISTERED => 'onUserRegistrated',
+            Events::USER_CONTACT => 'onUserContact',
         ];
     }
 
-    public function onUserRegistrated(GenericEvent $event): void
+    public function onUserContact(GenericEvent $event)
     {
-        /** @var User $user */
-        $user = $event->getSubject();
+        $contact = $event->getSubject();
+        $subject = 'Un email de contact vient de tomber !';
         $mailContent = $event->getArguments();
-        $subject = "Bienvenue {$user->getUsername()} ! ";
-
+        $destinataires = explode(';', $this->receiver);
         $message = (new \Swift_Message())
             ->setSubject($subject)
-            ->setTo($user->getEmail(), $user->getUsername())
+            ->setTo($destinataires, 'Admin Community Waxtan')
             ->setFrom($this->sender, 'Service Community')
             ->setBody($this->template->render(
-                'email/registration.html.twig',
+                'email/contact.html.twig',
                 [
                     'url' => $mailContent['path'],
-                    'username' => $user->getUsername(),
+                    'username' => 'Admin Community Waxtan',
+                    'contact' => $contact,
                 ]
             ), 'text/html')
         ;
 
         $this->mailer->send($message);
-        $this->logger->info('MESSAGE New User registred. email :  (id:'.$user->getId().') : '.$user->getFirstname().' '.$user->getEmail());
+        $this->logger->info("MESSAGE New email contact from {$contact->getEmail()}");
     }
 }

@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Event;
- 
+
 /**
  * This class defines the names of all the events dispatched in
  * our project. It's not mandatory to create a
  * class like this, but it's considered a good practice.
- *
  */
 final class Events
 {
@@ -19,4 +18,5 @@ final class Events
      * @var string
      */
     const USER_REGISTERED = 'user.registered';
+    const USER_CONTACT = 'user.contact';
 }
