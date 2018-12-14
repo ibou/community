@@ -38,8 +38,8 @@ $(function () {
                 items.forEach(function (val) {
                     var tags = val['tags'];
                     html += "<article class=post>";
-                    // html += "<div class='alert alert-dismissible alert-light'>";
-                    // html += "<button type='button' class='close' data-dismiss='alert'>&times;</button>";
+                    html += "<div class='alert alert-dismissible alert-gris'>";
+                    html += "<button type='button' class='close' data-dismiss='alert'>&times;</button>";
                     html += "<h2><a href= " + val['url'] + "> " + val['title'] + "</a></h2>";
 
                     html += "<p class='post-metadata'>";
@@ -50,6 +50,11 @@ $(function () {
                     html += val['author'];
                     html += "</span>";
                     html += "</p>";
+                    html += "<div class='text-black'>";
+                    html += val['content'].substr(1, 130)+" ...";
+                    html += "<a href= " + val['url'] + "> (voir plus)</a>"; 
+                    html +="</div>"; 
+                    html += "<span class='metadata'><i class='fa fa-user'></i>";
                     html += "<p class='post-tags'>";
                     tags.forEach(tag => {
                         var linkByTag = val['url_post'] + "?tag=" + tag;
@@ -60,7 +65,7 @@ $(function () {
                     html += '</p>';
                     html += "</div>";
 
-                    // html += "</div>";
+                    html += "</div>";
                     html += "</article>";
 
                 });
