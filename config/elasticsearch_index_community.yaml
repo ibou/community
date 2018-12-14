@@ -7,11 +7,10 @@ mappings:
     article:
         dynamic: false # disable dynamic mapping
         properties:
-            title: &en_text
+            title: &fr_text
                 type: text
-                analyzer: english
-            summary: *en_text
-            author: *en_text
-            tags: *en_text
-            content: *en_text
-            comments: *en_text
+                analyzer: french
+            author: *fr_text
+            tags: *fr_text
+            content: *fr_text
+            comments: *fr_text
