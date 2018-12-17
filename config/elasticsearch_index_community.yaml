@@ -11,6 +11,8 @@ mappings:
                 type: text
                 analyzer: french
             author: *fr_text
-            tags: *fr_text
+            tags: &fr_text
+                type: text
+                fielddata: true
             content: *fr_text
             comments: *fr_text

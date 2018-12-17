@@ -14,6 +14,8 @@ $(function () {
 
     const action = form.action;
     var output = document.getElementById('output');
+    var outputTags = document.getElementById('outputTags');
+    
 
     // Listen for keystroke events
     textInput.onkeyup = function (e) {
@@ -21,6 +23,7 @@ $(function () {
         const url = action;
         if(query.length < 4){
             output.innerHTML = "";
+            outputTags.innerHTML = "";
             spanCountResult.textContent = "...";
             return false;
         }
@@ -30,11 +33,13 @@ $(function () {
                     limit: 35
                 }
             })
-            .then(response => {
-                const items = response.data;
-                var html = "";
-                console.log(items)
-                spanCountResult.textContent = response.data.length + ' résultat(s)';
+            .then(response => { 
+                const items = response.data['source'];
+                const aggrTags = response.data['aggr'];
+                var html = ""; 
+                var htmlTags = "";  
+                spanCountResult.textContent = items.length + ' résultat(s)';
+               
                 items.forEach(function (val) {
                     var tags = val['tags'];
                     html += "<article class=post>";
@@ -69,12 +74,18 @@ $(function () {
                     html += "</article>";
 
                 });
+                aggrTags.forEach(function (value) {  
+                    htmlTags += "<a href='' class='label label-default'>";
+                    htmlTags += "<i class='fa fa-tag'></i>";
+                    htmlTags += value.key+"("+value.doc_count+")";  
+                    htmlTags += "</a>";
+                }); 
 
                 //output.className = 'contai';
                 output.innerHTML = html;
-
+                outputTags.innerHTML = htmlTags; 
             })
-            .catch(function (error) {
+            .catch(function (error) { 
                 // handle error
                 if (error.response.status === 403) {
                     window.alert("No Result ");

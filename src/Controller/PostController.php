@@ -22,6 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Elastica\Aggregation\Terms;
 
 /**
  * @Route("/posts")
@@ -169,14 +170,21 @@ class PostController extends AbstractController
 
         $bool = new BoolQuery();
         $bool->addMust($match);
+        $termAgg = new Terms('by_tags');
+        $termAgg->setSize(50);
+        $termAgg->setField('tags');
 
         $elasticaQuery = new Query($bool);
         $elasticaQuery->setSize($limit);
+        $elasticaQuery->addAggregation($termAgg);
         $foundPosts = $client->getIndex('community')->search($elasticaQuery);
         $results = [];
+        $source = [];
         foreach ($foundPosts as $post) {
-            $results[] = $post->getSource();
+            $source[] = $post->getSource();
         }
+        $results['source'] = $source;
+        $results['aggr'] = $foundPosts->getAggregation('by_tags')['buckets'];
 
         return $this->json($results);
     }

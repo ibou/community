@@ -43,7 +43,6 @@ class ArticleIndexer
             [
                 'title' => $post->getTitle(),
                 'tags' => $tags,
-                'tag' => $tag_string,
                 'author' => "{$post->getAuthor()->getFirstname()} - {$post->getAuthor()->getLastname()}",
                 'content' => $post->getContent(),
                 'comments' => $comments,

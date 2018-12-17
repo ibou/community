@@ -1,0 +1,19 @@
+<div class="section about"> 
+    <div class="card">
+        <div class="card-header">
+            Sujets liés 
+        </div>
+        <div class="card-body"> 
+            <div class="post-tags" id="outputTags">  
+            </div> 
+        </div>
+        <div class="card-footer">
+            Footer 
+        </div>
+    </div>
+</div>
+
+{# it's not mandatory to set the timezone in localizeddate(). This is done to
+avoid errors when the 'intl' PHP extension is not available and the application
+is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+<!-- Fragment rendered on {{ 'now'|localizeddate('long', 'long', null, 'UTC') }} -->

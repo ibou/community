@@ -73,13 +73,6 @@
 {% endblock %}
 
 {% block sidebar %}
-{{ render_esi(controller('App\\Controller\\PostController::listTags', { 'maxPerPage': 5 })) }}
-
-{# {{render_esi(controller('Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController::templateAction',
-{
-'template': 'default/side-tags.html.twig',
-'sharedAge': 600,
-'_locale': app.request.locale
-})) }} #}
+{{ render_esi(controller('App\\Controller\\PostController::listTags', { 'maxPerPage': 20 })) }}
 
 {% endblock %}
