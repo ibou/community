@@ -18,7 +18,12 @@ $(function () {
     
 
     // Listen for keystroke events
-    textInput.onkeyup = function (e) {
+    textInput.onkeyup = function (e) { 
+            doSearch(); 
+    };
+
+
+    let doSearch = () => {
         const query = textInput.value;
         const url = action;
         if(query.length < 4){
@@ -97,7 +102,5 @@ $(function () {
             .then(function () {
                 // always executed
             });
-
-
-    };
+    }
 });

@@ -13,6 +13,7 @@ mappings:
             author: *fr_text
             tags: &fr_text
                 type: text
-                fielddata: true
+                fielddata: true 
+                boost: 2
             content: *fr_text
             comments: *fr_text

@@ -27,12 +27,9 @@ class ArticleIndexer
     public function buildDocument(Post $post)
     {
         $tags = [];
-        $tag_string = '<p class="post-tags">';
         foreach ($post->getTags() as $tag) {
             $tags[] = $tag->getName();
-            $tag_string .= '<i class="fa fa-tag"></i>'.$tag->getName();
         }
-        $tag_string .= '</p>';
         $comments = [];
         foreach ($post->getComments() as $comment) {
             $comments[] = $comment->getContent();

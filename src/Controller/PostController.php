@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Elastica\Aggregation\Terms;
+use Elastica\Aggregation\Filter;
 
 /**
  * @Route("/posts")
@@ -173,10 +174,18 @@ class PostController extends AbstractController
         $termAgg = new Terms('by_tags');
         $termAgg->setSize(50);
         $termAgg->setField('tags');
+        $termAgg->setOrders([
+            ['_count' => 'asc'], // 1. red,   2. green, 3. blue
+            //['_key' => 'asc'],   // 1. green, 2. red,   3. blue
+        ]);
+
+        $filterAgg = new Filter('by_date');
+        $filterAgg->setFilter($match);
 
         $elasticaQuery = new Query($bool);
         $elasticaQuery->setSize($limit);
         $elasticaQuery->addAggregation($termAgg);
+        $elasticaQuery->addAggregation($filterAgg);
         $foundPosts = $client->getIndex('community')->search($elasticaQuery);
         $results = [];
         $source = [];
@@ -185,6 +194,7 @@ class PostController extends AbstractController
         }
         $results['source'] = $source;
         $results['aggr'] = $foundPosts->getAggregation('by_tags')['buckets'];
+        $results['aggrsd'] = $foundPosts->getAggregations();
 
         return $this->json($results);
     }
