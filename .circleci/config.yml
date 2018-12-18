@@ -9,9 +9,8 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/ibou/community
-    parallelism: 1
-    shell: /bin/bash --login
+    working_directory: ~/repo
+    parallelism: 1 
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
     # If any of these refer to each other, rewrite them so that they don't or see https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables .
     environment:
@@ -27,7 +26,7 @@ jobs:
     # To see the list of pre-built images that CircleCI provides for most common languages see
     # https://circleci.com/docs/2.0/circleci-images/
     docker:
-    - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
+    - image: circleci/php:7.2-browsers
       command: /sbin/init
     steps:
     # Machine Setup
@@ -72,7 +71,7 @@ jobs:
     # Test
     #   This would typically be a build job when using workflows, possibly combined with build
     # The following line was run implicitly in your 1.0 builds based on what CircleCI inferred about the structure of your project. In 2.0 you need to be explicit about which commands should be run. In some cases you can discard inferred commands if they are not relevant to your project.
-    - run: phpunit
+    - run: ./vendor/bin/simple-phpunit
     # Teardown
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
     # Save test results
