@@ -10,8 +10,9 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Symfony Demo application{% endblock %}</title>
+
     {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
+    {{ encore_entry_link_tags('css/app') }}
     {% endblock %}
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -173,8 +174,9 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
     </footer>
     {% endblock %}
 
+
     {% block javascripts %}
-    <script src="{{ asset('build/js/app.js') }}"></script>
+    {{ encore_entry_script_tags('js/app') }}
     {% endblock %}
 </body>
 

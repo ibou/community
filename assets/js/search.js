@@ -1,10 +1,4 @@
-// import './jquery.instantSearch.js';
 
-// $(function() {
-//     $('.search-field').instantSearch({
-//         delay: 100,
-//     });
-// });
 $(function () {
     const axios = require('axios');
     // Get the input box

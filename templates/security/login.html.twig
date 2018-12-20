@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block javascripts %}
-{{ parent() }}
-<script src="{{ asset('build/js/login.js') }}"></script>
+{{ parent() }} 
+{{ encore_entry_script_tags('js/login') }}
 {% endblock %}
 {% block title %}Log in!{% endblock %}
 

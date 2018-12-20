@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
-{{ parent() }}
-<script src="{{ asset('build/js/search.js') }}"></script>
+{{ parent() }} 
+{{ encore_entry_script_tags('js/search') }}
 {% endblock %}
 
 {% block body_id 'blog_search' %}
