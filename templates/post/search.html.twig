@@ -10,7 +10,7 @@
 {% block main %}
 <form action="{{ path('post_search_query') }}" method="get" id="form-search">
     <div class="form-group">
-        <input name="q" class="form-control search-field" id="search-field" placeholder="{{ 'post.search_for'|trans }}" autocomplete="off"
+        <input name="query" class="form-control search-field" id="search-field" placeholder="{{ 'post.search_for'|trans }}" autocomplete="off"
             autofocus data-no-results-message="{{ 'post.search_no_results'|trans }}">
     </div>
      <span class="js-count-result">...</span>
