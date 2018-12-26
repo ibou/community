@@ -4,16 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Post;
+use App\Entity\PostLike;
 use App\Form\CommentType;
 use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Elastica\Aggregation\Filters;
+use Elastica\Aggregation\Terms;
 use Elastica\Client;
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\MultiMatch;
-use App\Entity\PostLike;
+use Elastica\Query\Terms as TermsFiter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -22,8 +25,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Elastica\Aggregation\Terms;
-use Elastica\Aggregation\Filter;
 
 /**
  * @Route("/posts")
@@ -152,8 +153,8 @@ class PostController extends AbstractController
     public function search(Request $request, Client $client): Response
     {
         return $this->render('post/search.html.twig',
-        ['results' => []]
-    );
+            ['results' => []]
+        );
     }
 
     /**
@@ -164,6 +165,7 @@ class PostController extends AbstractController
     {
         $query = $request->query->get('query', '');
         $limit = $request->query->get('limit', 15);
+        $tags = $request->query->get('tags', false);
 
         $match = new MultiMatch();
         $match->setQuery($query);
@@ -179,13 +181,19 @@ class PostController extends AbstractController
             //['_key' => 'asc'],   // 1. green, 2. red,   3. blue
         ]);
 
-        $filterAgg = new Filter('by_date');
-        $filterAgg->setFilter($match);
-
         $elasticaQuery = new Query($bool);
+        $elasticaQuery->setFrom(0);
         $elasticaQuery->setSize($limit);
         $elasticaQuery->addAggregation($termAgg);
-        $elasticaQuery->addAggregation($filterAgg);
+
+        if (false !== $tags) {
+            $filterAgg = new Filters('filter_by_tag');
+            $termTags = new TermsFiter('tags', [$tags]);
+
+            $filterAgg->addFilter($termTags);
+            $elasticaQuery->setPostFilter($termTags);
+            $elasticaQuery->addAggregation($filterAgg);
+        }
         $foundPosts = $client->getIndex('community')->search($elasticaQuery);
         $results = [];
         $source = [];
@@ -197,17 +205,6 @@ class PostController extends AbstractController
         $results['aggrsd'] = $foundPosts->getAggregations();
 
         return $this->json($results);
-    }
-
-    /**
-     * @Route("/getpost", name="getpost")
-     * @Method("GET")
-     */
-    public function getpost(Request $request)
-    {
-        $result = ['id' => 45, 'name' => 'Shuffle'];
-
-        return $this->json($result);
     }
 
     /**

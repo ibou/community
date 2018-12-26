@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block javascripts %}
-{{ parent() }}
-<script src="{{ asset('build/js/comments_likes.js') }}"></script>
+{{ parent() }} 
+{{ encore_entry_script_tags('js/comments_likes') }}
 {% endblock %}
 {% block stylesheets %}
 {{ parent() }}

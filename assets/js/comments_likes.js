@@ -33,7 +33,7 @@ function onClickBtnLike(event){
       });
 } 
 
- document.querySelectorAll('a.js-like').forEach(function(link){
+ document.querySelectorAll('a.js-like').forEach(function(link){ 
      link.addEventListener('click',  onClickBtnLike);
     
  })
