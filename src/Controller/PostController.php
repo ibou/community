@@ -182,6 +182,7 @@ class PostController extends AbstractController
         ]);
 
         $elasticaQuery = new Query($bool);
+        $elasticaQuery->setFrom(0);
         $elasticaQuery->setSize($limit);
         $elasticaQuery->addAggregation($termAgg);
 
@@ -204,17 +205,6 @@ class PostController extends AbstractController
         $results['aggrsd'] = $foundPosts->getAggregations();
 
         return $this->json($results);
-    }
-
-    /**
-     * @Route("/getpost", name="getpost")
-     * @Method("GET")
-     */
-    public function getpost(Request $request)
-    {
-        $result = ['id' => 45, 'name' => 'Shuffle'];
-
-        return $this->json($result);
     }
 
     /**
