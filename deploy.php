@@ -53,14 +53,12 @@ task('build', function () {
     run('cd {{release_path}} && build');
     run('{{bin/php}} {{console}} cache:warmup --env=prod --no-debug --no-interaction');
     run('composer install --no-dev --optimize-autoloader');
-    run('cd {{release_path}} && npm install');
-    run('cd {{release_path}} && ./node_modules/.bin/encore production');
 });
 
-// task('npm', function () {
-//     run('cd {{release_path}} && npm install');
-//     run('./node_modules/.bin/encore production');
-// });
+task('npm', function () {
+    run('cd {{release_path}} && npm install');
+    run('./node_modules/.bin/encore production');
+});
 
 after('deploy:update_code', 'deploy:clear_paths');
 after('deploy:vendors', 'deploy:writable');
@@ -70,5 +68,10 @@ after('deploy:failed', 'deploy:unlock');
 task('database:migrate', function () {
     run('{{bin/php}} {{bin/console}} doctrine:schema:update --force {{console_options}}');
 })->desc('Migrate database');
+
+task('deploy', [
+    'build',
+    'npm',
+]);
 
 before('deploy:symlink', 'database:migrate');
