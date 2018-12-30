@@ -18,7 +18,7 @@ set('ssh_multiplexing', true);
 set('symfony_env', 'prod');
 set('shared_dirs', ['var/logs', 'var/sessions']);
 set('shared_files', ['.env']);
-set('writable_dirs', ['var']);
+ set('writable_dirs', ['var']);
 set('bin_dir', 'bin');
 set('var_dir', 'var');
 set('keep_releases', 3);
@@ -40,6 +40,9 @@ set('clear_paths', [
     '.gitignore',
 ]);
 
+set('http_user', 'www-data');
+set('writable_mode', 'chmod');
+set('writable_use_sudo', true);
 // Hosts
 
 host('root@51.77.201.108')
@@ -49,8 +52,8 @@ host('root@51.77.201.108')
 
 task('build', function () {
     run('cd {{release_path}} && build');
-    run('{{bin/php}} {{console}} cache:warmup --env=prod --no-debug --no-interaction');
-    run('{{bin/php}} {{console}} doctrine:migrations:migrate --env=prod --no-interaction');
+    // run('{{bin/php}} {{console}} cache:warmup --env=prod --no-debug --no-interaction');
+    // run('{{bin/php}} {{console}} doctrine:migrations:migrate --env=prod --no-interaction');
 });
 
 after('deploy:update_code', 'deploy:clear_paths');
@@ -59,4 +62,4 @@ after('deploy:failed', 'deploy:unlock');
 
 // Migrate database before symlink new release.
 
-// before('deploy:symlink', 'database:migrate');
+before('deploy:symlink', 'database:migrate');

@@ -13,7 +13,7 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
-/web/
+/web/coverage/
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
