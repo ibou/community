@@ -2,7 +2,7 @@
 
 namespace Deployer;
 
-require 'recipe/symfony4.php';
+require 'recipe/symfony.php';
 
 // Project name
 set('application', 'deployed_community');
@@ -53,7 +53,12 @@ task('build', function () {
     run('cd {{release_path}} && build');
     run('{{bin/php}} {{console}} cache:warmup --env=prod --no-debug --no-interaction');
     run('composer install --no-dev --optimize-autoloader');
-    run('npm install');
+    // run('npm install');
+    // run('./node_modules/.bin/encore production');
+});
+
+task('npm', function () {
+    run('cd {{release_path}} && npm install');
     run('./node_modules/.bin/encore production');
 });
 
