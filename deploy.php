@@ -53,13 +53,13 @@ task('build', function () {
     run('cd {{release_path}} && build');
     run('{{bin/php}} {{console}} cache:warmup --env=prod --no-debug --no-interaction');
     run('composer install --no-dev --optimize-autoloader');
-    run('npm install');
+    run('cd {{release_path}} && npm install');
     run('cd {{release_path}} && ./node_modules/.bin/encore production');
 });
 
 // task('npm', function () {
 //     run('cd {{release_path}} && npm install');
-//      run('./node_modules/.bin/encore production');
+//     run('./node_modules/.bin/encore production');
 // });
 
 after('deploy:update_code', 'deploy:clear_paths');
