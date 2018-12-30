@@ -2,7 +2,7 @@
 
 namespace Deployer;
 
-require 'recipe/symfony.php';
+require 'recipe/symfony4.php';
 
 // Project name
 set('application', 'deployed_community');
@@ -16,7 +16,7 @@ set('git_tty', true);
 set('ssh_type', 'native');
 set('ssh_multiplexing', true);
 set('symfony_env', 'prod');
-set('shared_dirs', ['var/logs', 'var/sessions']);
+set('shared_dirs', ['var/log', 'var/sessions']);
 set('shared_files', ['.env']);
 // set('writable_dirs', ['var']);
 set('bin_dir', 'bin');
