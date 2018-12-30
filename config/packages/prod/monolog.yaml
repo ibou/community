@@ -10,7 +10,7 @@ monolog:
                 # regex: exclude all 404 errors from the logs
                 - ^/
         nested:
-            type: rotating_file
+            type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
         console:
