@@ -69,9 +69,9 @@ task('database:migrate', function () {
     run('{{bin/php}} {{bin/console}} doctrine:schema:update --force {{console_options}}');
 })->desc('Migrate database');
 
-task('deploy', [
+task('runjs', [
     'build',
     'npm',
 ]);
-
+after('deploy:vendors', 'runjs');
 before('deploy:symlink', 'database:migrate');
