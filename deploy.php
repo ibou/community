@@ -18,10 +18,10 @@ set('ssh_multiplexing', true);
 set('symfony_env', 'prod');
 set('shared_dirs', ['var/logs', 'var/sessions']);
 set('shared_files', ['.env']);
- set('writable_dirs', ['var']);
+// set('writable_dirs', ['var']);
 set('bin_dir', 'bin');
 set('var_dir', 'var');
-set('keep_releases', 3);
+// set('keep_releases', 3);
 set('bin/console', function () {
     return sprintf('{{release_path}}/%s/console', trim(get('bin_dir'), '/'));
 });
@@ -42,7 +42,6 @@ set('clear_paths', [
 
 set('http_user', 'www-data');
 set('writable_mode', 'chmod');
-set('writable_use_sudo', true);
 // Hosts
 
 host('root@51.77.201.108')
@@ -52,8 +51,8 @@ host('root@51.77.201.108')
 
 task('build', function () {
     run('cd {{release_path}} && build');
-    // run('{{bin/php}} {{console}} cache:warmup --env=prod --no-debug --no-interaction');
-    // run('{{bin/php}} {{console}} doctrine:migrations:migrate --env=prod --no-interaction');
+    run('{{bin/php}} {{console}} cache:warmup --env=prod --no-debug --no-interaction');
+    run('composer install --no-dev --optimize-autoloader');
 });
 
 after('deploy:update_code', 'deploy:clear_paths');
@@ -61,5 +60,10 @@ after('deploy:vendors', 'deploy:writable');
 after('deploy:failed', 'deploy:unlock');
 
 // Migrate database before symlink new release.
+task('database:migrate', function () {
+    run('{{bin/php}} {{bin/console}} doctrine:schema:update --force {{console_options}}');
+    run('npm install');
+    run('./node_modules/.bin/encore production');
+})->desc('Migrate database');
 
 before('deploy:symlink', 'database:migrate');
