@@ -53,7 +53,7 @@ task('build', function () {
     run('composer install --no-dev --optimize-autoloader');
     run('npm install');
     run('./node_modules/.bin/encore production');
-})->local();
+});
 
 // task('npm', function () {
 //     run('cd {{release_path}} && npm install');
