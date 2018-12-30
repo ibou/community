@@ -53,6 +53,8 @@ task('build', function () {
     run('cd {{release_path}} && build');
     run('{{bin/php}} {{console}} cache:warmup --env=prod --no-debug --no-interaction');
     run('composer install --no-dev --optimize-autoloader');
+    run('npm install');
+    run('yarn run encore production');
 });
 
 after('deploy:update_code', 'deploy:clear_paths');
@@ -62,8 +64,6 @@ after('deploy:failed', 'deploy:unlock');
 // Migrate database before symlink new release.
 task('database:migrate', function () {
     run('{{bin/php}} {{bin/console}} doctrine:schema:update --force {{console_options}}');
-    run('npm install');
-    run('./node_modules/.bin/encore production');
 })->desc('Migrate database');
 
 before('deploy:symlink', 'database:migrate');
