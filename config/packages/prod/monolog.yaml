@@ -1,9 +1,11 @@
 monolog:
     handlers:
         main:
-            type: fingers_crossed
+            type: rotating_file
             action_level: error
+             level: debug
             handler: nested
+            max_files: 10
             excluded_404s:
                 # regex: exclude all 404 errors from the logs
                 - ^/
@@ -12,7 +14,7 @@ monolog:
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
         console:
-            type: console.
+            type: console
             process_psr_3_messages: false
             channels: ["!event", "!doctrine"]
         deprecation:
