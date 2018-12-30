@@ -50,14 +50,15 @@ host('root@51.77.201.108')
 // Tasks
 
 task('build', function () {
-    run('cd {{release_path}} && composer install --no-dev --optimize-autoloader');
-    run('{{bin/php}} {{console}} cache:warmup --env=prod --no-debug --no-interaction');
-});
-
-task('npm', function () {
-    run('cd {{release_path}} && npm install');
+    run('composer install --no-dev --optimize-autoloader');
+    run('npm install');
     run('./node_modules/.bin/encore production');
-});
+})->local();
+
+// task('npm', function () {
+//     run('cd {{release_path}} && npm install');
+//     run('./node_modules/.bin/encore production');
+// });
 after('deploy:update_code', 'deploy:clear_paths');
 after('deploy:vendors', 'deploy:writable');
 after('deploy:failed', 'deploy:unlock');
@@ -67,9 +68,8 @@ task('database:migrate', function () {
     run('{{bin/php}} {{bin/console}} doctrine:schema:update --force {{console_options}}');
 })->desc('Migrate database');
 
-task('run:build', [
+task('runbuild', [
     'build',
-    'npm',
 ]);
-after('deploy:vendors', 'run:build');
+after('deploy:vendors', 'runbuild');
 before('deploy:symlink', 'database:migrate');
