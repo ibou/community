@@ -3,14 +3,14 @@ monolog:
         main:
             type: rotating_file
             action_level: error
-             level: debug
+            level: debug
             handler: nested
             max_files: 10
             excluded_404s:
                 # regex: exclude all 404 errors from the logs
                 - ^/
         nested:
-            type: stream
+            type: rotating_file
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
         console:
@@ -25,3 +25,4 @@ monolog:
             handler: deprecation
             max_level: info
             channels: ["php"]
+
