@@ -50,9 +50,9 @@ host('root@51.77.201.108')
 // Tasks
 
 task('build', function () {
-    run('cd {{release_path}} && composer install --no-dev --optimize-autoloader');
-    run('npm install');
-    run('./node_modules/.bin/encore production');
+    run('cd {{release_path}} && composer install --no-dev --optimize-autoloader && npm install && ./node_modules/.bin/encore production');
+    // run('npm install');
+    // run('./node_modules/.bin/encore production');
 });
 
 // task('npm', function () {
