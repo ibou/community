@@ -21,6 +21,8 @@ add('shared_dirs', []);
 add('writable_dirs', []);
 
 // Hosts
+set('http_user', 'www-data');
+set('writable_mode', 'chmod');
 
 host('root@51.77.201.108')
     ->set('deploy_path', '/home/debian/ww-dev/{{application}}');
