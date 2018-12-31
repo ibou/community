@@ -41,3 +41,7 @@ task('database:migrate', function () {
 })->desc('Migrate database');
 
 before('deploy:symlink', 'database:migrate');
+task('runbuild', [
+    'build',
+]);
+after('deploy:symlink', 'runbuild');
