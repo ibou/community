@@ -37,9 +37,8 @@ task('build', function () {
 after('deploy:failed', 'deploy:unlock');
 
 // Migrate database before symlink new release.
-// Migrate database before symlink new release.
 task('database:migrate', function () {
-    run('{{bin/php}} {{bin/console}} doctrine:schema:update --force {{console_options}}');
+    run('{{bin/php}} {{bin/console}} doctrine:schema:update --force');
 })->desc('Migrate database');
 
 before('deploy:symlink', 'database:migrate');
