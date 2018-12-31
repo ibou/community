@@ -21,7 +21,7 @@ set('shared_files', ['.env']);
 // set('writable_dirs', ['var']);
 set('bin_dir', 'bin');
 set('var_dir', 'var');
-// set('keep_releases', 3);
+set('keep_releases', 2);
 set('bin/console', function () {
     return sprintf('{{release_path}}/%s/console', trim(get('bin_dir'), '/'));
 });
@@ -55,7 +55,7 @@ task('build', function () {
 
 after('deploy:update_code', 'deploy:clear_paths');
 after('deploy:vendors', 'deploy:writable');
-after('deploy:failed', 'deploy:unlock');
+// after('deploy:failed', 'deploy:unlock');
 
 // Migrate database before symlink new release.
 task('database:migrate', function () {
