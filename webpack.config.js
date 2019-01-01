@@ -26,9 +26,6 @@ Encore
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     // .disableSingleRuntimeChunk()
-    // .addStyleEntry('css/admin', ['./assets/scss/admin.scss'])
-    //.addEntry('page1', './assets/js/page1.js')
-    //.addEntry('page2', './assets/js/page2.js')
 
 
     /*
