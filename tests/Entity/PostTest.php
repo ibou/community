@@ -41,7 +41,7 @@ class PostTest extends TestCase
         $reflection = new \ReflectionClass($this->object);
         $property = $reflection->getProperty('id');
         $property->setAccessible(true);
-        $property->setValue($this->object, 9);
+        $property->setValue($this->object, 90);
         $this->assertEquals(9, $this->object->getId());
     }
 }
