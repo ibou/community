@@ -15,18 +15,16 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class RegisterUserType extends AbstractType
 {
-
- public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
             ->add('lastname', TextType::class)
             ->add('email', EmailType::class)
             ->add('username', TextType::class)
             ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
-                'first_options'  => array('label' => 'Password'),
+                'first_options' => array('label' => 'Password'),
                 'second_options' => array('label' => 'Repeat Password'),
             ))
             //  ->add('termsAccepted', CheckboxType::class, array(
@@ -45,7 +43,8 @@ class RegisterUserType extends AbstractType
             'csrf_field_name' => '_token',
             // an arbitrary string used to generate the value of the token
             // using a different string for each form improves its security
-            'csrf_token_id'   => 'register_type',
+            'csrf_token_id' => 'register_type',
+            'translation_domain' => 'forms',
         ]);
     }
 }
