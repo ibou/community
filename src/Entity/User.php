@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields="email", message="Email already taken")
  * @UniqueEntity(fields="username", message="Username already taken")
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -54,7 +54,7 @@ class User implements UserInterface
      */
     private $lastname;
 
-     /**
+    /**
      * @var string
      *
      * @ORM\Column(type="string", unique=true, length   = 80)
@@ -106,17 +106,17 @@ class User implements UserInterface
         $this->likes = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId() : ? int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail() : ? string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email) : self
     {
         $this->email = $email;
 
@@ -127,7 +127,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
+    public function getRoles() : array
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
@@ -136,7 +136,7 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles) : self
     {
         $this->roles = $roles;
 
@@ -146,12 +146,12 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword() : string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password) : self
     {
         $this->password = $password;
 
@@ -176,24 +176,24 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFirstname(): ?string
+    public function getFirstname() : ? string
     {
         return $this->firstname;
     }
 
-    public function setFirstname(string $firstname): self
+    public function setFirstname(string $firstname) : self
     {
         $this->firstname = $firstname;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastname() : ? string
     {
         return $this->lastname;
     }
 
-    public function setLastname(string $lastname): self
+    public function setLastname(string $lastname) : self
     {
         $this->lastname = $lastname;
 
@@ -240,24 +240,24 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLastlogin(): ?\DateTimeInterface
+    public function getLastlogin() : ? \DateTimeInterface
     {
         return $this->lastlogin;
     }
 
-    public function setLastlogin(?\DateTimeInterface $lastlogin): self
+    public function setLastlogin(? \DateTimeInterface $lastlogin) : self
     {
         $this->lastlogin = $lastlogin;
 
         return $this;
     }
 
-    public function getLogincount(): ?int
+    public function getLogincount() : ? int
     {
         return $this->logincount;
     }
 
-    public function setLogincount(?int $logincount): self
+    public function setLogincount(? int $logincount) : self
     {
         $this->logincount = $logincount;
 
@@ -279,12 +279,12 @@ class User implements UserInterface
     /**
      * @return Collection|Post[]
      */
-    public function getPosts(): Collection
+    public function getPosts() : Collection
     {
         return $this->posts;
     }
 
-    public function addPost(Post $post): self
+    public function addPost(Post $post) : self
     {
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
@@ -294,7 +294,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removePost(Post $post): self
+    public function removePost(Post $post) : self
     {
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);
@@ -310,12 +310,12 @@ class User implements UserInterface
     /**
      * @return Collection|Comment[]
      */
-    public function getComments(): Collection
+    public function getComments() : Collection
     {
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): self
+    public function addComment(Comment $comment) : self
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
@@ -325,7 +325,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeComment(Comment $comment): self
+    public function removeComment(Comment $comment) : self
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
@@ -341,12 +341,12 @@ class User implements UserInterface
     /**
      * @return Collection|PostLike[]
      */
-    public function getLikes(): Collection
+    public function getLikes() : Collection
     {
         return $this->likes;
     }
 
-    public function addLike(PostLike $like): self
+    public function addLike(PostLike $like) : self
     {
         if (!$this->likes->contains($like)) {
             $this->likes[] = $like;
@@ -356,7 +356,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeLike(PostLike $like): self
+    public function removeLike(PostLike $like) : self
     {
         if ($this->likes->contains($like)) {
             $this->likes->removeElement($like);
@@ -367,5 +367,21 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize() : string
+    {
+        // add $this->salt too if you don't use Bcrypt or Argon2i
+        return serialize([$this->id, $this->username, $this->password]);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized) : void
+    {
+        // add $this->salt too if you don't use Bcrypt or Argon2i
+        [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
     }
 }
