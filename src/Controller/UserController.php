@@ -10,16 +10,32 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
 /**
  * Controller used to manage current user.
  *
  * @Route("/profile")
  * @IsGranted("ROLE_USER")
- *
  */
 class UserController extends AbstractController
 {
- /**
+    /**
+     * @var ObjectManager
+     */
+    private $em;
+
+    /**
+     * Undocumented function.
+     *
+     * @param ObjectManager $em
+     */
+    public function __construct(ObjectManager $em)
+    {
+        $this->em = $em;
+    }
+
+    /**
      * @Route("/edit", methods={"GET", "POST"}, name="user_edit")
      */
     public function edit(Request $request): Response
@@ -30,8 +46,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $this->em->flush();
             $this->addFlash('success', 'user.updated_successfully');
 
             return $this->redirectToRoute('user_edit');
@@ -56,7 +71,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($encoder->encodePassword($user, $form->get('newPassword')->getData()));
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->flush();
 
             return $this->redirectToRoute('security_logout');
         }
