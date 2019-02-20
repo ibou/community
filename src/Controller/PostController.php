@@ -18,7 +18,6 @@ use Elastica\Query\BoolQuery;
 use Elastica\Query\MultiMatch;
 use Elastica\Query\Terms as TermsFiter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -50,7 +49,16 @@ class PostController extends AbstractController
         if ($request->query->has('tag')) {
             $tag = $tags->findOneBy(['name' => $request->query->get('tag')]);
         }
-        $lastest = $posts->findLatest($page, $tag);
+        if ($request->query->has('query')) {
+            $client = new Client();
+            $result = $this->doSearch($request, $client);
+            $source = $result['source'];
+            var_dump($result, $source);
+        } else {
+            $lastest = $posts->findLatest($page, $tag);
+        }
+
+        // die;
 
         return $this->render('post/index.html.twig', [
             'posts' => $lastest,
@@ -144,10 +152,14 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/dosearch", name="post_search_query")
-     * @Method("GET")
+     * Undocumented function.
+     *
+     * @param Request $request
+     * @param Client  $client
+     *
+     * @return array
      */
-    public function doSearch(Request $request, Client $client): Response
+    private function doSearch(Request $request, Client $client): array
     {
         $query = $request->query->get('query', '');
         $limit = $request->query->get('limit', 15);
@@ -188,9 +200,8 @@ class PostController extends AbstractController
         }
         $results['source'] = $source;
         $results['aggr'] = $foundPosts->getAggregation('by_tags')['buckets'];
-        $results['aggrsd'] = $foundPosts->getAggregations();
 
-        return $this->json($results);
+        return $results;
     }
 
     /**

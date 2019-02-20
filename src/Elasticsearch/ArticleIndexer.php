@@ -62,8 +62,6 @@ class ArticleIndexer
         foreach ($allPosts as $post) {
             $documents[] = $this->buildDocument($post);
         }
-
-        //$this->logger->debug('ELASTIC SEARCH : DATA REINDEXED', $documents);
         $index->addDocuments($documents);
         $index->refresh();
     }
