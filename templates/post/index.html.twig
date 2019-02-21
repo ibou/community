@@ -22,9 +22,9 @@
 <div class="container mt-4">
     <form action="{{ path('post_index') }}" method="get" id="form-search">
         <div class="form-group">
-            <input name="query" class="col-md-4" autocomplete="off" autofocus
+            <input name="query" class="col-md-4" autofocus
                 data-no-results-message="{{ 'post.search_no_results'|trans }}">
-            <button class="btn btn-secondary">{{ button_label|default('Save') }}</button>
+            <button class="btn btn-secondary">{{ button_label|default('Search') }}</button>
         </div>
 
     </form>
@@ -44,7 +44,7 @@
                 null,
                 'UTC') }}</span>
             <span class="metadata"><i class="fa fa-user"></i>
-                {{ post.author.firstname ~' '~post.author.lastname}}</span>
+                {# {{ post.author.firstname ~' '~post.author.lastname}}</span> #}
         </p>
 
         <div class="text-black">
@@ -53,9 +53,9 @@
         <a href="{{ path('post_show', {slug: post.slug}) }}">
             (voir plus)
         </a>
-        {{ include('post/_post_tags.html.twig') }}
+        {# {{ include('post/_post_tags.html.twig') }} #}
 
-        <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
+        {# <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
 
             {% if(app.user and post.isLikedByUser(app.user)) %}
             <i class="fa fa-thumbs-down"></i>
@@ -64,7 +64,7 @@
             {% endif %}
             <span class="js-likes">{{post.likes | length}}</span>
             <span class="js-label">J'aime</span>
-        </a>
+        </a> #}
     </div>
     <hr>
 </article>
@@ -74,7 +74,7 @@
 
 {% if posts.haveToPaginate %}
 <div class="navigation text-center">
-    {{ pagerfanta(posts, 'twitter_bootstrap4_translated', {routeName: 'post_index_paginated', routeParams:
+    {{ pagerfanta(posts, 'twitter_bootstrap4_translated', {routeName: 'post_index_paginated_search', routeParams:
     app.request.query.all}) }}
 </div>
 {% endif %}

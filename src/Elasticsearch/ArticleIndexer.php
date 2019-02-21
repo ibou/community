@@ -40,14 +40,16 @@ class ArticleIndexer
             [
                 'title' => $post->getTitle(),
                 'tags' => $tags,
-                'author' => "{$post->getAuthor()->getFirstname()} - {$post->getAuthor()->getLastname()}",
+               // 'author' => "{$post->getAuthor()->getFirstname()} - {$post->getAuthor()->getLastname()}",
+                //'author' => ['firstname' => $post->getAuthor()->getFirstname(), 'lastname' => $post->getAuthor()->getFirstname()],
                 'content' => $post->getContent(),
                 'comments' => $comments,
+                'slug' => $post->getSlug(),
 
                 // Not indexed but needed for display
                 'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),
                 'url_post' => $this->router->generate('post_index', [], UrlGeneratorInterface::ABSOLUTE_PATH),
-                'publishedAt' => $post->getPublishedAt()->format('d M Y à H:i:s'),
+                'publishedAt' => $post->getPublishedAt()->format('c'),
             ],
             'article' // Types are deprecated, to be removed in Elastic 7
         );

@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post
 {
-    public const NUM_ITEMS = 10;
+    public const NUM_ITEMS = 3;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
