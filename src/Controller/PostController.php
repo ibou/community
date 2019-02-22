@@ -37,7 +37,7 @@ class PostController extends AbstractController
 
     /**
      * @Route("", defaults={"page": "1","query": ""}, methods={"GET"}, name="post_index")
-     * @Route("/page/{page<[1-9]\d*>}/query={query}", defaults={"page": "1","query": ""}, methods={"GET"}, name="post_index_paginated_search")
+     * @Route("/page/{page<[1-9]\d*>}", defaults={"page": "1","query": ""}, methods={"GET"}, name="post_index_paginated_search")
      */
     public function index(Request $request, int $page, $query, PostRepository $posts, TagRepository $tags, Client $client): Response
     {
@@ -45,13 +45,12 @@ class PostController extends AbstractController
         if ($request->query->has('tag')) {
             $tag = $tags->findOneBy(['name' => $request->query->get('tag')]);
         }
-
+        $currentRoute = $request->attributes->get('_route');
+        $page = null !== $request->attributes->get('page') ? $request->attributes->get('page') : 1;
+        $query = $request->query->get('query', '');
         if ($request->query->has('query')) {
-            $query = $request->query->get('query', '');
             $limit = $request->query->get('limit', 15);
             $tags = $request->query->get('tags', false);
-            $page = $request->query->get('page', 1);
-            // dump($query);
             $search = new Search($client, $query, $tags);
             $search->setLimit(18);
             $search->setPage($page);
@@ -62,12 +61,11 @@ class PostController extends AbstractController
             $lastest = $posts->findLatest($page, $tag);
         }
 
-        dump($lastest->getCurrentPage(), $request->query->get('query', ''));
-        dump($request->query->all());
-        // die;
+        //Inclure template dans index selon si search or direct access (a gerer dans le template index.html.twig)
 
         return $this->render('post/index.html.twig', [
             'posts' => $lastest,
+            'query' => $query,
         ]);
     }
 

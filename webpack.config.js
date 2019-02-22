@@ -23,6 +23,7 @@ Encore
     .addEntry('js/search', './assets/js/search.js')
     .addStyleEntry('css/app', ['./assets/scss/app.scss'])
     .addStyleEntry('css/admin', ['./assets/scss/admin.scss'])
+    .addStyleEntry('css/search', ['./assets/scss/search.scss'])
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     // .disableSingleRuntimeChunk()

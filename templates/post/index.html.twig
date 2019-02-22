@@ -1,87 +1,116 @@
 {% extends 'base.html.twig' %}
-{% block javascripts %}
-{{ parent() }}
-{{ encore_entry_script_tags('js/comments_likes') }}
-{% endblock %}
+
+
 {% block stylesheets %}
 {{ parent() }}
-<style>
-    .fa {
-        cursor: pointer;
-        user-select: none;
-    }
-
-    .fa:hover {
-        color: darkblue;
-    }
-</style>
+{{ encore_entry_link_tags('css/search') }}
 {% endblock %}
+
 {% block body_id 'blog_index' %}
 
 {% block main %}
-<div class="container mt-4">
-    <form action="{{ path('post_index') }}" method="get" id="form-search">
-        <div class="form-group">
-            <input name="query" class="col-md-4" autofocus
-                data-no-results-message="{{ 'post.search_no_results'|trans }}">
-            <button class="btn btn-secondary">{{ button_label|default('Search') }}</button>
+<div class="container fluid">
+
+    <form action="{{ path('post_index') }}" method="get">
+        <div class="form-row align-items-end">
+            <div class="col-sm-9">
+                <div class="form-group">
+                    <input name="query" class="form-control" autofocus
+                        data-no-results-message="{{ 'post.search_no_results'|trans }}">
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <button class="btn btn-secondary form-control">{{ button_label|default('Search') }}</button> 
+                </div>
+            </div>
         </div>
 
     </form>
-</div>
-{% for post in posts %}
-<article class="post">
-    <div class='alert alert-dismissible alert-gris'>
-        <button type='button' class='close' data-dismiss='alert'>&times;</button>
-        <h2>
-            <a href="{{ path('post_show', {slug: post.slug}) }}">
-                {{ post.title }}
-            </a>
-        </h2>
 
-        <p class="post-metadata">
-            <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium',
+{% if query %} 
+    <div class="row justify-content-end">
+        <div class="badge badge-info text-right col-5">
+            <div class="text-black">
+                {% if posts.getNbResults > 0 %} 
+                {{posts.getNbResults}} resultats pour <span style="font-weight: bold">{{query}}</span>
+                {% else %}
+                {{ 'post.search_no_results'|trans }} pour <span style="font-weight: bold">{{query}}</span>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+{% endif %}
+
+
+    {% for post in posts %}
+    <div class="row">
+
+        <article class="post">
+            <div class='alert alert-dismissible alert-gris'>
+                <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                <h2>
+                    <a href="{{ path('post_show', {slug: post.slug}) }}">
+                        {{ post.title }}
+                    </a>
+                </h2>
+
+                <p class="post-metadata">
+                    <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium',
                 null,
                 'UTC') }}</span>
-            <span class="metadata"><i class="fa fa-user"></i>
-                {# {{ post.author.firstname ~' '~post.author.lastname}}</span> #}
-        </p>
+                    <span class="metadata"><i class="fa fa-user"></i>
+                        {{ post.fullAuthorName}}</span>
+                </p>
 
-        <div class="text-black">
-            {{ post.content|striptags|slice(0, 130) ~ "..." }}
-        </div>
-        <a href="{{ path('post_show', {slug: post.slug}) }}">
-            (voir plus)
-        </a>
-        {# {{ include('post/_post_tags.html.twig') }} #}
+                <div class="text-black">
+                    {{ post.content|striptags|slice(0, 130) ~ "..." }}
+                </div>
+                <a href="{{ path('post_show', {slug: post.slug}) }}">
+                    (voir plus)
+                </a>
+               
+                {# {{
 
-        {# <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
+                    dump(app.user.getLikes)
+                }} #}
+                {# {{ include('post/_post_tags.html.twig') }} #}
 
-            {% if(app.user and post.isLikedByUser(app.user)) %}
+                  <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">  
+
+           {# {% if(app.user and post.isLikedByUser(app.user)) %}
             <i class="fa fa-thumbs-down"></i>
             {% else %}
             <i class="fa fa-thumbs-up"></i>
-            {% endif %}
-            <span class="js-likes">{{post.likes | length}}</span>
+            {% endif %} #}
+            <span class="js-likes">{{post.numberLikes }}</span>
             <span class="js-label">J'aime</span>
-        </a> #}
+        </a>  
+                <hr>
+            </div>
+        </article>
+
     </div>
-    <hr>
-</article>
-{% else %}
-<div class="well">{{ 'post.no_posts_found'|trans }}</div>
-{% endfor %}
+    {% endfor %}
 
-{% if posts.haveToPaginate %}
-<div class="navigation text-center">
-    {{ pagerfanta(posts, 'twitter_bootstrap4_translated', {routeName: 'post_index_paginated_search', routeParams:
+    {% if posts.haveToPaginate %}
+    <div class="row">
+        <div class="navigation text-center">
+            {{ pagerfanta(posts, 'twitter_bootstrap4_translated', {routeName: 'post_index_paginated_search', routeParams:
     app.request.query.all}) }}
+        </div>
+    </div>
+    {% endif %}
 </div>
-{% endif %}
-
 {% endblock %}
 
 {% block sidebar %}
 {{ render_esi(controller('App\\Controller\\PostController::listTags', { 'maxPerPage': 20 })) }}
 
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('js/comments_likes') }}
 {% endblock %}

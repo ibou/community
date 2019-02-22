@@ -119,7 +119,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
     </header>
     {% endblock %}
 
-    <div class="container body-container">
+    <div class="container fluid">
         {% block body %}
         <div class="row">
             <div id="main" class="col-sm-9">
@@ -145,7 +145,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
 
     {% block footer %}
     <footer>
-        <div class="container">
+        <div class="container fluid">
             <div class="row">
                 <div id="footer-copyright" class="col-md-12">
                     <p>&copy; {{ 'now'|date('Y') }} - The Symfony Project</p>

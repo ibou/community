@@ -155,6 +155,16 @@ class Post
         return $this;
     }
 
+    public function fullAuthorName()
+    {
+        return $this->author->getUserInfosName();
+    }
+
+    public function numberLikes()
+    {
+        return $this->likes->count();
+    }
+
     /**
      * @return Collection|Tag[]
      */
@@ -263,5 +273,20 @@ class Post
         }
 
         return false;
+    }
+
+    /**
+     * @return array
+     */
+    public function userOfLikes(): array
+    {
+        $t = [];
+        foreach ($this->likes as $like) {
+            if ($like->getUser() === $user) {
+                return true;
+            }
+        }
+
+        return $t;
     }
 }

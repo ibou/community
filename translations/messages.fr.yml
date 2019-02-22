@@ -81,7 +81,7 @@ post.to_publish_a_comment: 'pour publier un commentaire'
 post.num_comments: commentaire(s)
 post.commented_on: 'a commenté le'
 post.no_comments: 'Soyez le premier à commenter cet article.'
-post.no_posts_found: 'Aucun article trouvé.'
+post.no_posts_found: 'Aucun article trouvé'
 post.created_successfully: 'Article créé avec succès !'
 post.updated_successfully: 'Article mis à jour avec succès !'
 post.deleted_successfully: 'Article supprimé avec succès !'

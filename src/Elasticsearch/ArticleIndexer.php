@@ -38,13 +38,15 @@ class ArticleIndexer
         return new Document(
             $post->getId(), // Manually defined ID
             [
+                'id' => $post->getId(),
                 'title' => $post->getTitle(),
                 'tags' => $tags,
-               // 'author' => "{$post->getAuthor()->getFirstname()} - {$post->getAuthor()->getLastname()}",
-                //'author' => ['firstname' => $post->getAuthor()->getFirstname(), 'lastname' => $post->getAuthor()->getFirstname()],
+                'fullAuthorName' => $post->fullAuthorName(),
                 'content' => $post->getContent(),
                 'comments' => $comments,
                 'slug' => $post->getSlug(),
+                'numberLikes' => $post->numberLikes(),
+                'likes' => $post->getLikes(),
 
                 // Not indexed but needed for display
                 'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),
