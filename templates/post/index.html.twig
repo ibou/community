@@ -21,18 +21,18 @@
             </div>
             <div class="col-sm-3">
                 <div class="form-group">
-                    <button class="btn btn-secondary form-control">{{ button_label|default('Search') }}</button> 
+                    <button class="btn btn-secondary form-control">{{ button_label|default('Search') }}</button>
                 </div>
             </div>
         </div>
 
     </form>
 
-{% if query %} 
+{% if query %}
     <div class="row justify-content-end">
         <div class="badge badge-info text-right col-5">
             <div class="text-black">
-                {% if posts.getNbResults > 0 %} 
+                {% if posts.getNbResults > 0 %}
                 {{posts.getNbResults}} resultats pour <span style="font-weight: bold">{{query}}</span>
                 {% else %}
                 {{ 'post.search_no_results'|trans }} pour <span style="font-weight: bold">{{query}}</span>
@@ -42,8 +42,6 @@
 
     </div>
 {% endif %}
-
-
     {% for post in posts %}
     <div class="row">
 
@@ -70,14 +68,14 @@
                 <a href="{{ path('post_show', {slug: post.slug}) }}">
                     (voir plus)
                 </a>
-               
+
                 {# {{
 
                     dump(app.user.getLikes)
                 }} #}
                 {# {{ include('post/_post_tags.html.twig') }} #}
 
-                  <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">  
+                  <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
 
            {# {% if(app.user and post.isLikedByUser(app.user)) %}
             <i class="fa fa-thumbs-down"></i>
@@ -86,7 +84,7 @@
             {% endif %} #}
             <span class="js-likes">{{post.numberLikes }}</span>
             <span class="js-label">J'aime</span>
-        </a>  
+        </a>
                 <hr>
             </div>
         </article>
@@ -106,8 +104,11 @@
 {% endblock %}
 
 {% block sidebar %}
-{{ render_esi(controller('App\\Controller\\PostController::listTags', { 'maxPerPage': 20 })) }}
+{# {{ render_esi(controller('App\\Controller\\PostController::listTags', { 'maxPerPage': 20 })) }} #}
+{% if query %}
 
+{% include "post/side-tags-search.html.twig" %}
+{% endif %}
 {% endblock %}
 
 {% block javascripts %}

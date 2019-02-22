@@ -51,20 +51,24 @@ class PostController extends AbstractController
         if ($request->query->has('query')) {
             $limit = $request->query->get('limit', 15);
             $tags = $request->query->get('tags', false);
+            if(false !== $tags){
+
+            }
             $search = new Search($client, $query, $tags);
-            $search->setLimit(18);
+            $search->setLimit(500);
             $search->setPage($page);
             $result = $search->runSearch();
             $source = $result['source'];
+            $tags = $result['aggr'];
             $lastest = $search->getPaginatedData($source);
         } else {
             $lastest = $posts->findLatest($page, $tag);
         }
-
         //Inclure template dans index selon si search or direct access (a gerer dans le template index.html.twig)
 
         return $this->render('post/index.html.twig', [
             'posts' => $lastest,
+            'tags' => $tags,
             'query' => $query,
         ]);
     }

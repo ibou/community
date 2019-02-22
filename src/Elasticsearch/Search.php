@@ -150,7 +150,9 @@ class Search
         $source = [];
         foreach ($foundPosts as $post) {
             $source[] = $post->getSource();
+            dump($post);
         }
+        $results['aggr'] = $foundPosts->getAggregation('by_tags')['buckets'];
         $results['source'] = $source;
 
         return $results;
