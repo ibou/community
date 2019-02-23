@@ -7,12 +7,6 @@ disable this validation, add the 'novalidate' attribute:
 #}
 {# {% set parent_id = comment is not null ? comment.id : null %} #}
 {{ form_start(form, {method: 'POST', action: path('comment_new', {'postSlug': post.slug}),name: parent_id}) }}
-{# instead of displaying form fields one by one, you can also display them
-all with their default options and styles just by calling to this function:
-
-{{ form_widget(form) }}
-#}
-
 
 <div class="form-row">
     <div class="col-1">

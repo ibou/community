@@ -91,9 +91,7 @@
         <h4 class="col-sm-12">
             <span style="color:brown">{{ comment.author.firstname ~' '~comment.author.lastname}}</span> {{
             'post.commented_on'|trans }}
-            {# it's not mandatory to set the timezone in localizeddate(). This is done to
-            avoid errors when the 'intl' PHP extension is not available and the application
-            is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+
             {{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
         </h4>
     </div>
@@ -110,9 +108,6 @@
                 <span style="color:brown">{{ child.author.firstname ~' '~child.author.lastname}} 
                 </span> {{
                 'post.commented_on'|trans }}
-                {# it's not mandatory to set the timezone in localizeddate(). This is done to
-                avoid errors when the 'intl' PHP extension is not available and the application
-                is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
                 {{ child.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
             </h4>
         </div>
@@ -151,9 +146,6 @@
 </div>
 {% endif %}
 
-{# the parent() function includes the contents defined by the parent template
-('base.html.twig') for this block ('sidebar'). This is a very convenient way
-to share common contents in different templates #}
 {{ parent() }}
 
 {% endblock %}

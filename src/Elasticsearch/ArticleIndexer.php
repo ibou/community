@@ -47,6 +47,7 @@ class ArticleIndexer
                 'slug' => $post->getSlug(),
                 'numberLikes' => $post->numberLikes(),
                 'likes' => $post->getLikes(),
+                'likesUser' => $post->likesUser(),
 
                 // Not indexed but needed for display
                 'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),

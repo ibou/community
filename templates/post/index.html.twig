@@ -16,7 +16,7 @@
             <div class="col-sm-9">
                 <div class="form-group">
                     <input name="query" class="form-control" autofocus
-                        data-no-results-message="{{ 'post.search_no_results'|trans }}">
+                        data-no-results-message="{{ 'post.search_no_results'|trans }}" required placeholder="Mots clés...(Liberté, art, le pouvoir ...)">
                 </div>
             </div>
             <div class="col-sm-3">
@@ -28,7 +28,7 @@
 
     </form>
 
-{% if query %}
+    {% if query %}
     <div class="row justify-content-end">
         <div class="badge badge-info text-right col-5">
             <div class="text-black">
@@ -41,7 +41,7 @@
         </div>
 
     </div>
-{% endif %}
+    {% endif %}
     {% for post in posts %}
     <div class="row">
 
@@ -68,23 +68,22 @@
                 <a href="{{ path('post_show', {slug: post.slug}) }}">
                     (voir plus)
                 </a>
+                {% if query %}
+                {{ include('post/_post_tags_search.html.twig') }}
+                {% else %}
+                {{ include('post/_post_tags.html.twig') }}
+                {% endif %}
 
-                {# {{
+                <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
 
-                    dump(app.user.getLikes)
-                }} #}
-                {# {{ include('post/_post_tags.html.twig') }} #}
-
-                  <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
-
-           {# {% if(app.user and post.isLikedByUser(app.user)) %}
-            <i class="fa fa-thumbs-down"></i>
-            {% else %}
-            <i class="fa fa-thumbs-up"></i>
-            {% endif %} #}
-            <span class="js-likes">{{post.numberLikes }}</span>
-            <span class="js-label">J'aime</span>
-        </a>
+                    {% if(app.user and app.user.id in post.likesUser) %}
+                    <i class="fa fa-thumbs-down"></i>
+                    {% else %}
+                    <i class="fa fa-thumbs-up"></i>
+                    {% endif %}
+                    <span class="js-likes">{{post.numberLikes }}</span>
+                    <span class="js-label">J'aime</span>
+                </a>
                 <hr>
             </div>
         </article>
@@ -104,10 +103,11 @@
 {% endblock %}
 
 {% block sidebar %}
-{# {{ render_esi(controller('App\\Controller\\PostController::listTags', { 'maxPerPage': 20 })) }} #}
 {% if query %}
-
 {% include "post/side-tags-search.html.twig" %}
+{% else %}
+{{ render_esi(controller('App\\Controller\\PostController::listTags', { 'maxPerPage': 20 })) }}
+
 {% endif %}
 {% endblock %}
 

@@ -275,6 +275,16 @@ class Post
         return false;
     }
 
+    public function likesUser(): array
+    {
+        $listUserLiker = [];
+        foreach ($this->likes as $like) {
+            $listUserLiker[] = $like->getUser()->getId();
+        }
+
+        return $listUserLiker;
+    }
+
     /**
      * @return array
      */
