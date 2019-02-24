@@ -51,8 +51,7 @@ class PostController extends AbstractController
         if ($request->query->has('query')) {
             $limit = $request->query->get('limit', 15);
             $tags = $request->query->get('tags', false);
-            if(false !== $tags){
-
+            if (false !== $tags) {
             }
             $search = new Search($client, $query, $tags);
             $search->setLimit(500);
@@ -66,7 +65,7 @@ class PostController extends AbstractController
         }
         //Inclure template dans index selon si search or direct access (a gerer dans le template index.html.twig)
 
-        return $this->render('post/index.html.twig', [
+        return $this->render('post/list.html.twig', [
             'posts' => $lastest,
             'tags' => $tags,
             'query' => $query,
@@ -125,6 +124,7 @@ class PostController extends AbstractController
 
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
+        var_dump($request->request);
         if ($form->isSubmitted() && $form->isValid()) {
             $parent_id = $request->request->get('parent');
             $parent = null;
