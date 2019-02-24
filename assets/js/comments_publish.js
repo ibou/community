@@ -9,10 +9,10 @@ document.querySelectorAll('button.publish-comment').forEach(function(link){
 function onClickBtnComment (event){
     event.preventDefault();
     const form = this.form; 
-    var ct = document.querySelector('textarea');  
-    var frm = $("form").serialize();
+    var ct = this.querySelector('content');  
+     var frm = this.serialize();
     //  const parent = form.name;    
-    console.log("cocococ hello ",frm)
+    console.log("cocococ hello ",ct)
     // axios.post(url,data) 
     // .then(function(response){ 
          
