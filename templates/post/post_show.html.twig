@@ -98,11 +98,11 @@
             {{ comment.id }} - {{ comment.content }}
         </div>
     </div>
-
+{% set parent_id = comment.id %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="row new-comment">
         <div class="col-sm-10" style="vertical-align: middle;margin: 13px;clear:both;">
-            {% set parent_id = comment.id %} 
+
             {{ include('post/_comment_form.html.twig') }}
         </div>
     </div>
@@ -111,7 +111,7 @@
     <div id="new-pushed-{{parent_id}}" class="new-pushed-comment">sitoeee</div>
     {% for child in comment.children %}
     <div class="childComment" style="margin-left: 25px; color: rgb(118, 133, 133)">
-        
+
         Reply : <div class="row">
             <a name="comment_{{ child.id }}"></a>
             <h4 class="col-sm-12">

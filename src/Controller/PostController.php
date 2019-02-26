@@ -148,7 +148,7 @@ class PostController extends AbstractController
             // $em->flush();
 
             return $this->json([
-                'slug' => $post->getSlug(), 'user' => $this->getUser(), ], 201);
+                'slug' => $post->getSlug(), ], 201);
 
             // return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         }
