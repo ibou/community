@@ -20,6 +20,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Form;
 
 /**
  * @Route("/posts")
@@ -84,7 +85,15 @@ class PostController extends AbstractController
     {
         return $this->render('post/post_show.html.twig', [
             'post' => $post,
+            'form' => $this->_newFormComment(),
         ]);
+    }
+
+    private function _newFormComment()
+    {
+        $form = $this->createForm(CommentType::class);
+
+        return $form->createView();
     }
 
     /**
@@ -119,15 +128,14 @@ class PostController extends AbstractController
     public function commentNew(Request $request, Post $post, EventDispatcherInterface $eventDispatcher): Response
     {
         $comment = new Comment();
-        $comment->setAuthor($this->getUser());
-        $post->addComment($comment);
-
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
-        var_dump($request->request);
-        if ($form->isSubmitted() && $form->isValid()) {
+
+        if ($form->isSubmitted()) {
             $parent_id = $request->request->get('parent');
             $parent = null;
+            $comment->setAuthor($this->getUser());
+            $post->addComment($comment);
             foreach ($post->getComments() as $parentComment) {
                 if ((bool) $parent_id && $parent_id == $parentComment->getId()) {
                     $parent = $parentComment;
@@ -137,9 +145,12 @@ class PostController extends AbstractController
             }
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
-            $em->flush();
+            // $em->flush();
 
-            return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+            return $this->json([
+                'slug' => $post->getSlug(), 'user' => $this->getUser(), ], 201);
+
+            // return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         }
 
         return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
