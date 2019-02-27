@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Elasticsearch\Search;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\PostLike;
@@ -10,21 +11,16 @@ use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Elastica\Aggregation\Filters;
-use Elastica\Aggregation\Terms;
 use Elastica\Client;
 use Elastica\Query;
-use Elastica\Query\BoolQuery;
-use Elastica\Query\MultiMatch;
-use Elastica\Query\Terms as TermsFiter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Form;
 
 /**
  * @Route("/posts")
@@ -41,19 +37,39 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("", defaults={"page": "1"}, methods={"GET"}, name="post_index")
-     * @Route("/page/{page<[1-9]\d*>}", defaults={"_format"="html"}, methods={"GET"}, name="post_index_paginated")
+     * @Route("", defaults={"page": "1","query": ""}, methods={"GET"}, name="post_index")
+     * @Route("/page/{page<[1-9]\d*>}", defaults={"page": "1","query": ""}, methods={"GET"}, name="post_index_paginated_search")
      */
-    public function index(Request $request, int $page, PostRepository $posts, TagRepository $tags): Response
+    public function index(Request $request, int $page, $query, PostRepository $posts, TagRepository $tags, Client $client): Response
     {
         $tag = null;
         if ($request->query->has('tag')) {
             $tag = $tags->findOneBy(['name' => $request->query->get('tag')]);
         }
-        $lastest = $posts->findLatest($page, $tag);
+        $currentRoute = $request->attributes->get('_route');
+        $page = null !== $request->attributes->get('page') ? $request->attributes->get('page') : 1;
+        $query = $request->query->get('query', '');
+        if ($request->query->has('query')) {
+            $limit = $request->query->get('limit', 15);
+            $tags = $request->query->get('tags', false);
+            if (false !== $tags) {
+            }
+            $search = new Search($client, $query, $tags);
+            $search->setLimit(500);
+            $search->setPage($page);
+            $result = $search->runSearch();
+            $source = $result['source'];
+            $tags = $result['aggr'];
+            $lastest = $search->getPaginatedData($source);
+        } else {
+            $lastest = $posts->findLatest($page, $tag);
+        }
+        //Inclure template dans index selon si search or direct access (a gerer dans le template index.html.twig)
 
-        return $this->render('post/index.html.twig', [
+        return $this->render('post/list.html.twig', [
             'posts' => $lastest,
+            'tags' => $tags,
+            'query' => $query,
         ]);
     }
 
@@ -69,7 +85,15 @@ class PostController extends AbstractController
     {
         return $this->render('post/post_show.html.twig', [
             'post' => $post,
+            'form' => $this->_newFormComment(),
         ]);
+    }
+
+    private function _newFormComment()
+    {
+        $form = $this->createForm(CommentType::class);
+
+        return $form->createView();
     }
 
     /**
@@ -104,14 +128,14 @@ class PostController extends AbstractController
     public function commentNew(Request $request, Post $post, EventDispatcherInterface $eventDispatcher): Response
     {
         $comment = new Comment();
-        $comment->setAuthor($this->getUser());
-        $post->addComment($comment);
-
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+
+        if ($form->isSubmitted()) {
             $parent_id = $request->request->get('parent');
             $parent = null;
+            $comment->setAuthor($this->getUser());
+            $post->addComment($comment);
             foreach ($post->getComments() as $parentComment) {
                 if ((bool) $parent_id && $parent_id == $parentComment->getId()) {
                     $parent = $parentComment;
@@ -121,9 +145,12 @@ class PostController extends AbstractController
             }
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
-            $em->flush();
+            // $em->flush();
 
-            return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+            return $this->json([
+                'slug' => $post->getSlug(), ], 201);
+
+            // return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         }
 
         return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
@@ -141,56 +168,6 @@ class PostController extends AbstractController
         return $this->render('post/search.html.twig',
             ['results' => []]
         );
-    }
-
-    /**
-     * @Route("/dosearch", name="post_search_query")
-     * @Method("GET")
-     */
-    public function doSearch(Request $request, Client $client): Response
-    {
-        $query = $request->query->get('query', '');
-        $limit = $request->query->get('limit', 15);
-        $tags = $request->query->get('tags', false);
-
-        $match = new MultiMatch();
-        $match->setQuery($query);
-        $match->setFields(['title^4', 'tags', 'content', 'author', 'comments']);
-
-        $bool = new BoolQuery();
-        $bool->addMust($match);
-        $termAgg = new Terms('by_tags');
-        $termAgg->setSize(50);
-        $termAgg->setField('tags');
-        $termAgg->setOrders([
-            ['_count' => 'asc'], // 1. red,   2. green, 3. blue
-            //['_key' => 'asc'],   // 1. green, 2. red,   3. blue
-        ]);
-
-        $elasticaQuery = new Query($bool);
-        $elasticaQuery->setFrom(0);
-        $elasticaQuery->setSize($limit);
-        $elasticaQuery->addAggregation($termAgg);
-
-        if (false !== $tags) {
-            $filterAgg = new Filters('filter_by_tag');
-            $termTags = new TermsFiter('tags', [$tags]);
-
-            $filterAgg->addFilter($termTags);
-            $elasticaQuery->setPostFilter($termTags);
-            $elasticaQuery->addAggregation($filterAgg);
-        }
-        $foundPosts = $client->getIndex('community')->search($elasticaQuery);
-        $results = [];
-        $source = [];
-        foreach ($foundPosts as $post) {
-            $source[] = $post->getSource();
-        }
-        $results['source'] = $source;
-        $results['aggr'] = $foundPosts->getAggregation('by_tags')['buckets'];
-        $results['aggrsd'] = $foundPosts->getAggregations();
-
-        return $this->json($results);
     }
 
     /**

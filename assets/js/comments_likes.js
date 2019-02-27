@@ -1,4 +1,4 @@
-console.log("Date ::", new Date());
+console.log(new Date());
 
 const axios = require('axios');
 
@@ -33,7 +33,7 @@ function onClickBtnLike(event){
       });
 } 
 
- document.querySelectorAll('a.js-like').forEach(function(link){ 
-     link.addEventListener('click',  onClickBtnLike);
-    
+ document.querySelectorAll('a.js-like').forEach(function(link){  
+     link.addEventListener('click',  onClickBtnLike);    
  })
+ 

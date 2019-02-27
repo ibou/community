@@ -1,8 +1,4 @@
 {% extends 'base.html.twig' %}
-{% block javascripts %}
-{{ parent() }} 
-{{ encore_entry_script_tags('js/comments_likes') }}
-{% endblock %}
 {% block stylesheets %}
 {{ parent() }}
 <style>
@@ -72,12 +68,14 @@
 </h3>
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-<div class="row new-comment">
-    <div class="col-sm-12" style="vertical-align: middle;margin: 13px;clear:both;">
-        Main::Comments !!!
-        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id,'p_id': null})) }}
-    </div>
+
+<div class="col-sm-12" style="vertical-align: middle;margin: 13px;clear:both;">
+    Main::Comments !!!
+    {% set parent_id = null %}
+    {# {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id,'p_id': null})) }} #}
+    {{ include('post/_comment_form.html.twig') }}
 </div>
+
 {% endif %}
 <hr>
 
@@ -91,28 +89,35 @@
         <h4 class="col-sm-12">
             <span style="color:brown">{{ comment.author.firstname ~' '~comment.author.lastname}}</span> {{
             'post.commented_on'|trans }}
-            {# it's not mandatory to set the timezone in localizeddate(). This is done to
-            avoid errors when the 'intl' PHP extension is not available and the application
-            is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+
             {{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
         </h4>
     </div>
     <div class="row post-comment">
         <div class="col-sm-12">
-            {{ comment.content }}
+            {{ comment.id }} - {{ comment.content }}
         </div>
     </div>
+{% set parent_id = comment.id %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <div class="row new-comment">
+        <div class="col-sm-10" style="vertical-align: middle;margin: 13px;clear:both;">
+
+            {{ include('post/_comment_form.html.twig') }}
+        </div>
+    </div>
+    {% endif %}
+    <hr>
+    <div id="new-pushed-{{parent_id}}" class="new-pushed-comment">sitoeee</div>
     {% for child in comment.children %}
     <div class="childComment" style="margin-left: 25px; color: rgb(118, 133, 133)">
+
         Reply : <div class="row">
             <a name="comment_{{ child.id }}"></a>
             <h4 class="col-sm-12">
-                <span style="color:brown">{{ child.author.firstname ~' '~child.author.lastname}} 
+                <span style="color:brown">{{ child.author.firstname ~' '~child.author.lastname}}
                 </span> {{
                 'post.commented_on'|trans }}
-                {# it's not mandatory to set the timezone in localizeddate(). This is done to
-                avoid errors when the 'intl' PHP extension is not available and the application
-                is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
                 {{ child.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
             </h4>
         </div>
@@ -125,14 +130,7 @@
 
     {% endfor %}
 </div>
-{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-<div class="row new-comment">
-    <div class="col-sm-10" style="vertical-align: middle;margin: 13px;clear:both;">
-        {{ render(controller('App\\Controller\\PostController::commentForm', {'id': post.id,'p_id': comment.id})) }}
-    </div>
-</div>
-{% endif %}
-<hr>
+
 {% else %}
 
 <div class="post-comment">
@@ -151,9 +149,10 @@
 </div>
 {% endif %}
 
-{# the parent() function includes the contents defined by the parent template
-('base.html.twig') for this block ('sidebar'). This is a very convenient way
-to share common contents in different templates #}
-{{ parent() }}
+{% endblock %}
 
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('js/comments_likes') }}
+{{ encore_entry_script_tags('js/comments_publish') }}
 {% endblock %}

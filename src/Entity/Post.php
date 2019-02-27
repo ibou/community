@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post
 {
-    public const NUM_ITEMS = 10;
+    public const NUM_ITEMS = 12;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -155,6 +155,16 @@ class Post
         return $this;
     }
 
+    public function fullAuthorName()
+    {
+        return $this->author->getUserInfosName();
+    }
+
+    public function numberLikes()
+    {
+        return $this->likes->count();
+    }
+
     /**
      * @return Collection|Tag[]
      */
@@ -263,5 +273,30 @@ class Post
         }
 
         return false;
+    }
+
+    public function likesUser(): array
+    {
+        $listUserLiker = [];
+        foreach ($this->likes as $like) {
+            $listUserLiker[] = $like->getUser()->getId();
+        }
+
+        return $listUserLiker;
+    }
+
+    /**
+     * @return array
+     */
+    public function userOfLikes(): array
+    {
+        $t = [];
+        foreach ($this->likes as $like) {
+            if ($like->getUser() === $user) {
+                return true;
+            }
+        }
+
+        return $t;
     }
 }

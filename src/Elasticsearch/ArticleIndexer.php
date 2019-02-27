@@ -38,16 +38,21 @@ class ArticleIndexer
         return new Document(
             $post->getId(), // Manually defined ID
             [
+                'id' => $post->getId(),
                 'title' => $post->getTitle(),
                 'tags' => $tags,
-                'author' => "{$post->getAuthor()->getFirstname()} - {$post->getAuthor()->getLastname()}",
+                'fullAuthorName' => $post->fullAuthorName(),
                 'content' => $post->getContent(),
                 'comments' => $comments,
+                'slug' => $post->getSlug(),
+                'numberLikes' => $post->numberLikes(),
+                'likes' => $post->getLikes(),
+                'likesUser' => $post->likesUser(),
 
                 // Not indexed but needed for display
                 'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),
                 'url_post' => $this->router->generate('post_index', [], UrlGeneratorInterface::ABSOLUTE_PATH),
-                'publishedAt' => $post->getPublishedAt()->format('d M Y à H:i:s'),
+                'publishedAt' => $post->getPublishedAt()->format('c'),
             ],
             'article' // Types are deprecated, to be removed in Elastic 7
         );
@@ -62,8 +67,6 @@ class ArticleIndexer
         foreach ($allPosts as $post) {
             $documents[] = $this->buildDocument($post);
         }
-
-        //$this->logger->debug('ELASTIC SEARCH : DATA REINDEXED', $documents);
         $index->addDocuments($documents);
         $index->refresh();
     }

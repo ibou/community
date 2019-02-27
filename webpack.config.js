@@ -20,14 +20,16 @@ Encore
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/login', './assets/js/login.js')
     .addEntry('js/comments_likes', './assets/js/comments_likes.js')
+    .addEntry('js/comments_publish', './assets/js/comments_publish.js')
     .addEntry('js/search', './assets/js/search.js')
     .addStyleEntry('css/app', ['./assets/scss/app.scss'])
     .addStyleEntry('css/admin', ['./assets/scss/admin.scss'])
+    .addStyleEntry('css/search', ['./assets/scss/search.scss'])
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     // .disableSingleRuntimeChunk()
 
-
+    
     /*
      * FEATURE CONFIG
      *
