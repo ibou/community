@@ -258,7 +258,7 @@ body#login #login-users-help p .console {
 }
 
 article.post {
-    margin-bottom: 3em;
+    margin-bottom: -1em;
 }
 
 .post-metadata, {
@@ -311,7 +311,6 @@ body#blog_post_show .post-comment {
 
 body#blog_post_show .post-comment h4 {
     font-size: 13px;
-    line-height: 1.42857;
     margin-top: 0
 }
 
@@ -327,7 +326,7 @@ body#comment_form_error h1.text-danger {
 
 @media (min-width: 768px) and (max-width: 1200px) {
     .container {
-        width: 98%;
+        width: 100%;
     }
 }
 
@@ -356,7 +355,7 @@ body#blog_search .post-metadata {
 }
 .text-black{
     color: grey;
-    font-size: 18px;
+    font-size: 14px;
 }
 .alert-dismissible .close{
     color: #95A6A7 !important;

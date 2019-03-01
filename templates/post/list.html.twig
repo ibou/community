@@ -9,8 +9,7 @@
 {% block body_id 'blog_index' %}
 
 {% block main %}
-<div class="container fluid">
-
+<div class="list-article">
     <form action="{{ path('post_index') }}" method="get">
         <div class="form-row align-items-end">
             <div class="col-sm-9">
@@ -43,16 +42,14 @@
     </div>
     {% endif %}
     {% for post in posts %}
-    <div class="row">
-
+    <div class="content-posts m-1">
         <article class="post">
             <div class='alert alert-dismissible alert-gris'>
-                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                <h2>
+                <h4>
                     <a href="{{ path('post_show', {slug: post.slug}) }}">
                         {{ post.title }}
                     </a>
-                </h2>
+                </h4>
 
                 <p class="post-metadata">
                     <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium',
@@ -73,18 +70,22 @@
                 {% else %}
                 {{ include('post/_post_tags.html.twig') }}
                 {% endif %}
-
-                <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
-
-                    {% if(app.user and app.user.id in post.likesUser) %}
-                    <i class="fa fa-thumbs-down"></i>
-                    {% else %}
-                    <i class="fa fa-thumbs-up"></i>
-                    {% endif %}
-                    <span class="js-likes">{{post.numberLikes }}</span>
-                    <span class="js-label">J'aime</span>
-                </a>
                 <hr>
+                <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
+                <span class="js-likes">{{post.numberLikes }}</span> <span class="js-label">J'aime</span>
+
+
+                {% if app.user %}
+                    {% if(app.user.id in post.likesUser) %}
+                        <i class="fa fa-thumbs-up"></i>
+                        {% else %}
+                            <i class="fa fa-thumbs-up"></i>gris
+                     {% endif %}
+
+                {% endif %}
+
+                </a>
+
             </div>
         </article>
 
@@ -92,7 +93,7 @@
     {% endfor %}
 
     {% if posts.haveToPaginate %}
-    <div class="row">
+    <div class="m-5">
         <div class="navigation text-center">
             {{ pagerfanta(posts, 'twitter_bootstrap4_translated', {routeName: 'post_index_paginated_search', routeParams:
     app.request.query.all}) }}
