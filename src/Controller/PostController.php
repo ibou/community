@@ -43,8 +43,10 @@ class PostController extends AbstractController
     public function index(Request $request, int $page, $query, PostRepository $posts, TagRepository $tags, Client $client): Response
     {
         $tag = null;
+        $queryTag = $request->query->get('tag');
+        $queryTags = $request->query->get('tags');
         if ($request->query->has('tag')) {
-            $tag = $tags->findOneBy(['name' => $request->query->get('tag')]);
+            $tag = $tags->findOneBy(['name' => $queryTag]);
         }
         $currentRoute = $request->attributes->get('_route');
         $page = null !== $request->attributes->get('page') ? $request->attributes->get('page') : 1;
@@ -66,9 +68,12 @@ class PostController extends AbstractController
         }
         //Inclure template dans index selon si search or direct access (a gerer dans le template index.html.twig)
 
+        dump($queryTag);
+
         return $this->render('post/list.html.twig', [
             'posts' => $lastest,
             'tags' => $tags,
+            'queryTags' => $queryTags,
             'query' => $query,
         ]);
     }

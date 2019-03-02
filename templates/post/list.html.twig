@@ -8,14 +8,15 @@
 
 {% block body_id 'blog_index' %}
 
-{% block main %}
+{% block main %} 
 <div class="list-article">
     <form action="{{ path('post_index') }}" method="get">
         <div class="form-row align-items-end">
             <div class="col-sm-9">
                 <div class="form-group">
                     <input name="query" class="form-control" autofocus
-                        data-no-results-message="{{ 'post.search_no_results'|trans }}" required placeholder="Mots clés...(Liberté, art, le pouvoir ...)">
+                        data-no-results-message="{{ 'post.search_no_results'|trans }}" required placeholder="Mots clés...(Liberté, art, le pouvoir ...)"
+                       value="{{query}}" >
                 </div>
             </div>
             <div class="col-sm-3">
@@ -32,7 +33,10 @@
         <div class="badge badge-info text-right col-5">
             <div class="text-black">
                 {% if posts.getNbResults > 0 %}
-                {{posts.getNbResults}} resultats pour <span style="font-weight: bold">{{query}}</span>
+                {{posts.getNbResults}} resultats pour <span style="font-weight: bold">{{query}}</span> 
+                    {% if queryTags %}
+                        ,<strong> Filtre : {{queryTags}}</strong>
+                    {% endif %}
                 {% else %}
                 {{ 'post.search_no_results'|trans }} pour <span style="font-weight: bold">{{query}}</span>
                 {% endif %}
@@ -64,12 +68,7 @@
                 </div>
                 <a href="{{ path('post_show', {slug: post.slug}) }}">
                     (voir plus)
-                </a>
-                {% if query %}
-                {{ include('post/_post_tags_search.html.twig') }}
-                {% else %}
-                {{ include('post/_post_tags.html.twig') }}
-                {% endif %}
+                </a> 
                 <hr>
                 <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
                 <span class="js-likes">{{post.numberLikes }}</span> <span class="js-label">J'aime</span>
@@ -108,7 +107,6 @@
 {% include "post/side-tags-search.html.twig" %}
 {% else %}
 {{ render_esi(controller('App\\Controller\\PostController::listTags', { 'maxPerPage': 20 })) }}
-
 {% endif %}
 {% endblock %}
 
