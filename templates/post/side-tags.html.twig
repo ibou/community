@@ -1,16 +1,19 @@
 <div class="section about"> 
     <div class="card">
         <div class="card-header">
-            Tags 
+            Filtre
         </div>
-        <div class="card-body"> 
-            <div class="post-tags">
+        <div>
+                <ul class="post-tags list-group">
                 {% for tag in tags %}
+                <li class="list-group-item">
                     <a href="{{ path('post_index', {'tag': tag.name == app.request.query.get('tag') ? null : tag.name}) }}" class="label label-{{ tag.name == app.request.query.get('tag') ? 'success' : 'default' }}">
                             <i class="fa fa-tag"></i> {{ tag.name }}
                         </a>
+                    </li>
+
                 {% endfor %}
-                </div> 
+                    </ul> 
         </div>
         <div class="card-footer">
             Footer 

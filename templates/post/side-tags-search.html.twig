@@ -1,19 +1,22 @@
 <div class="section about">
     <div class="card">
         <div class="card-header">
-            Tags
+            Filtre
         </div>
-        <div class="card-body">
-            <div class="post-tags" id="outputTags">
+        <div>
+            <ul class="post-tags list-group">
             {% set query = 'query='~app.request.query.get('query') %}
             {% for tag in tags %}
             {% set url = '?'~query~'&tags='~tag.key %}
             {% set full_url = path('post_index_paginated_search',{page: 1})  %}
+            <li class="list-group-item">
+
                 <a href="{{full_url}}/{{url}}" class='label label-default search-tag-filter'>
-                <i class='fa fa-tag'></i>{{tag.key}} ({{tag.doc_count}})
+                    <i class='fa fa-tag'></i>{{tag.key}} ({{tag.doc_count}})
                 </a>
+            </li>
             {% endfor %}
-            </div>
+            </ul>
         </div>
         <div class="card-footer">
             Footer
