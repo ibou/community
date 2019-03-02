@@ -68,8 +68,6 @@ class PostController extends AbstractController
         }
         //Inclure template dans index selon si search or direct access (a gerer dans le template index.html.twig)
 
-        dump($queryTag);
-
         return $this->render('post/list.html.twig', [
             'posts' => $lastest,
             'tags' => $tags,
