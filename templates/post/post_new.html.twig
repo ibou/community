@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block title 'Poser une question' %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Poser une question</h1>
+
+    {{form_start(form)}}
+
+    <div class="row">
+        <div class="col-md-6">{{form_row(form.title)}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{form_row(form.content)}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{form_row(form.tags)}}</div>
+    </div>
+    <button class="btn btn-primary"> {{button|default('Créer !')}}</button>
+    {{form_end(form)}}
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">  
+    $(document).ready(function () { 
+       $('.post_tags').select2();
+    });
+</script>
+{%  endblock %}

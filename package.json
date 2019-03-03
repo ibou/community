@@ -20,6 +20,7 @@
     "build": "encore production"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "select2": "^4.0.6-rc.1"
   }
 }
