@@ -38,6 +38,12 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                     <ul class="navbar-nav ml-auto">
 
                         {% block header_navigation_links %}
+
+                        <li>
+                            <a href="{{ path('post_new') }}" class="nav-link">
+                                <i class="fa fa-edit" aria-hidden="true"></i> {{ 'menu.newpost'|trans }}
+                            </a>
+                        </li>
                         <li>
                             <a href="{{ path('post_index') }}" class="nav-link">
                                 <i class="fa fa-home" aria-hidden="true"></i> {{ 'menu.homepage'|trans }}

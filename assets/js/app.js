@@ -9,8 +9,11 @@
 // require('../scss/app.scss');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
-// var $ = require('jquery');
-// import $ from 'jquery';
+//  var $ = require('jquery');
+// import $ from 'jquery'; 
+global.$ = global.jQuery = $;
+import select2 from 'select2';
+//Hook up select2 to jQuery 
 import 'bootstrap/js/dist/tooltip';
 import 'bootstrap/js/dist/alert';
 import 'bootstrap/js/dist/collapse';
@@ -21,4 +24,6 @@ import 'bootstrap/js/dist/modal';
 // require('bootstrap/js/dist/popover');
 $(document).ready(function () {
     console.log("Hello,", new Date());
+    // $('select').select2();
+    
 });

@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Form;
+use App\Form\PostType;
+use Cocur\Slugify\Slugify;
 
 /**
  * @Route("/posts")
@@ -73,6 +75,34 @@ class PostController extends AbstractController
             'tags' => $tags,
             'queryTags' => $queryTags,
             'query' => $query,
+        ]);
+    }
+
+    /**
+     * @Route("/new", name="post_new", methods={"GET","POST"})
+     */
+    public function Postnew(Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $slugify = new Slugify();
+
+            $post->setSlug($slugify->slugify($post->getTitle()));
+            $post->setAuthor($this->getUser());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('post_index');
+        }
+
+        return $this->render('post/post_new.html.twig', [
+            'post' => $post,
+            'form' => $form->createView(),
         ]);
     }
 
