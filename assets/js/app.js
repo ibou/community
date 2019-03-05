@@ -19,11 +19,3 @@ import 'bootstrap/js/dist/alert';
 import 'bootstrap/js/dist/collapse';
 import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/modal';
-
-// require('bootstrap/js/dist/tooltip');
-// require('bootstrap/js/dist/popover');
-$(document).ready(function () {
-    console.log("Hello,", new Date());
-    // $('select').select2();
-    
-});

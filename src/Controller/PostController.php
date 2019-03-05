@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Form;
 use App\Form\PostType;
 use Cocur\Slugify\Slugify;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 /**
  * @Route("/posts")
@@ -165,9 +166,10 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            $user = $this->getUser();
             $parent_id = $request->request->get('parent');
             $parent = null;
-            $comment->setAuthor($this->getUser());
+            $comment->setAuthor($user);
             $post->addComment($comment);
             foreach ($post->getComments() as $parentComment) {
                 if ((bool) $parent_id && $parent_id == $parentComment->getId()) {
@@ -178,12 +180,16 @@ class PostController extends AbstractController
             }
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
-            // $em->flush();
+            $em->flush();
+            $encoder = new JsonEncode();
+            $data = [
+                'slug' => $post->getSlug(),
+                'user' => $user->getUserInfos(),
+                'comment' => $comment->getContent(),
+                'created_at' => $comment->getPublishedAt(),
+            ];
 
-            return $this->json([
-                'slug' => $post->getSlug(), ], 201);
-
-            // return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+            return $this->json($data, 201);
         }
 
         return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
