@@ -385,4 +385,14 @@ class User implements UserInterface, \Serializable
     {
         return "{$this->getFirstname()} - {$this->getLastname()}";
     }
+
+    public function getUserInfos()
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+        ];
+    }
 }
