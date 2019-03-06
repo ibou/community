@@ -57,7 +57,8 @@
 
                 <p class="post-metadata">
                     <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium',
-                null) }}</span>
+                null,
+                'UTC') }}</span>
                     <span class="metadata"><i class="fa fa-user"></i>
                         {{ post.fullAuthorName}}</span>
                 </p>
