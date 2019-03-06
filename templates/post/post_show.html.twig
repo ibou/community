@@ -17,15 +17,14 @@
 
 {% block main %}
 
-<h1>{{ post.title }}</h1>
+<h1>{{ post.title|raw }}</h1>
 
 <p class="post-metadata">
-    <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium', null,
-        'UTC') }}</span>
+    <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium', null) }}</span>
     <span class="metadata"><i class="fa fa-user"></i> {{ post.author.firstname ~' '~post.author.lastname}}</span>
 </p>
 
-{{ post.content }}
+{{ post.content|raw }}
 
 {{ include('post/_post_tags.html.twig') }}
 <hr>
@@ -70,8 +69,7 @@
 
 
 <div class="col-sm-12" style="vertical-align: middle;margin: 13px;clear:both;">
-    Main::Comments !!!
-    {% set parent_id = null %} 
+    {% set parent_id = null %}
     {{ include('post/_comment_form.html.twig') }}
     <div id="new-pushed-{{parent_id}}" class="new-pushed-comment"></div>
 </div>
@@ -89,13 +87,12 @@
         <h4 class="col-sm-12">
             <span style="color:brown">{{ comment.author.firstname ~' '~comment.author.lastname}}</span> {{
             'post.commented_on'|trans }}
-
-            {{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
+            {{ comment.publishedAt|localizeddate('long', 'medium', null) }}</strong>
         </h4>
     </div>
     <div class="row post-comment">
         <div class="col-sm-12">
-            {{ comment.id }} - {{ comment.content }}
+            {{ comment.id }} - {{ comment.content|raw }}
         </div>
     </div>
 {% set parent_id = comment.id %}
@@ -108,21 +105,21 @@
     {% endif %}
     <hr>
     <div id="new-pushed-{{parent_id}}" class="new-pushed-comment"></div>
-    {% for child in comment.children %}
+    {% for child in comment.children|reverse %}
     <div class="childComment" style="margin-left: 25px; color: rgb(118, 133, 133)">
 
-        Reply : <div class="row">
+        <div class="row">
             <a name="comment_{{ child.id }}"></a>
-          
+
                 <span style="color:brown">{{ child.author.firstname ~' '~child.author.lastname}}
-                </span> {{
+                </span> &nbsp;{{
                 'post.commented_on'|trans }}
-                {{ child.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
-           
+                {{ child.publishedAt|localizeddate('long', 'medium', null) }}</strong>
+
         </div>
         <div class="row">
             <div class="col-sm-12">
-                {{ child.content }}
+                 {{ child.content|raw }}
             </div>
         </div>
     </div>

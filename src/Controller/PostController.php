@@ -24,6 +24,15 @@ use Symfony\Component\Form\Form;
 use App\Form\PostType;
 use Cocur\Slugify\Slugify;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Faker\Provider\zh_CN\DateTime;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use App\Entity\User;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Utils\DateTimeFrench;
 
 /**
  * @Route("/posts")
@@ -181,15 +190,22 @@ class PostController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
+            $date_french = new DateTimeFrench($comment->getPublishedAt()->format('c'));
+            $date_french->setFormat('j F Y à H:i:s');
             $encoder = new JsonEncode();
             $data = [
                 'slug' => $post->getSlug(),
                 'user' => $user->getUserInfos(),
                 'comment' => $comment->getContent(),
-                'created_at' => $comment->getPublishedAt(),
+                'publishedAt' => $date_french->getFormatedDate(),
             ];
 
-            return $this->json($data, 201);
+            $objectNormalizer = new ObjectNormalizer();
+            $serializer = new Serializer(
+                [$objectNormalizer],
+                [new JsonEncoder(), new XmlEncoder()]
+            );
+            return new Response($serializer->serialize($data, 'json'),201);
         }
 
         return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);

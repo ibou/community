@@ -8,21 +8,21 @@ $('form').on('submit', function (e) {
   var url = $('input[type=hidden]#url', formEl).val();
   var identifier = $('input[name=parent]', formEl).val();
   var contentinput = $('textarea[name=content]', formEl).val();
-  var newAreaComment = document.getElementById('new-pushed-' + identifier); 
-
+  var newAreaComment = document.getElementById('new-pushed-' + identifier);
   axios.post(url, data)
     .then(function (response) {
 
       var data = response.data;
       var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-      console.log("REP POST", response.data);
+      console.log("REP POST", data);
+      console.log("User", data.user.firstname);
       if (201 === response.status) {
         var html = '';
         html += '<div class="well">';
-        html += '<span style="color:brown">'+data.user.firstname+' '+data.user.lastname+'</span> a répondu à '+data.created_at;
-        html += '<br/>'; 
+        html += '<span style="color:brown">'+data.user.firstname+' '+data.user.lastname+' </span> a répondu à '+data.publishedAt;
+        html += '<br/>';
         html += data.comment;
-        html += '</div>'; 
+        html += '</div>';
 
         $(html).insertAfter($(newAreaComment));
         $('textarea[name=content]', formEl).val('').empty();
@@ -30,10 +30,10 @@ $('form').on('submit', function (e) {
           //On recharte la page si c'est un commentaire parent
           location.reload();
         }
-        
+
       }
     }).catch(function (error) {
       console.log("Error: ",error);
     })
 
-}) 
+})
