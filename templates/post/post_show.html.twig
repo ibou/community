@@ -20,7 +20,7 @@
 <h1>{{ post.title|raw }}</h1>
 
 <p class="post-metadata">
-    <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium', null) }}</span>
+    <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium', null,"utc") }}</span>
     <span class="metadata"><i class="fa fa-user"></i> {{ post.author.firstname ~' '~post.author.lastname}}</span>
 </p>
 
