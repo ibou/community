@@ -27,7 +27,10 @@ host('root@51.38.234.212')
 // Tasks
 
 task('build', function () {
-    run('cd {{release_path}} && composer install --no-dev --optimize-autoloader && npm install && ./node_modules/.bin/encore production');
+    run('cd {{release_path}} && composer install --no-dev --optimize-autoloader');
+    run('cd {{release_path}} && npm install');
+    run('cd {{release_path}} && ./node_modules/.bin/encore production');
+   // run('cd {{release_path}} && composer install --no-dev --optimize-autoloader && npm install && ./node_modules/.bin/encore production');
 });
 
 
@@ -38,13 +41,17 @@ task('database:migrate', function () {
 
 // before('deploy:symlink', 'database:migrate');
 task('tag_version', function(){
-    run('echo "Author : Ibrahima D." > version.txt');
+    run('echo ------------------ > version.txt');
+    run('echo ------ `TZ="Europe/Paris" date -R` ------ >> version.txt');
+    run('echo ------------------ >> version.txt');
+
+    run('echo "Author Name  : `git config --get user.name`" >> version.txt');
+    run('echo "Author Email : `git config --get user.email`" >> version.txt');
+    run('echo "Author Machine : `hostname -f`" >> version.txt');
+    run('echo "Author IP : `hostname -I`" >> version.txt');
     run('echo "Revision : `git name-rev --name-only $(git rev-parse HEAD)`" >> version.txt');
-    run('echo ------ >> version.txt');
-    run('echo `TZ="Europe/Paris" date -R` >> version.txt');
-    run('echo ------ >> version.txt');
     run('git log --pretty=format:"%h%x09%an%x09%ad%x09%s" | head -n 5 >> version.txt');
-})->local();;
+})->local();
 
 task('upload', function () {
     upload(__DIR__ . '/version.txt', '{{release_path}}');

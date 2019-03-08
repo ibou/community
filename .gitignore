@@ -1,5 +1,6 @@
 ###> symfony/framework-bundle ###
 /.env
+/version.txt
 /public/bundles/
 /var/
 /vendor/
