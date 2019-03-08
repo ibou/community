@@ -26,7 +26,7 @@ class Post
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
@@ -69,6 +69,10 @@ class Post
      */
     private $likes;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true, options={"default" : 0})
+     */
+    private $enabled = false;
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
@@ -298,5 +302,26 @@ class Post
         }
 
         return $t;
+    }
+
+
+    /**
+     * Get the value of enabled
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set the value of enabled
+     *
+     * @return  self
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
     }
 }
