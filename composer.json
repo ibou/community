@@ -6,7 +6,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "cocur/slugify": "^3.2",
-        "deployer/deployer": "^6.3",
         "egulias/email-validator": "^2.1",
         "ruflin/elastica": "^6.0",
         "sensio/framework-extra-bundle": "^5.2",
@@ -34,6 +33,7 @@
         "white-october/pagerfanta-bundle": "^1.2"
     },
     "require-dev": {
+        "deployer/deployer": "^6.4",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "fzaninotto/faker": "^1.8",
         "symfony/debug-pack": "*",
