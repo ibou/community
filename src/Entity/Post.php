@@ -70,9 +70,9 @@ class Post
     private $likes;
 
     /**
-     * @ORM\Column(type="integer", length=10, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
-    private $duree;
+    private $enabled;
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
@@ -304,22 +304,23 @@ class Post
         return $t;
     }
 
+
     /**
-     * Get the value of duree
+     * Get the value of enabled
      */
-    public function getDuree()
+    public function getEnabled()
     {
-        return $this->duree;
+        return $this->enabled;
     }
 
     /**
-     * Set the value of duree
+     * Set the value of enabled
      *
      * @return  self
      */
-    public function setDuree($duree)
+    public function setEnabled($enabled)
     {
-        $this->duree = $duree;
+        $this->enabled = $enabled;
 
         return $this;
     }

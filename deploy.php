@@ -20,9 +20,6 @@ add('shared_dirs', []);
 // Writable dirs by web server
  add('writable_dirs', []);
 
-// Hosts
-// set('http_user', 'www-data');
-// set('writable_mode', 'chmod');
 
 host('root@51.38.234.212')
     ->set('deploy_path', '/var/www/{{application}}');
@@ -32,10 +29,6 @@ host('root@51.38.234.212')
 task('build', function () {
     run('cd {{release_path}} && composer install --no-dev --optimize-autoloader && npm install && ./node_modules/.bin/encore production');
 });
-desc('Clear cache bis');
-task('deploy:cache2', function () {
-    run('APP_ENV=prod APP_DEBUG=0 {{bin/console}} cache:clear --no-warmup');
-});
 
 
 // Migrate database before symlink new release.
@@ -43,13 +36,29 @@ task('database:migrate', function () {
     run('{{bin/php}} {{bin/console}} doctrine:schema:update --force');
 })->desc('Migrate database');
 
-before('deploy:symlink', 'database:migrate');
+// before('deploy:symlink', 'database:migrate');
+task('tag_version', function(){
+    run('echo "Author : Ibrahima D." > version.txt');
+    run('echo "Revision : `git name-rev --name-only $(git rev-parse HEAD)`" >> version.txt');
+    run('echo ------ >> version.txt');
+    run('echo `TZ="Europe/Paris" date -R` >> version.txt');
+    run('echo ------ >> version.txt');
+    run('git log --pretty=format:"%h%x09%an%x09%ad%x09%s" | head -n 5 >> version.txt');
+})->local();;
 
-
-task('runbuild', [
+task('upload', function () {
+    upload(__DIR__ . '/version.txt', '{{release_path}}');
+});
+task('release', [
     'build',
-    'deploy:cache2',
+    'tag_version',
+    'upload',
 ]);
-after('deploy:symlink', 'runbuild');
+
+after('deploy:symlink', 'release');
+task('database:migrate', function () {
+    run('{{bin/console}} doctrine:schema:update --force {{console_options}}');
+})->desc('Migrate database');
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
+// after('deploy:symlink', 'database:migrate');
