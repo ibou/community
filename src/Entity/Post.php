@@ -26,7 +26,7 @@ class Post
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
@@ -69,6 +69,10 @@ class Post
      */
     private $likes;
 
+    /**
+     * @ORM\Column(type="integer", length=10, nullable=true)
+     */
+    private $duree;
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
@@ -298,5 +302,25 @@ class Post
         }
 
         return $t;
+    }
+
+    /**
+     * Get the value of duree
+     */
+    public function getDuree()
+    {
+        return $this->duree;
+    }
+
+    /**
+     * Set the value of duree
+     *
+     * @return  self
+     */
+    public function setDuree($duree)
+    {
+        $this->duree = $duree;
+
+        return $this;
     }
 }
