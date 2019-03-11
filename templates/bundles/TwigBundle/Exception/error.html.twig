@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Community - Error
+    {{status_text}} - {{status_code}}
+{% endblock %}
+{% block body %}
+
+<div class="container mt-4">
+    <div class="card card-body bg-light">
+    <h2 class="card-title">{{status_text}} - {{status_code}} !</h2>
+       Impossible d'accéder à la page demandée. <a href="{{ path('homepage') }}">Page d'accuil</a>
+    </div>
+</div>
+{% endblock %}

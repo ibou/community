@@ -90,10 +90,10 @@ class PostController extends AbstractController
 
     /**
      * @Route("/new", name="post_new", methods={"GET","POST"})
-     */
+    * @IsGranted("ROLE_USER", statusCode=403, message="Vous n'êtes pas habilit à consulter cette page !")
+    */
     public function Postnew(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);

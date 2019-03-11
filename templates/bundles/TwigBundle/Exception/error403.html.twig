@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}Community - Error
+    {{status_text}}
+    -
+    {{status_code}}
+{% endblock %}
+{% block body %}
+    <div class="container mt-4">
+        <div class="card card-body bg-light">
+            <h2 class="card-title">
+                {{status_text}}
+                -
+                {{status_code}}
+                !</h2>
+            {% if exception.message =='Access Denied.' %}
+                Vous n'êtes pas habilité à consulter cette page
+                {% else %}
+                {{exception.message}}
+            {% endif %}.
+            <a href="{{ path('homepage') }}">Page d'accuil</a>
+            <a href="{{ path('security_login') }}">Page d'authentification</a>
+        </div>
+    </div>
+{% endblock %}
