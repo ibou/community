@@ -51,7 +51,7 @@
             <div class='alert alert-dismissible alert-gris'>
                 <h4>
                     <a href="{{ path('post_show', {slug: post.slug}) }}">
-                        {{ post.title|raw }}
+                     {{ post.id }}  - {{ post.title|raw }}
                     </a>
                 </h4>
 
@@ -72,16 +72,12 @@
                 <hr>
                 <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
                 <span class="js-likes">{{post.numberLikes }}</span> <span class="js-label">J'aime</span>
-
-
-                {% if app.user %}
-                    {% if(app.user.id in post.likesUser) %}
-                        <i class="fa fa-thumbs-up"></i>
-                        {% else %}
-                            <i class="fa fa-thumbs-up"></i>gris
+                    {% if(app.user and app.user.id in post.likesUser) %}
+                        <i class="likeicon_{{post.id}} fa fa-thumbs-up" id="likeicon_{{post.id}}"></i>
+                     {% else %}
+                       <i class="likeicon_{{post.id}} fa" id="likeicon_{{post.id}}">&#xf087;</i>
                      {% endif %}
 
-                {% endif %}
 
                 </a>
 

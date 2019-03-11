@@ -29,25 +29,18 @@
 {{ include('post/_post_tags.html.twig') }}
 <hr>
 <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
-
-    {% if(app.user and post.isLikedByUser(app.user)) %}
-    <i class="fa fa-thumbs-down"></i>
-    {% else %}
-    <i class="fa fa-thumbs-up"></i>
-    {% endif %}
     <span class="js-likes">{{post.likes | length}}</span>
     <span class="js-label">J'aime</span>
+    {% if(app.user and post.isLikedByUser(app.user)) %}
+     <i class="likeicon_{{post.id}} fa fa-thumbs-up" id="likeicon_{{post.id}}"></i>
+    {% else %}
+    <i class="likeicon_{{post.id}} fa" id="likeicon_{{post.id}}">&#xf087;</i>
+    {% endif %}
+
 </a>
 
 
 <div id="post-add-comment" class="well">
-    {# The 'IS_AUTHENTICATED_FULLY' role ensures that the user has entered
-    his/her credentials (login + password) during this session. If he/she
-    is automatically logged via the 'Remember Me' functionality, he/she won't
-    be able to add a comment.
-    See
-    https://symfony.com/doc/current/security/remember_me.html#forcing-the-user-to-re-authenticate-before-accessing-certain-resources
-    #}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
     {% else %}
