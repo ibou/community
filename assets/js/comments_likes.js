@@ -8,19 +8,18 @@ function onClickBtnLike(event){
     const spanCount = this.querySelector('span.js-likes');
 
     const icon = this.querySelector('i');
+    const ival = $(icon).attr('id');
     axios.get(url)
     .then(function(response){
         spanCount.textContent = response.data.likes;
-
-        if(icon.classList.contains('fa-thumbs-down')){
-            icon.classList.replace('fa-thumbs-down','fa-thumbs-up');
+        $( "."+ival ).toggleClass( "fa-thumbs-up" );
+        if(icon.classList.contains('fa-thumbs-up')){
+            icon.innerHTML = "";
         }else{
-            icon.classList.replace('fa-thumbs-up','fa-thumbs-down');
+            icon.innerHTML = "&#xf087;";
         }
-
     })
     .catch(function (error) {
-        // handle error
         if(error.response.status === 403){
             window.alert("Connectez vous pour pouvoir effectuer cette action");
         }else{
@@ -36,3 +35,5 @@ function onClickBtnLike(event){
  document.querySelectorAll('a.js-like').forEach(function(link){
      link.addEventListener('click',  onClickBtnLike);
  })
+{/* <i class="far fa-thumbs-up"></i>
+<i class="fas fa-thumbs-up"></i> */}

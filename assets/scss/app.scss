@@ -5,7 +5,7 @@ $web-font-path: 'data:text/css;base64,';
 @import "../../node_modules/bootswatch/dist/yeti/bootswatch";
 @import "../../node_modules/font-awesome/scss/font-awesome.scss";
 @import "../../node_modules/highlight.js/styles/solarized-light.css";
-@import "../../node_modules/select2/dist/css/select2.min.css"; 
+@import "../../node_modules/select2/dist/css/select2.min.css";
 
 /* Basic styles
    ------------------------------------------------------------------------- */
@@ -359,4 +359,7 @@ body#blog_search .post-metadata {
 }
 .alert-dismissible .close{
     color: #95A6A7 !important;
+}
+.remove-like {
+    &::before { content: none; }
 }
