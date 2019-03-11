@@ -90,7 +90,7 @@ class PostController extends AbstractController
 
     /**
      * @Route("/new", name="post_new", methods={"GET","POST"})
-    * @IsGranted("ROLE_USER", statusCode=403, message="Vous n'êtes pas habilit à consulter cette page !")
+    * @IsGranted("ROLE_USER", statusCode=403, message="Vous n'êtes pas habilité à consulter cette page, merci de vous authentifier avant !")
     */
     public function Postnew(Request $request): Response
     {
