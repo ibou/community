@@ -192,7 +192,6 @@ class PostController extends AbstractController
             $em->flush();
             $date_french = new DateTimeFrench($comment->getPublishedAt()->format('c'));
             $date_french->setFormat('j F Y à H:i:s');
-            $encoder = new JsonEncode();
             $data = [
                 'slug' => $post->getSlug(),
                 'user' => $user->getUserInfos(),
@@ -209,10 +208,6 @@ class PostController extends AbstractController
         }
 
         return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
-        // return $this->render('blog/comment_form_error.html.twig', [
-        //     'post' => $post,
-        //     'form' => $form->createView(),
-        // ]);
     }
 
     /**
