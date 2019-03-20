@@ -44,6 +44,7 @@ task('tag_version', function(){
     run('echo ------------------ > version.txt');
     run('echo ------ `TZ="Europe/Paris" date -R` ------ >> version.txt');
     run('echo ------------------ >> version.txt');
+    run('echo ---------COUCOU IBOU---------');
 
     run('echo "Author Name  : `git config --get user.name`" >> version.txt');
     run('echo "Author Email : `git config --get user.email`" >> version.txt');
