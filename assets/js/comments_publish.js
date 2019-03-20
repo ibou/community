@@ -13,9 +13,7 @@ $('form').on('submit', function (e) {
     .then(function (response) {
 
       var data = response.data;
-      var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-      console.log("REP POST", data);
-      console.log("User", data.user.firstname);
+      var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }; 
       if (201 === response.status) {
         var html = '';
         html += '<div class="well">';
@@ -24,7 +22,8 @@ $('form').on('submit', function (e) {
         html += data.comment;
         html += '</div>';
 
-        $(html).insertAfter($(newAreaComment));
+        $(newAreaComment).append(html);
+        //$(html).insertAfter($(newAreaComment));
         $('textarea[name=content]', formEl).val('').empty();
         if($('input[name=parent]', formEl).val().length == 0){
           //On recharte la page si c'est un commentaire parent

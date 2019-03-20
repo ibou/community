@@ -20,18 +20,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Form;
 use App\Form\PostType;
 use Cocur\Slugify\Slugify;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
-use Faker\Provider\zh_CN\DateTime;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use App\Entity\User;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Utils\DateTimeFrench;
 
 /**
@@ -90,8 +85,8 @@ class PostController extends AbstractController
 
     /**
      * @Route("/new", name="post_new", methods={"GET","POST"})
-    * @IsGranted("ROLE_USER", statusCode=403, message="Vous n'êtes pas habilité à consulter cette page, merci de vous authentifier avant !")
-    */
+     * @IsGranted("ROLE_USER", statusCode=403, message="Vous n'êtes pas habilité à consulter cette page, merci de vous authentifier avant !")
+     */
     public function Postnew(Request $request): Response
     {
         $post = new Post();
@@ -129,6 +124,13 @@ class PostController extends AbstractController
         return $this->render('post/post_show.html.twig', [
             'post' => $post,
             'form' => $this->_newFormComment(),
+        ]);
+    }
+
+    public function linkedSubject(Post $post): Response
+    {
+        return $this->render('post/side-subjects.html.twig', [
+            'post' => $post,
         ]);
     }
 
@@ -204,7 +206,8 @@ class PostController extends AbstractController
                 [$objectNormalizer],
                 [new JsonEncoder(), new XmlEncoder()]
             );
-            return new Response($serializer->serialize($data, 'json'),201);
+
+            return new Response($serializer->serialize($data, 'json'), 201);
         }
 
         return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
