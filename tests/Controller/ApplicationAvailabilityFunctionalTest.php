@@ -50,7 +50,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         // the service container is always available via the test client
         $blogPost = $this->client->getContainer()->get('doctrine')->getRepository(Post::class)->find(104);
 
-        $this->client->request('GET', sprintf('/posts/article/%s', $blogPost->getSlug()));
+        $this->client->request('GET', sprintf('/posts/articles/%s', $blogPost->getSlug()));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 }
