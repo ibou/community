@@ -14,9 +14,9 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       - image: circleci/mysql:5.7
         environment:
-          - MYSQL_ROOT_HOST=%
+          - MYSQL_ROOT_HOST=51.38.234.212
           - MYSQL_USER=root
-          # - MYSQL_PASSWORD=root
+          - MYSQL_PASSWORD=root
           - MYSQL_ALLOW_EMPTY_PASSWORD=true
           - MYSQL_DATABASE=test_community
 
