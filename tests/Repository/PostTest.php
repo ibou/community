@@ -22,7 +22,7 @@ class PostTest extends WebTestCase
      *
      * @var ObjectRepository
      */
-    private $userRepository;
+    private $postRepository;
 
     protected function setUp()
     {
