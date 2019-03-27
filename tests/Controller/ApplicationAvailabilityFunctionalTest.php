@@ -46,18 +46,4 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/contact-us'];
         yield ['/login/reset-password'];
     }
-    public function testPublicBlogPost()
-    {
-
-        if (!extension_loaded('pdo_mysql')) {
-            $this->markTestSkipped(
-            'This test is not available for testPageIsSuccessful.'
-          );
-        }
-        // the service container is always available via the test client
-        $blogPost = $this->client->getContainer()->get('doctrine')->getRepository(Post::class)->find(104);
-
-        $this->client->request('GET', sprintf('/posts/article/%s', $blogPost->getSlug()));
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
 }
