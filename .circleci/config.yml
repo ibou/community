@@ -8,11 +8,17 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/php:7.2-browsers
-      
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mysql:9.4
+      - image: circleci/mysql
+        environment:
+          - MYSQL_ROOT_HOST=%
+          - MYSQL_USER=root
+          # - MYSQL_PASSWORD=root
+          - MYSQL_ALLOW_EMPTY_PASSWORD=true
+          - MYSQL_DATABASE=test_community
 
     working_directory: ~/repo
 
@@ -32,7 +38,6 @@ jobs:
           paths:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
-        
+
       # run tests!
       - run: ./vendor/bin/simple-phpunit
-      
