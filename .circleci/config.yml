@@ -18,7 +18,7 @@ jobs:
           - MYSQL_USER=root
           - MYSQL_PASSWORD=root
           - MYSQL_ALLOW_EMPTY_PASSWORD=true
-          - MYSQL_DATABASE=community
+          - MYSQL_DATABASE=test_community
 
     working_directory: ~/repo
 
