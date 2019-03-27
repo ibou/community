@@ -18,7 +18,7 @@ jobs:
           - MYSQL_USER=root
           - MYSQL_PASSWORD=root
           - MYSQL_ALLOW_EMPTY_PASSWORD=true
-          - MYSQL_DATABASE=test_community
+          - MYSQL_DATABASE=community
 
     working_directory: ~/repo
 
@@ -33,7 +33,10 @@ jobs:
           - v1-dependencies-
       - run:
           name: Install PHP extensions
-          command: sudo docker-php-ext-install pdo_mysql
+          command: |
+            sudo docker-php-ext-install zip
+            sudo docker-php-ext-install pdo_mysql
+            sudo apt install -y mysql-client
 
       - run: composer install -n --prefer-dist
 
