@@ -27,10 +27,8 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=100, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email.",
-     *     checkMX = true
+     *     message = "The email '{{ value }}' is not a valid email."
      * )
-     * @Assert\Email(strict=true, message="incorrect format email")
      */
     private $email;
     /**
