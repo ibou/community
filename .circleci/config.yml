@@ -13,11 +13,11 @@ jobs:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mysql:5.7
-        environment:
-          - MYSQL_ROOT_HOST=localhost
-          - MYSQL_USER=root
-          - MYSQL_ALLOW_EMPTY_PASSWORD=true
-          - MYSQL_DATABASE=test_community
+        # environment:
+        #   - MYSQL_ROOT_HOST=%
+        #   - MYSQL_USER=root
+        #   - MYSQL_ALLOW_EMPTY_PASSWORD=true
+        #   - MYSQL_DATABASE=test_community
 
     working_directory: ~/repo
 

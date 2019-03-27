@@ -25,9 +25,11 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
      */
     public function testPageIsSuccessful(string $url)
     {
-        $this->markTestSkipped(
+        if (!extension_loaded('pdo_mysql')) {
+            $this->markTestSkipped(
             'This test is not available for testPageIsSuccessful.'
           );
+        }
         $this->client->request('GET', $url);
          $this->assertSame(
             Response::HTTP_OK,
@@ -47,6 +49,11 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     public function testPublicBlogPost()
     {
 
+        if (!extension_loaded('pdo_mysql')) {
+            $this->markTestSkipped(
+            'This test is not available for testPageIsSuccessful.'
+          );
+        }
         // the service container is always available via the test client
         $blogPost = $this->client->getContainer()->get('doctrine')->getRepository(Post::class)->find(104);
 
