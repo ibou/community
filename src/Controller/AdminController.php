@@ -7,13 +7,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("admin")
+ * @Route("/admin")
  * @IsGranted("ROLE_ADMIN", statusCode=403, message="Vous n'êtes pas habilité à consulter cette page ...")
  */
 class AdminController extends AbstractController
 {
     /**
-     * @Route("", name="admin")
+     * @Route("", methods={"GET"}, name="admin")
      */
     public function index()
     {

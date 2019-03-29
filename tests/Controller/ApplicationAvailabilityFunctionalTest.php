@@ -3,21 +3,47 @@
 namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\BrowserKit\Cookie;
+use App\Entity\Post;
 
-class ApplicationAvailabilityFunctionalTest extends TestCase
+class ApplicationAvailabilityFunctionalTest extends WebTestCase
 {
-    public function testPageIsSuccessful()
-    {
-        $this->assertTrue(true);
-        // $client = self::createClient();
-        // $client->request('GET', $url);
 
-        // $this->assertTrue($client->getResponse()->isSuccessful());
+    private $client = null;
+
+    public function setUp()
+    {
+        $this->client = static::createClient( );
+        $this->client->followRedirects(true);
+    }
+
+    /**
+     * @dataProvider urlProvider
+     */
+    public function testPageIsSuccessful(string $url)
+    {
+        if (!extension_loaded('pdo_mysql')) {
+            $this->markTestSkipped(
+            'This test is not available for testPageIsSuccessful.'
+          );
+        }
+        $this->client->request('GET', $url);
+         $this->assertSame(
+            Response::HTTP_OK,
+            $this->client->getResponse()->getStatusCode(),
+            sprintf('The %s public URL loads correctly.', $url)
+        );
     }
 
     public function urlProvider()
     {
         yield ['/'];
         yield ['/login'];
+        yield ['/register'];
+        yield ['/contact-us'];
+        yield ['/login/reset-password'];
     }
 }
