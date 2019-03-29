@@ -2,16 +2,26 @@ language: php
 php:
   - '7.2'
   - '7.3'
+# Allows use container-based infrastructure
+sudo: false
 
 env:
   - DB=mysql
+before_install:
+  - composer self-update
 
 install:
-  - composer install
+  - composer install --no-interaction --prefer-source
   - npm install
   - cp .env.dist .env
-  - php bin/console doctrine:database:create --env=test
-  - php bin/console doctrine:schema:create --env=test
-  - php bin/console doctrine:fixtures:load -n --env=test
+
+before_script:
+  - mysql -u root -e 'CREATE DATABASE IF NOT EXISTS test_community;'
+  - mysql -u root test_community < var/sql/test_community.sql
+
 script:
    - vendor/bin/simple-phpunit
+
+notifications:
+   on_success: never
+   on_failure: always
