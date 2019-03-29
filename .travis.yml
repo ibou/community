@@ -2,12 +2,20 @@ language: php
 php:
   - '7.2'
   - '7.3'
+env:
+  - DB=mysql
+
+
 # Allows use container-based infrastructure
 sudo: false
 
-env:
-  - DB=mysql
+addons:
+  mariadb: '10.3'
+
 before_install:
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('root') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade -u root -root
+  - sudo service mysql restart
   - composer self-update
 
 install:
