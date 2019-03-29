@@ -1,7 +1,6 @@
 language: php
 php:
   - '7.2'
-  - '7.3'
 env:
   - DB=mysql
 
@@ -22,6 +21,8 @@ install:
   - npm install
 
 before_script:
+  - GRANT SELECT ON mysql.user TO 'root'@'%'
+  - sudo service mysql restart
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test_community;'
   - mysql -u root test_community < var/sql/test_community.sql
 
