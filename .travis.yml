@@ -1,9 +1,17 @@
 language: php
 php:
-  - '7.1'
   - '7.2'
   - '7.3'
 
+env:
+  - DB=mysql
+
+install:
+  - composer install
+  - npm install
+  - cp .env.dist .env
+  - php bin/console doctrine:database:create --env=test
+  - php bin/console doctrine:schema:create --env=test
+  - php bin/console doctrine:fixtures:load -n --env=test
 script:
-   - composer install
    - vendor/bin/simple-phpunit
