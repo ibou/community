@@ -13,7 +13,6 @@ before_install:
 install:
   - composer install --no-interaction --prefer-source
   - npm install
-  - cp .env.dist .env
 
 before_script:
   - mysql -u root -e 'CREATE DATABASE IF NOT EXISTS test_community;'
