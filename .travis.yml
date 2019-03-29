@@ -22,7 +22,7 @@ install:
   - npm install
 
 before_script:
-  - mysql -u root -e 'CREATE DATABASE IF NOT EXISTS test_community;'
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS test_community;'
   - mysql -u root test_community < var/sql/test_community.sql
 
 script:
