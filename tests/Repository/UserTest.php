@@ -30,9 +30,6 @@ class UserTest extends WebTestCase
 
     public function testPublicBlogPost()
     {
-        $this->markTestSkipped(
-            'This test is not available for testPageIsSuccessful.'
-          );
         if (!extension_loaded('pdo_mysql')) {
             $this->markTestSkipped(
             'This test is not available for testPageIsSuccessful.'

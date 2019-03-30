@@ -27,19 +27,16 @@ class PostTest extends WebTestCase
         $this->postRepository = $this->em->getRepository(Post::class);
     }
 
-    /**
-     * @group failing
-     */
     public function testPublicBlogPost()
     {
-        // if (!extension_loaded('pdo_mysql')) {
-        $this->markTestSkipped(
+        if (!extension_loaded('pdo_mysql')) {
+            $this->markTestSkipped(
             'This test is not available for testPageIsSuccessful.'
           );
-        // }
+        }
         $id = 1;
         $post = $this->postRepository->findBy(['id' => $id]);
-        $this->assertCount(1, $post, "La valeur du post {$id} est vide ");
+        $this->assertCount(41, $post, "La valeur du post {$id} est vide ");
     }
 
     protected function tearDown()
