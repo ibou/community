@@ -6,6 +6,9 @@ use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\Common\Persistence\ObjectRepository;
 
+/**
+ * @group  reposbdd
+ */
 class UserTest extends WebTestCase
 {
     use HelperTraitTest;
