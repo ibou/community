@@ -36,7 +36,7 @@ class PostTest extends WebTestCase
         }
         $id = 1;
         $post = $this->postRepository->findBy(['id' => $id]);
-        $this->assertCount(41, $post, "La valeur du post {$id} est vide ");
+        $this->assertCount(1, $post, "La valeur du post {$id} est vide ");
     }
 
     protected function tearDown()
