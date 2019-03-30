@@ -27,8 +27,8 @@ install:
   - npm install
 
 before_script:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS test_community;use test_community'
-  - mysql -u root test_community < var/sql/test_community.sql
+  # - mysql -e 'CREATE DATABASE IF NOT EXISTS test_community;use test_community'
+  # - mysql -u root test_community < var/sql/test_community.sql
 
 script:
    - vendor/bin/simple-phpunit
