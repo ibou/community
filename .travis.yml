@@ -26,13 +26,15 @@ install:
   - composer install --no-interaction --prefer-source
   - npm install
 
+
 before_script:
   # - mysql -e 'CREATE DATABASE IF NOT EXISTS test_community;use test_community'
   # - mysql -u root test_community < var/sql/test_community.sql
 
 script:
    - vendor/bin/simple-phpunit
-
+   - node_modules/.bin/encore production
+   
 notifications:
    on_success: never
    on_failure: always
