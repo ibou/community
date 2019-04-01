@@ -25,11 +25,12 @@ Encore
     .addStyleEntry('css/app', ['./assets/scss/app.scss'])
     .addStyleEntry('css/admin', ['./assets/scss/admin.scss'])
     .addStyleEntry('css/search', ['./assets/scss/search.scss'])
+    .addStyleEntry('css/login', ['./assets/scss/login.scss'])
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     // .disableSingleRuntimeChunk()
 
-    
+
     /*
      * FEATURE CONFIG
      *
