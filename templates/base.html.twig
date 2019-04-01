@@ -9,7 +9,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Symfony Demo application{% endblock %}</title>
+    <title>{% block title %}Community App{% endblock %}</title>
 
     {% block stylesheets %}
     {{ encore_entry_link_tags('css/app') }}
@@ -136,7 +136,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
         <div class="container fluid">
             <div class="row">
                 <div id="footer-copyright" class="col-md-12">
-                    <p>&copy; {{ 'now'|date('Y') }} - The Symfony Project</p>
+                    <p>&copy; {{ 'now'|date('Y') }} - Community project</p>
                     <p>{{ 'mit_license'|trans }}</p>
                 </div>
                 <div id="footer-resources" class="col-md-6">

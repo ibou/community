@@ -1,12 +1,14 @@
 <?php
+
 namespace App\Tests\Repository;
 
 use App\Entity\User;
-use App\Tests\Repository\HelperTraitTest;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\Common\Persistence\ObjectRepository;
 
-
+/**
+ * @group  reposbdd
+ */
 class UserTest extends WebTestCase
 {
     use HelperTraitTest;
@@ -17,7 +19,7 @@ class UserTest extends WebTestCase
     private $em;
 
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var ObjectRepository
      */
@@ -31,16 +33,15 @@ class UserTest extends WebTestCase
 
     public function testPublicBlogPost()
     {
-
         if (!extension_loaded('pdo_mysql')) {
             $this->markTestSkipped(
             'This test is not available for testPageIsSuccessful.'
           );
         }
         $user = $this->userRepository->findOneBy([
-            'username' => 'ibou888'
+            'username' => 'ibou888',
         ]);
-        $this->assertSame('iboudiallo84@gmail.com', $user->getEmail(), "Bad email");
+        $this->assertSame('iboudiallo84@gmail.com', $user->getEmail(), 'Bad email');
     }
 
     protected function tearDown()

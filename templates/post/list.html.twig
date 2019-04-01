@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body_id 'blog_index' %}
-
+{% block title %} {{ parent() }} : Liste résultats {% endblock title %}
 {% block main %}
 <div class="list-article">
     <form action="{{ path('post_index') }}" method="get">

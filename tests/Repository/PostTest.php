@@ -5,6 +5,9 @@ namespace App\Tests\Repository;
 use App\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @group  reposbdd
+ */
 class PostTest extends WebTestCase
 {
     use HelperTraitTest;
