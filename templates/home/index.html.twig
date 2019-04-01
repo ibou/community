@@ -6,8 +6,8 @@
 the homepage is a special page which displays neither a header nor a footer.
 this is done with the 'trick' of defining empty Twig blocks without any content
 #}
-{% block title %} TOJKE {% endblock title %}
- 
+{% block title %} {{ parent() }} : Accueil {% endblock title %}
+
 {% block main %}
 
 <div class="row">
