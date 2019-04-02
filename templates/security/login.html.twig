@@ -1,19 +1,14 @@
 {% extends 'base.html.twig' %}
-{% block javascripts %}
-{{ parent() }} 
-{{ encore_entry_script_tags('js/login') }}
+{% block stylesheets %}
+{{ parent() }}
+{{ encore_entry_link_tags('css/login') }}
 {% endblock %}
 {% block title %}Log in!{% endblock %}
 
 {% block body_id 'login_auth' %}
 {% block main %}
-<style>
 
-</style>
-
-
-
-<form method="post">
+<form method="post" autocomplete="off">
     <div class="row">
         <div class="col-sm-10">
             {% if error %}
@@ -22,46 +17,39 @@
 
             <h1 class="h3 mb-3 font-weight-normal">{{ 'title.login'|trans }}</h1>
             <label for="inputEmail" class="sr-only">{{ 'label.username'|trans }}</label>
-            <div class="input-group">
+
+            <div class="input-group form-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">@</span>
+                    <span class="input-group-text"><i class="fa fa-user"></i></span>
                 </div>
                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
-                    placeholder="Email" required autofocus>
+                    placeholder="Adresse Email" required autofocus>
             </div>
             <label for="inputPassword" class="sr-only">{{ 'label.password'|trans }}</label>
-            <div class="input-group">
+            <div class="input-group form-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                    <span class="input-group-text"><i class="fa fa-key"></i></span>
                 </div>
                 <input type="password" name="password" id="password-field" class="form-control" placeholder="Password"
                     required>
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></i></span>
+                    <span class="input-group-text"><i toggle="#password-field"
+                            class="fa fa-fw fa-eye field-icon toggle-password"></i></span>
                 </div>
             </div>
-
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        </div>
-    </div>
-
-    {# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-    See https://symfony.com/doc/current/security/remember_me.html #}
-    <div class="row">
-        <div class="col-sm-7 checkbox">
-            <label>
+            <div class="row align-items-center remember">
                 <input type="checkbox" name="_remember_me"> {{ 'action.remember_me'|trans }}
-            </label>
-        </div>
-
-        <div class="col-sm-3 text-right">
-            <a href="{{ path('resetpassword') }}">{{'password.forgotten'|trans}} ?</a>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <div class="form-group">
+                    {# <input type="submit" value="Login" class="btn float-right login_btn"> #}
+                    <button type="submit" class="btn float-right login_btn">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
+                        </button>
+                </div>
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
-    </button>
 </form>
 
 
@@ -81,4 +69,9 @@
     </div>
 </div>
 {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('js/login') }}
 {% endblock %}
