@@ -8,7 +8,7 @@ use App\Entity\Post;
 class PostTest extends TestCase
 {
     /**
-     * @var \AppBundle\Entity\Document
+     * @var \App\Entity\Post
      */
     protected $object;
 
