@@ -28,6 +28,7 @@ use App\Entity\User;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use App\Utils\DateTimeFrench;
+use App\Repository\UserRepository;
 
 /**
  * @Route("/posts")

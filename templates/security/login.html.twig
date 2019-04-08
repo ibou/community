@@ -39,20 +39,26 @@
             </div>
             <div class="row align-items-center remember">
                 <input type="checkbox" name="_remember_me"> {{ 'action.remember_me'|trans }}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             </div>
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="form-group  float-right">
+
+                <button type="submit" class="btn  login_btn">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
+                </button>
+            </div>
+
             <div class="form-group">
-                    {# <input type="submit" value="Login" class="btn float-right login_btn"> #}
-                    <button type="submit" class="btn float-right login_btn">
-                            <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
-                        </button>
+                <div class="btn float-left login_btn">
+                    <a href="{{ path('resetpassword') }}">{{'password.forgotten'|trans}} ?</a>
                 </div>
+            </div>
         </div>
+
     </div>
 
 </form>
-
-
 
 
 {% endblock %}

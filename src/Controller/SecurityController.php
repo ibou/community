@@ -52,9 +52,10 @@ class SecurityController extends AbstractController
      */
     public function resetPassword(Request $request,TranslatorInterface $translator, UserRepository $UserRepositroy, \Swift_Mailer $mailer, EventDispatcherInterface $dispatcher, GenerateLink $glink)
     {
+
         // Check if user is logged and redirect to home page
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('app_document_new');
+            return $this->redirectToRoute('post_index');
         }
 
         $PasswordReset = new PasswordReset();
@@ -64,16 +65,15 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form['email']->getData();
             $protocol = $request->isSecure() ? 'https://' : 'http://';
-            $locale = $request->getLocale();
-            $hostName = $protocol.$request->getHttpHost()."/".$locale; 
+            $hostName = $protocol.$request->getHttpHost();
             $resetUrl = $glink->generateResetPasswordLink($hostName, $email, 'PT01H');
-            
-            if ($resetUrl) { 
+
+            if ($resetUrl) {
                 $user = $UserRepositroy->findOneBy([
                     'email'=>$email
                     ]
                 );
- 
+
              $mailContent = [
                 'subject' => 'Community: Reset password',
                 'fromEmail' => 'community@comdesk.com',
@@ -85,14 +85,14 @@ class SecurityController extends AbstractController
                     ['url' => $resetUrl, 'username' => $user->getFirstname() . ' ' . $user->getLastname()]
                 ),
             ];
- 
+
             //Création de l'événement new user
             $event = new UserEvent($user, $mailContent);
             $dispatcher->dispatch(UserEvent::EMAIL_RESET_PASSWORD, $event);
-            $message = $translator->trans('flash.email.reset.sent'); 
+            $message = $translator->trans('flash.email.reset.sent');
             $this->addFlash('success', "{$message} : " . $user->getEmail());
               return $this->redirectToRoute('security_login');
-            } else { 
+            } else {
                 $message = $translator->trans('flash.not.exist.email');
                 $this->addFlash('warning', "Email {$email} {$message} ");
             }
@@ -110,7 +110,7 @@ class SecurityController extends AbstractController
     {
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('homepage');
-        }  
+        }
         $em = $this->getDoctrine()->getManager();
         //Verification of email and selector and token
         $selector = $request->query->get('selector');
@@ -120,7 +120,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         $resetPasswordObjet = $passwordRepos->findOneBy([
-            'selector' => $selector, 
+            'selector' => $selector,
             'token' => $token
             ]);
         if (count((array)$resetPasswordObjet) > 0) {
@@ -135,7 +135,7 @@ class SecurityController extends AbstractController
                     // Get Current user object
 
                     $user->setPassword($encoder->encodePassword($user, $form->get('newPassword')->getData()));
-   
+
                     $em->persist($user);
                     $em->remove($resetPasswordObjet);
                     $em->flush();
