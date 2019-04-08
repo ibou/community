@@ -58,7 +58,7 @@ class UserTest extends WebTestCase
         $userRepo = $this->createMock(UserRepository::class);
         $userRepo->expects($this->any())
                 //  ->method('findCountLoginUsers')
-                 ->method('findBy')
+                 ->method('findUserByEmail')
                  ->willReturn($user);
 
         $objectManager = $this->createMock(ObjectManager::class);
@@ -66,7 +66,7 @@ class UserTest extends WebTestCase
                       ->method('getRepository')
                       ->willReturn($userRepo);
 
-              // var_dump($userRepo->findUserByEmailsss('iboudiallo@gmail.com'));
+    //    var_dump($objectManager->findUserByEmail('iboudiallo@gmail.com'));
        // $this->assertSame('iboudiallo@gmail.com', $userRepo->findUserByEmailsss('iboudiallo@gmail.com'));
        $this->assertTrue(true);
     }

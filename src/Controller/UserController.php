@@ -63,6 +63,8 @@ class UserController extends AbstractController
      */
     public function changePassword(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $user = $this->getUser();
 
         $form = $this->createForm(ChangePasswordType::class);
