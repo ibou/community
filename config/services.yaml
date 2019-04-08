@@ -51,7 +51,8 @@ services:
     #         - { name: 'kernel.event_listener', event: 'security.interactive_login' }
     Elastica\Client:
         $config:
-            host: '127.0.0.1'
+            host: elasticsearch
+            port: 9200
 
     App\Controller\CustomExceptionController:
         public: true
