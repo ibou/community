@@ -13,9 +13,11 @@ services:
         environment:
           - ALLOW_OVERRIDE=true
         links:
-          - localdb:localdb
+          - localdb:db
           - maildev:maildev
           - elasticsearch:elasticsearch
+        depends_on:
+          - localdb
 
     localdb:
         image: mariadb:10.3
