@@ -1,0 +1,63 @@
+version: '3'
+services:
+    phpseven:
+        build: .docker/apache
+        container_name: sf4_php_apache
+        ports:
+          - 80:80
+        volumes:
+          - .docker/config/vhosts:/etc/apache2/sites-enabled
+          - .:/var/www/html
+          - ./var/httpd:/var/log/apache2
+          - .docker/config/php/php.ini:/usr/local/etc/php/conf.d/30-custom.ini # PHP ini custom
+        environment:
+          - ALLOW_OVERRIDE=true
+        links:
+          - localdb:db
+          - maildev:maildev
+          - elasticsearch:elasticsearch
+        depends_on:
+          - localdb
+
+    localdb:
+        image: mariadb:10.3
+        container_name: localdb
+        volumes:
+            - /var/data/community:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: community
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: sf4_phpmyadmin
+        ports:
+            - 8000:80
+        links:
+            - localdb:db
+        environment:
+            - PMA_USER=root
+            - PMA_PASSWORD=root
+
+    maildev:
+        image: djfarrelly/maildev
+        container_name: sf4_maildev
+        ports:
+          - 1080:80
+
+    elasticsearch:
+            image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+            container_name: elasticsearch
+            environment:
+              - cluster.name=demo
+              - bootstrap.memory_lock=true
+              - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+              - transport.host=127.0.0.1
+            ulimits:
+                memlock:
+                    soft: -1
+                    hard: -1
+            ports:
+                - 9200:9200

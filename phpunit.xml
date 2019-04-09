@@ -16,7 +16,7 @@
         <env name="SHELL_VERBOSITY" value="-1" />
         <!-- define your env variables for the test env here -->
            <!-- ###+ doctrine/doctrine-bundle ### -->
-        <env name="DATABASE_URL" value="mysql://root:root@127.0.0.1:3306/test_community"/>
+        <env name="DATABASE_URL" value="mysql://root:root@db:3306/test_community"/>
         <!-- ###- doctrine/doctrine-bundle ### -->
 
         <!-- ###+ symfony/swiftmailer-bundle ### -->
