@@ -1,11 +1,31 @@
 #!/bin/bash
 
+listCommandes(){
+         echo " "
+         echo " "
+         echo "############  Lancer les tests unitaires avec : dotests :  ########"
+         echo "############  Mise à jour du schema de bdd : updateschema"
+         echo "############  Charger les données bdd avec : loaddata ########"
+         echo "############  Reindex avec  : reindex ########"
+         echo " "
+         echo " "
+}
+
+
+
 if [ $# -eq 0 ];
 then
-echo "Vous avez passé $# paramètres : tapez en arguments '--help' ou 'listCommandes' pour voir les différentes options"
+listCommandes
+exit 0
+elif [ $1 = "-h" ]
+then
+listCommandes
+exit 0
 else
 echo "Vous avez passé $# paramètres"
+echo $1
 fi
+
 # Affichage du nombre de paramètres
 
 # Liste des paramètres (un seul argument)
@@ -25,17 +45,6 @@ fi
       docker exec sf4_php_apache bin/console doctrine:fixtures:load
       reindex
  }
-
-listCommandes(){
-         echo " "
-         echo " "
-         echo "############  Lancer les tests unitaires avec : dotests :  ########"
-         echo "############  Mise à jour du schema de bdd : updateschema"
-         echo "############  Charger les données bdd avec : loaddata ########"
-         echo "############  Reindex avec  : reindex ########"
-         echo " "
-         echo " "
-}
 
 
   reindex(){
