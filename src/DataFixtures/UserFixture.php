@@ -133,7 +133,7 @@ class UserFixture extends Fixture
         $faker = Faker\Factory::create('fr_FR');
 
         $posts = [];
-        for ($i = 0; $i < 450; ++$i) {
+        for ($i = 0; $i < 81; ++$i) {
             $posts[] = [
                 $faker->catchPhrase(),
                 $faker->slug(),
