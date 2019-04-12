@@ -6,6 +6,7 @@ listCommandes(){
          echo "############  Lancer les tests unitaires avec : dotests :  ########"
          echo "############  Mise à jour du schema de bdd : updateschema"
          echo "############  Charger les données bdd avec : loaddata ########"
+         echo "############  Reindex avec  : reindex ########"
          echo " "
          echo " "
 }
@@ -44,6 +45,10 @@ fi
       docker exec sf4_php_apache bin/console doctrine:fixtures:load
       reindex
  }
+ reindex(){
+       echo "########### Reindexing data###########"
+      docker exec sf4_php_apache bin/console elastic:reindex
+ }
 
 for param in "$@"
 do
@@ -56,6 +61,9 @@ loaddata)
     $param;;
 
 updateschema)
+    $param;;
+
+reindex)
     $param;;
 
 listCommandes)
