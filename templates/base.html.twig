@@ -80,7 +80,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="{{ path('security_logout') }}" class="dropdown-item">
+                                    <a href="{{ path('fos_user_security_logout') }}" class="dropdown-item">
                                         <i class="fa fa-sign-out" aria-hidden="true"></i> {{ 'menu.logout'|trans }}
                                     </a>
                                 </li>
@@ -94,7 +94,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                             </a>
                             <ul class="dropdown-menu user" role="menu" aria-labelledby="user">
                                 <li>
-                                    <a href="{{ path('security_login') }}" class="dropdown-item"> <i class="fa fa-sign-in"></i>
+                                    <a href="{{ path('fos_user_security_login') }}" class="dropdown-item"> <i class="fa fa-sign-in"></i>
                                         {{'menu.login'|trans }}</a>
                                 </li>
                             </ul>

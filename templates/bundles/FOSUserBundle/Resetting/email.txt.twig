@@ -1,0 +1,26 @@
+{% trans_default_domain 'FOSUserBundle' %}
+{% block subject %}
+{%- autoescape false -%}
+{{ 'resetting.email.subject'|trans({'%username%': user.username}) }}
+{%- endautoescape -%}
+{% endblock %}
+
+{{ 'resetting.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+{% block body_text %} {% endblock %}
+{% block body_html %} 
+
+Bonjour {{user.username}} !
+<p>
+        Vous avez demandé une réinitialisation de mot de passe de votre compte.<br />
+        Afin de créer votre nouveau mot de passe, veuillez cliquer sur le lien suivant : 
+    <a href="{{ confirmationUrl }}"
+        style="font-size:14px; font-weight:bold; line-height:15px; text-decoration:none; color:#FFFFFF; background-color: #007ac3">
+        <font color="#FFFFFF"> →cliquer ici </font>
+    </a>
+</p>
+<p>
+    Cordialement,<br/>
+    L'équipe.
+</p>
+
+{% endblock %}

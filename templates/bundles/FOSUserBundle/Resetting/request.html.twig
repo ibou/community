@@ -1,0 +1,17 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block fos_user_content %}
+
+<div class="row">
+    {% block main %}
+    <div class="col-sm-9">
+        {% include "@FOSUser/Resetting/request_content.html.twig" %}
+    </div>
+    {% endblock %}
+    {% block sidebar %}
+    <div class="col-sm-3">  
+        {{ parent() }}
+    </div>
+    {% endblock %}
+</div>
+{% endblock fos_user_content %}

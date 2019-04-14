@@ -75,7 +75,7 @@ class UserController extends AbstractController
 
             $this->em->flush();
 
-            return $this->redirectToRoute('security_logout');
+            return $this->redirectToRoute('fos_user_security_logout');
         }
 
         return $this->render('user/change_password.html.twig', [

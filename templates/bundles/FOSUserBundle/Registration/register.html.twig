@@ -1,0 +1,29 @@
+{% extends '@FOSUser/layout.html.twig' %} 
+
+{% block fos_user_content %}
+<div class="row"> 
+{% block main %} 
+<div class="col-sm-8">
+
+    {% include "@FOSUser/Registration/register_content.html.twig" %}
+</div>
+{% endblock %}
+{% block sidebar %}
+<div class="col-sm-3">
+
+    <div class="card">
+        <div class="card-header">
+            {{ 'login.account.title'|trans }} ?
+        </div>
+        <div class="card-body">
+            <a href="{{path('fos_user_security_login')}}">
+                {{ 'login.account.connect'|trans }}
+            </a>
+        </div>
+    </div>
+    
+    {{ parent() }} 
+</div>
+{% endblock %}
+</div>
+{% endblock fos_user_content %}
