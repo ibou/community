@@ -3,15 +3,14 @@
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
-
 /**
- * ClassNameTest
+ * ClassNameTest.
+ *
  * @group group
  */
 class UserTest extends TestCase
 {
     /**
-     *
      * @var \App\Entity\User
      */
     protected $object;
@@ -31,5 +30,4 @@ class UserTest extends TestCase
         $property->setValue($this->object, 4);
         $this->assertEquals(4, $this->object->getId());
     }
-
 }

@@ -20,11 +20,9 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
      */
     public function testPageIsSuccessful(string $url)
     {
-        if (!extension_loaded('pdo_mysql')) {
-            $this->markTestSkipped(
+        $this->markTestSkipped(
             'This test is not available for testPageIsSuccessful.'
           );
-        }
         $this->client->request('GET', $url);
         $this->assertSame(
             Response::HTTP_OK,
