@@ -2,21 +2,16 @@
 
 namespace App\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\BrowserKit\Cookie;
-use App\Entity\Post;
 
 class ApplicationAvailabilityFunctionalTest extends WebTestCase
 {
-
     private $client = null;
 
     public function setUp()
     {
-        $this->client = static::createClient( );
+        $this->client = static::createClient();
         $this->client->followRedirects(true);
     }
 
@@ -31,7 +26,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
           );
         }
         $this->client->request('GET', $url);
-         $this->assertSame(
+        $this->assertSame(
             Response::HTTP_OK,
             $this->client->getResponse()->getStatusCode(),
             sprintf('The %s public URL loads correctly.', $url)
@@ -44,6 +39,6 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/login'];
         yield ['/register'];
         yield ['/contact-us'];
-        yield ['/login/reset-password'];
+        yield ['/resetting/request'];
     }
 }
