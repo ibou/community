@@ -6,7 +6,7 @@ listCommandes(){
          echo "############  Lancer les tests unitaires avec : dotests :  ########"
          echo "############  Mise à jour du schema de bdd : updateschema"
          echo "############  Charger les données bdd avec : loaddata ########"
-           echo "############  Reindex avec  : reindex ########"
+         echo "############  Reindex avec  : reindex ########"
          echo " "
          echo " "
 }
@@ -44,7 +44,7 @@ fi
       echo "########### loaddata data ... ###########"
       docker exec sf4_php_apache bin/console doctrine:fixtures:load
       reindex
- }  
+ }
  reindex(){
        echo "########### Reindexing data###########"
       docker exec sf4_php_apache bin/console elastic:reindex
@@ -64,10 +64,12 @@ loaddata)
 updateschema)
     $param;;
 
+reindex)
+    $param;;
+
 listCommandes)
     $param;;
-reindex)
-￼	    $param;;
+
 *)
 echo "Désolé, cette commande n'existe pas, tapez en arguments 'listCommandes' pour voir les différentes options " ;;
 esac
