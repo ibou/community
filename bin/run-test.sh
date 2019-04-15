@@ -33,7 +33,7 @@ fi
 
  dotests(){
      echo "########### Testing ... ###########"
-    docker exec sf4_php_apache ./vendor/bin/simple-phpunit
+    docker exec sf4_php_apache ./vendor/bin/simple-phpunit  --exclude-group reposbdd
  }
   updateschema(){
       echo "###########Update schema ... ###########"
