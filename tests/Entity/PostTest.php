@@ -4,7 +4,11 @@ namespace App\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use App\Entity\Post;
-
+/**
+ * PostTest.
+ *
+ * @group reposbdd
+ */
 class PostTest extends TestCase
 {
     /**

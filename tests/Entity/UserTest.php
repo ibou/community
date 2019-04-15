@@ -4,9 +4,9 @@ use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 /**
- * ClassNameTest.
+ * UserTest.
  *
- * @group group
+ * @group reposbdd
  */
 class UserTest extends TestCase
 {
