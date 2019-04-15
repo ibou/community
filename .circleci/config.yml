@@ -45,4 +45,4 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
 
       # run tests!
-      - run: ./vendor/bin/simple-phpunit --exclude-group reposbdd
+      # - run: ./vendor/bin/simple-phpunit --exclude-group reposbdd

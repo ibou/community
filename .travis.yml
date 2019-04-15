@@ -33,7 +33,7 @@ before_script:
   # - mysql -u root test_community < var/sql/test_community.sql
 
 script:
-   - vendor/bin/simple-phpunit --exclude-group reposbdd
+  #  - vendor/bin/simple-phpunit --exclude-group reposbdd
 
 
 notifications:
