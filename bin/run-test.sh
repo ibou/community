@@ -50,6 +50,7 @@ fi
       docker exec sf4_php_apache bin/console elastic:reindex
  }
 
+
 for param in "$@"
 do
 case $param
