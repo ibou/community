@@ -1,10 +1,9 @@
 <?php
-namespace App\Service;
+namespace App\Repository;
 
 use App\Entity\Post;
 
-interface PostServiceInterface
-{
+interface PostRepositoryInterface{
 
     /**
      * Undocumented function
@@ -12,12 +11,13 @@ interface PostServiceInterface
      * @param Post $post
      * @return void
      */
-    public function create(Post $post): void;
+    public function save(Post $post): void;
+
     /**
      * Undocumented function
      *
      * @param integer $id
      * @return Post|null
      */
-    public function getPostById(int $id): ?Post;
+    public function findById(int $id): ?Post;
 }
