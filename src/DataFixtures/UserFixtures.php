@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\PostLike;
 use Faker;
 
-class UserFixture extends Fixture
+class UserFixtures extends Fixture
 {
     private $passwordEncoder;
 

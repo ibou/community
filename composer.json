@@ -34,8 +34,9 @@
     },
     "require-dev": {
         "deployer/deployer": "^6.4",
-        "doctrine/doctrine-fixtures-bundle": "^3.0",
+        "doctrine/doctrine-fixtures-bundle": "^3.1",
         "fzaninotto/faker": "^1.8",
+        "liip/functional-test-bundle": "~2.0@alpha",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
