@@ -7,11 +7,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @group  reposbdd
  */
-class UserTest extends WebTestCase
+class UserTest extends KernelTestCase
 {
     use HelperTraitTest;
 
@@ -33,42 +34,54 @@ class UserTest extends WebTestCase
         $this->userRepository = $this->em->getRepository(User::class);
     }
 
-    public function testPublicPost()
+    public function testUsernamePost()
     {
         if (!extension_loaded('pdo_mysql')) {
             $this->markTestSkipped(
-            'This test is not available for testPageIsSuccessful.'
-          );
+                'This test is not available for testPageIsSuccessful.'
+            );
         }
         $user = $this->userRepository->findOneBy([
-            'username' => 'ibou888',
+            'username' => 'testiboudiallo',
         ]);
-        $this->assertSame('iboudiallo84@gmail.com', $user->getEmail(), 'Bad email');
+        $this->assertSame('testiboudiallo@gmail.com', $user->getEmail(), 'Bad email');
     }
 
-    public function testLoginCountUsers(){
-        $user = new User();
-        // $users = $this->userRepository->findUserByEmail('iboudiallo84@gmail.com');
+    public function testFindUserByEmailPost()
+    {
+        if (!extension_loaded('pdo_mysql')) {
+            $this->markTestSkipped(
+                'This test is not available for testPageIsSuccessful.'
+            );
+        }
+        $user = $this->userRepository->findUserByEmail('testiboudiallo@gmail.com');
+        $this->assertSame('testiboudiallo@gmail.com', $user->getEmail(), 'Bad email');
+    }
 
-       $user->setEmail('iboudiallo@gmail.com')
+
+
+    public function testLoginCountUsers()
+    {
+        $user = new User();
+
+        $user->setEmail('iboudiallo@gmail.com')
             ->setUsername('ibou')
             ->setFirstname('Alfred')
-            ->setLastname('einstein')
-            ;
+            ->setLastname('einstein');
         $userRepo = $this->createMock(UserRepository::class);
         $userRepo->expects($this->any())
-                //  ->method('findCountLoginUsers')
-                 ->method('findUserByEmail')
-                 ->willReturn($user);
+            //  ->method('findCountLoginUsers')
+            ->method('findUserByEmail')
+            ->willReturn($user);
 
         $objectManager = $this->createMock(ObjectManager::class);
         $objectManager->expects($this->any())
-                      ->method('getRepository')
-                      ->willReturn($userRepo);
+            ->method('getRepository')
+            ->willReturn($userRepo);
 
-    //    var_dump($objectManager->findUserByEmail('iboudiallo@gmail.com'));
-       // $this->assertSame('iboudiallo@gmail.com', $userRepo->findUserByEmailsss('iboudiallo@gmail.com'));
-       $this->assertTrue(true);
+        //    var_dump($objectManager->findUserByEmail('iboudiallo@gmail.com'));
+        // $this->assertSame('iboudiallo@gmail.com', $userRepo->findUserByEmailsss('iboudiallo@gmail.com'));
+        $this->assertTrue(true);
     }
     protected function tearDown()
     {

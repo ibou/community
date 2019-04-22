@@ -11,18 +11,15 @@ use App\Entity\Tag;
 
 class PostFixtures extends Fixture
 {
-    // public function __construct(UserPasswordEncoderInterface $passwordEncoder)
-    // {
-    //     $this->passwordEncoder = $passwordEncoder;
-    // }
 
     public function load(ObjectManager $manager)
     {
         $this->loadUsers($manager);
         $this->loadTags($manager);
- 
+
         $date = new \DateTime('now');
         $post = new Post();
+
         $post->setTitle('First titles test');
         $post->setSlug('first-titles-test');
         $post->setContent('A content <b>un texte en gras </b>. Ceci est un est exemple de texte');
@@ -40,11 +37,9 @@ class PostFixtures extends Fixture
             $user->setFirstname($fname);
             $user->setLastname($lname);
             $user->setUsername($username);
-            // $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
             $user->setPassword($password);
             $user->setEmail($email);
             $user->setRoles($roles);
-
             $manager->persist($user);
             $this->addReference($username, $user);
         }
@@ -60,7 +55,7 @@ class PostFixtures extends Fixture
             $tag->setName($name);
 
             $manager->persist($tag);
-            $this->addReference('tag-'.$name, $tag);
+            $this->addReference('tag-' . $name, $tag);
         }
 
         $manager->flush();
@@ -77,7 +72,7 @@ class PostFixtures extends Fixture
     {
         return [
             // $userData = [$fname, $lname, $username, $password, $email, $roles];
-            ['SuperTest', 'AdminTest', 'testiboudiallo', 'testiboudiallo', 'testiboudiallo@symfony.com', ['ROLE_SUPER_ADMIN']],
+            ['SuperTest', 'AdminTest', 'testiboudiallo', 'testiboudiallo', 'testiboudiallo@gmail.com', ['ROLE_SUPER_ADMIN']],
         ];
     }
 }

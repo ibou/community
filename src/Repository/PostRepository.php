@@ -51,6 +51,7 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         $this->repository->flush();
     }
 
+
     /**
      * Undocumented function
      *
@@ -62,6 +63,22 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         return $this->repository
             ->getRepository(Post::class)
             ->find($id);
+    }
+    /**
+     * Remove a post
+     *
+     * @param Post $post
+     * @return void
+     */
+    public function remove(Post $post): void
+    {
+        $this->repository->remove($post);
+    }
+    public function findOneByFields(array $fields)
+    {
+        return $this->repository
+            ->getRepository(Post::class)
+            ->findOneBy($fields);
     }
 
     public function findLatest(int $page = 1, Tag $tag = null): Pagerfanta

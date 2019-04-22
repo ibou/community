@@ -1,0 +1,48 @@
+<?php
+namespace App\Tests\Service;
+
+use PHPUnit\Framework\TestCase;
+use App\Entity\Post;
+use App\Entity\User;
+use App\Repository\PostRepositoryInterface;
+use App\Service\PostService;
+
+class PostServiceTest extends TestCase
+{
+
+    public function testPost()
+    {
+        $postId = 1;
+        $postSubject = 'First titles test';
+        $postSlug = 'first-titles-test';
+
+        $date = new \DateTime('now');
+        $post = new Post;
+
+        $author = new User;
+        $author->setEmail('tata@gmail.com');
+        $author->setLastname("my lname");
+        $author->setFirstname("John");
+        $author->setUsername('ibabou');
+
+        $post->setId($postId);
+        $post->setTitle($postSubject);
+        $post->setSlug($postSlug);
+        $post->setAuthor($author);
+        $post->setPublishedAt((new \DateTime()));
+
+        //Mock
+
+        $postRepository = $this->createMock(PostRepositoryInterface::class);
+        $postRepository->expects($this->any())
+            ->method('findById')
+            ->willReturn($post);
+
+        $postService = new PostService($postRepository);
+
+        $post = $postService->getPostById($postId);
+
+        $this->assertEquals($postId, $post->getId());
+        $this->assertEquals($postSubject, $post->getTitle());
+    }
+}

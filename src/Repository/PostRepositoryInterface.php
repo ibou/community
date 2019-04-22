@@ -3,7 +3,8 @@ namespace App\Repository;
 
 use App\Entity\Post;
 
-interface PostRepositoryInterface{
+interface PostRepositoryInterface
+{
 
     /**
      * Undocumented function
@@ -12,6 +13,13 @@ interface PostRepositoryInterface{
      * @return void
      */
     public function save(Post $post): void;
+    /**
+     * Undocumented function
+     *
+     * @param Post $post
+     * @return void
+     */
+    public function remove(Post $post): void;
 
     /**
      * Undocumented function
