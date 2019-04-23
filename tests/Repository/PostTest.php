@@ -47,6 +47,11 @@ class PostTest extends FixtureAwareTestCase
     }
     public function testFindById()
     {
+        if (!extension_loaded('pdo_mysql')) {
+            $this->markTestSkipped(
+                'This test is not available for testPageIsSuccessful.'
+            );
+        }
         $postId = 1;
         $postSubject = 'First titles test';
         $post = $this->postRepository->findById($postId);
@@ -63,6 +68,11 @@ class PostTest extends FixtureAwareTestCase
 
     public function testSave()
     {
+        if (!extension_loaded('pdo_mysql')) {
+            $this->markTestSkipped(
+                'This test is not available for testPageIsSuccessful.'
+            );
+        }
         $post = new Post;
         $author = new User;
         $author->setEmail('toto@gmail.com');
