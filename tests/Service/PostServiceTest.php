@@ -45,4 +45,37 @@ class PostServiceTest extends TestCase
         $this->assertEquals($postId, $post->getId());
         $this->assertEquals($postSubject, $post->getTitle());
     }
+
+    public function testCreation()
+    {
+        $postId = 1;
+        $postSubject = 'First titles test version create';
+        $postSlug = 'first-titles-test';
+
+        $date = new \DateTime('now');
+        $post = new Post;
+
+        $author = new User;
+        $author->setEmail('titi@gmail.com');
+        $author->setLastname("my titi ");
+        $author->setFirstname("John");
+        $author->setUsername('titibandi');
+
+        $post->setId($postId);
+        $post->setTitle($postSubject);
+        $post->setSlug($postSlug);
+        $post->setAuthor($author);
+        $post->setPublishedAt((new \DateTime()));
+
+        $postRepository = $this->createMock(PostRepositoryInterface::class);
+
+        $postRepository->expects($this->once())
+            ->method('save')
+            ->willReturn($post);
+
+        $postService = new PostService($postRepository);
+        $postService->create($post);
+
+        $this->assertEquals($postId, $post->getId());
+    }
 }
