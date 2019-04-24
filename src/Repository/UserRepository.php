@@ -23,7 +23,6 @@ class UserRepository extends ServiceEntityRepository
     {
             return $this->createQueryBuilder('u')
             ->andWhere('u.logincount IS NOT NULL')
-            ->orderBy('u.logincount', 'DESC')
             ->getQuery()
             ->getResult()
             ;

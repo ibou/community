@@ -40,11 +40,6 @@ class PostTest extends FixtureAwareTestCase
         $this->postRepository = $this->entityManager->getRepository(Post::class);
     }
 
-    public function FindByTitle()
-    {
-        $post = $this->postRepository->findOneBy(['slug' => 'first-titles-test']);
-        $this->assertEquals(1, $post->getId(), "le titre est mauvais !!");
-    }
     public function testFindById()
     {
         if (!extension_loaded('pdo_mysql')) {
@@ -59,11 +54,6 @@ class PostTest extends FixtureAwareTestCase
         $this->assertEquals("{$postId}", $post->getId());
         $this->assertEquals("{$postSubject}", $post->getTitle());
 
-
-        $post = $this->postRepository->findOneByFields([
-            'enabled' => '1',
-        ]);
-        // $this->assertEquals(1, $post->getId(), "le titre est mauvais !!");
     }
 
     public function testSave()
