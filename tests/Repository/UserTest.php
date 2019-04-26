@@ -19,7 +19,7 @@ class UserTest extends KernelTestCase
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    private $em;
+    private $entityManager;
 
     /**
      * Undocumented variable.
@@ -30,8 +30,8 @@ class UserTest extends KernelTestCase
 
     protected function setUp()
     {
-        $this->em = $this->getManagerRegistry();
-        $this->userRepository = $this->em->getRepository(User::class);
+        $this->entityManager = $this->getManagerRegistry();
+        $this->userRepository = $this->entityManager->getRepository(User::class);
     }
 
     public function testUsernamePost()
