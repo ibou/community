@@ -102,6 +102,6 @@ class UserTest extends KernelTestCase
     }
     protected function tearDown()
     {
-        $this->em = null;
+        $this->entityManager = null;
     }
 }
