@@ -29,12 +29,23 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use App\Utils\DateTimeFrench;
 use App\Repository\UserRepository;
+use App\Service\PostServiceInterface;
 
 /**
  * @Route("/posts")
  */
 class PostController extends AbstractController
 {
+
+    /**
+     * PostController constructor.
+     * @param PostServiceInterface $postService
+     */
+    public function __construct(PostServiceInterface $postService)
+    {
+        $this->postService = $postService;
+    }
+
     public function listTags(Request $request, TagRepository $tags): Response
     {
         $all = $tags->findAll();
@@ -96,13 +107,9 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $slugify = new Slugify();
-
             $post->setSlug($slugify->slugify($post->getTitle()));
             $post->setAuthor($this->getUser());
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($post);
-            $entityManager->flush();
-
+            $this->postService->create($post);
             return $this->redirectToRoute('post_index');
         }
 
@@ -122,6 +129,10 @@ class PostController extends AbstractController
      */
     public function postShow(Post $post): Response
     {
+
+        $pos = $this->postService->getPostById($post->getId());
+        dump($pos);
+
         return $this->render('post/post_show.html.twig', [
             'post' => $post,
             'form' => $this->_newFormComment(),

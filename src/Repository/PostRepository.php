@@ -4,12 +4,13 @@ namespace App\Repository;
 
 use App\Entity\Tag;
 use App\Entity\Post;
-use Doctrine\ORM\Query; 
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Post|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,14 +18,70 @@ use Pagerfanta\Pagerfanta;
  * @method Post[]    findAll()
  * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PostRepository extends ServiceEntityRepository
+class PostRepository extends ServiceEntityRepository implements PostRepositoryInterface
 {
+    /**
+     * Undocumented variable
+     *
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * Undocumented variable
+     *
+     * @var ObjectRepository
+     */
+    private $repository;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Post::class);
+        $this->repository = $this->getEntityManager();
+    }
+    /**
+     * Undocumented function
+     *
+     * @param Post $post
+     * @return void
+     */
+    public function save(Post $post): void
+    {
+        $this->repository->persist($post);
+        $this->repository->flush();
     }
 
-     public function findLatest(int $page = 1, Tag $tag = null): Pagerfanta
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $id
+     * @return Post
+     */
+    public function findById(int $id): Post
+    {
+        return $this->repository
+            ->getRepository(Post::class)
+            ->find($id);
+    }
+    /**
+     * Remove a post
+     *
+     * @param Post $post
+     * @return void
+     */
+    public function remove(Post $post): void
+    {
+        $this->repository->remove($post);
+    }
+    public function findOneByFields(array $fields)
+    {
+        return $this->repository
+            ->getRepository(Post::class)
+            ->findOneBy($fields);
+    }
+
+    public function findLatest(int $page = 1, Tag $tag = null): Pagerfanta
     {
         $qb = $this->createQueryBuilder('p')
             ->addSelect('a', 't')
@@ -67,9 +124,8 @@ class PostRepository extends ServiceEntityRepository
 
         foreach ($searchTerms as $key => $term) {
             $queryBuilder
-                ->orWhere('p.title LIKE :t_'.$key)
-                ->setParameter('t_'.$key, '%'.$term.'%')
-            ;
+                ->orWhere('p.title LIKE :t_' . $key)
+                ->setParameter('t_' . $key, '%' . $term . '%');
         }
 
         return $queryBuilder
@@ -98,5 +154,4 @@ class PostRepository extends ServiceEntityRepository
             return 2 <= mb_strlen($term);
         });
     }
-    
 }

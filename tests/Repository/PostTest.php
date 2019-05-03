@@ -3,47 +3,90 @@
 namespace App\Tests\Repository;
 
 use App\Entity\Post;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\FixtureAwareTestCase;
+use App\Repository\PostRepository;
+use App\DataFixtures\PostFixtures;
+use App\Entity\User;
 
 /**
  * @group  reposbdd
  */
-class PostTest extends WebTestCase
+class PostTest extends FixtureAwareTestCase
 {
-    use HelperTraitTest;
 
+    use HelperTraitTest;
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    private $em;
+    private $entityManager;
 
     /**
      * Undocumented variable.
      *
-     * @var ObjectRepository
+     * @var PostRepository
      */
     private $postRepository;
 
     protected function setUp()
     {
-        $this->em = $this->getManagerRegistry();
-        $this->postRepository = $this->em->getRepository(Post::class);
+        parent::setUp();
+        // $this->addFixture(new PostFixtures());
+        // $this->executeFixtures();
+
+        $kernel = static::bootKernel();
+
+        $this->entityManager = $this->getManagerRegistry();
+
+        $this->postRepository = $this->entityManager->getRepository(Post::class);
     }
 
-    public function testPublicBlogPost()
+    public function testFindById()
     {
         if (!extension_loaded('pdo_mysql')) {
             $this->markTestSkipped(
-            'This test is not available for testPageIsSuccessful.'
-          );
+                'This test is not available for testPageIsSuccessful.'
+            );
         }
-        $id = 1;
-        $post = $this->postRepository->findBy(['id' => $id]);
-        $this->assertCount(1, $post, "La valeur du post {$id} est vide ");
+        $postId = 1;
+        $postSubject = 'First titles test';
+        $post = $this->postRepository->findById($postId);
+
+        $this->assertEquals("{$postId}", $post->getId());
+        $this->assertEquals("{$postSubject}", $post->getTitle());
+
     }
+
+    public function testSave()
+    {
+        if (!extension_loaded('pdo_mysql')) {
+            $this->markTestSkipped(
+                'This test is not available for testPageIsSuccessful.'
+            );
+        }
+        $post = new Post;
+        $author = new User;
+        $author->setEmail('toto@gmail.com');
+        $author->setLastname("my lname");
+        $author->setUsername('usbdubdsdsd');
+        // $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
+        $author->setPassword('flnflknaeflkneaf');
+
+        $post->setTitle('Second titles test');
+        $post->setSlug('second-titles-test');
+        $post->setContent('A second A content <b>un texte en gras </b>. Ceci est un est exemple de texte');
+        $post->setAuthor($author);
+        $post->setPublishedAt((new \DateTime()));
+        $this->postRepository->save($post);
+        $this->entityManager->flush();
+        $this->assertNotNull($post->getId());
+        $this->postRepository->remove($post);
+        $this->entityManager->flush();
+    }
+
+
 
     protected function tearDown()
     {
-        $this->em = null;
+        $this->postRepository = null;
     }
 }

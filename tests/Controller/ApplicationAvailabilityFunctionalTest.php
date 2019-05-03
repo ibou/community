@@ -45,5 +45,22 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         yield ['/register'];
         yield ['/contact-us'];
         yield ['/login/reset-password'];
+        yield ['/posts/page/1'];
+    }
+
+    public function testViewPostNotFound(){
+        if (!extension_loaded('pdo_mysql')) {
+            $this->markTestSkipped(
+            'This test is not available for testPageIsSuccessful.'
+          );
+        }
+        $url = '/posts/article/first-tifjlkeahfeaf-tles-test';
+        $this->client->request('GET', $url);
+        $this->assertSame(
+            Response::HTTP_NOT_FOUND,
+            $this->client->getResponse()->getStatusCode(),
+            sprintf('The %s public URL loads correctly.', $url)
+        );
+
     }
 }

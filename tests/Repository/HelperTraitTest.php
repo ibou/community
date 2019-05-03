@@ -17,13 +17,7 @@ trait HelperTraitTest
     {
         $kernel = self::bootKernel();
         return $kernel->getContainer()
-                      ->get('doctrine')
-                      ->getManager()
-                      ;
+            ->get('doctrine')
+            ->getManager();
     }
-    public function getRepository($class): ObjectRepository
-    {
-        return $this->getManagerRegisterss()->getRepository($class);
-    }
-
 }
