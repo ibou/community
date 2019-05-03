@@ -18,7 +18,7 @@ add('shared_files', []);
 add('shared_dirs', []);
 
 // Writable dirs by web server
- add('writable_dirs', []);
+add('writable_dirs', []);
 
 
 host('root@51.38.234.212')
@@ -30,7 +30,7 @@ task('build', function () {
     run('cd {{release_path}} && composer install --no-dev --optimize-autoloader');
     run('cd {{release_path}} && npm install');
     run('cd {{release_path}} && ./node_modules/.bin/encore production');
-   // run('cd {{release_path}} && composer install --no-dev --optimize-autoloader && npm install && ./node_modules/.bin/encore production');
+    // run('cd {{release_path}} && composer install --no-dev --optimize-autoloader && npm install && ./node_modules/.bin/encore production');
 });
 
 
@@ -40,7 +40,7 @@ task('database:migrate', function () {
 })->desc('Migrate database');
 
 // before('deploy:symlink', 'database:migrate');
-task('tag_version', function(){
+task('tag_version', function () {
     run('echo ------------------ > version.txt');
     run('echo ------ `TZ="Europe/Paris" date -R` ------ >> version.txt');
     run('echo ------------------ >> version.txt');
@@ -66,6 +66,7 @@ task('release', [
 after('deploy:symlink', 'release');
 task('database:migrate', function () {
     run('{{bin/console}} doctrine:schema:update --force');
+    run('{{bin/console}} elastic:reindex');
 })->desc('Migrate database');
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');

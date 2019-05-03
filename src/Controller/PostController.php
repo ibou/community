@@ -73,8 +73,7 @@ class PostController extends AbstractController
         if ($request->query->has('query')) {
             $limit = $request->query->get('limit', 15);
             $tags = $request->query->get('tags', false);
-            if (false !== $tags) {
-            }
+            if (false !== $tags) { }
             $search = new Search($client, $query, $tags);
             $search->setLimit(500);
             $search->setPage($page);
@@ -131,7 +130,6 @@ class PostController extends AbstractController
     {
 
         $pos = $this->postService->getPostById($post->getId());
-        dump($pos);
 
         return $this->render('post/post_show.html.twig', [
             'post' => $post,
@@ -195,7 +193,7 @@ class PostController extends AbstractController
             $comment->setAuthor($user);
             $post->addComment($comment);
             foreach ($post->getComments() as $parentComment) {
-                if ((bool) $parent_id && $parent_id == $parentComment->getId()) {
+                if ((bool)$parent_id && $parent_id == $parentComment->getId()) {
                     $parent = $parentComment;
                     $comment->setParent($parent);
                     break;
@@ -230,7 +228,8 @@ class PostController extends AbstractController
      */
     public function search(Request $request, Client $client): Response
     {
-        return $this->render('post/search.html.twig',
+        return $this->render(
+            'post/search.html.twig',
             ['results' => []]
         );
     }
