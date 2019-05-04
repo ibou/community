@@ -129,11 +129,22 @@ class PostController extends AbstractController
     public function postShow(Post $post): Response
     {
 
-        $pos = $this->postService->getPostById($post->getId());
-
         return $this->render('post/post_show.html.twig', [
             'post' => $post,
             'form' => $this->_newFormComment(),
+        ]);
+    }
+    /**
+     * Undocumented function
+     * @Route("/mes-articles", methods={"GET"}, name="user_my_articles")
+     * @return Response
+     */
+    public function postsUser(): Response
+    {
+
+        $postOfUser = $this->postService->getPostsByUser($this->getUser());
+        return $this->render('post/post_user.html.twig', [
+            'posts' => $postOfUser,
         ]);
     }
 

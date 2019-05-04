@@ -2,6 +2,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\User;
 
 interface PostRepositoryInterface
 {
@@ -28,4 +29,6 @@ interface PostRepositoryInterface
      * @return Post|null
      */
     public function findById(int $id): ?Post;
+
+    public function findPostsByUser(User $user): array;
 }

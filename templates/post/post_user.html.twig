@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+
+{% block stylesheets %}
+{{ parent() }}
+{{ encore_entry_link_tags('css/search') }}
+{% endblock %}
+
+{% block body_id 'blog_index' %}
+{% block title %} {{ parent() }} : Liste résultats {% endblock title %}
+{% block main %}
+<div class="list-article"> 
+    {% for post in posts %}
+    <div class="content-posts m-1">
+        <article class="post">
+            <div class='alert alert-dismissible alert-gris'>
+                <h4>
+                    <a href="{{ path('post_show', {slug: post.slug}) }}">
+                    {{ post.title|raw }}
+                    </a>
+                </h4>
+
+                <p class="post-metadata">
+                    <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium',
+                null,
+                'UTC') }}</span>
+                    <span class="metadata"><i class="fa fa-user"></i>
+                        {{ post.fullAuthorName}}</span>
+                </p>
+
+                <div class="text-black">
+                    {{ post.content|raw|striptags|slice(0, 130) ~ "..." }}
+                </div>
+                <a href="{{ path('post_show', {slug: post.slug}) }}">
+                    (voir plus)
+                </a>
+                <hr>
+                <a href="{{path('post_like',{id: post.id})}}" class="btn btn-link js-like">
+                <span class="js-likes">{{post.numberLikes }}</span> <span class="js-label">J'aime</span>
+                    {% if(app.user and app.user.id in post.likesUser) %}
+                        <i class="likeicon_{{post.id}} fa fa-thumbs-up" id="likeicon_{{post.id}}"></i>
+                     {% else %}
+                       <i class="likeicon_{{post.id}} fa" id="likeicon_{{post.id}}">&#xf087;</i>
+                     {% endif %}
+
+
+                </a>
+
+            </div>
+        </article>
+
+    </div>
+    {% endfor %}
+ 
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div class="test">
+    <li>fiefn</li>
+    <li>fieN IKE</li>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('js/comments_likes') }}
+{% endblock %}
