@@ -107,10 +107,15 @@ header .locales a {
 }
 
 footer {
-    background: #ecf0f1;
-    margin-top: 2em;
+    position: fixed;
+    background: #436868;
+    margin-top: 2em;  
+    height: auto;
+    bottom: 0;
+    width: 100%; 
     padding-top: 2em;
     padding-bottom: 2em
+    
 }
 
 footer p {
@@ -251,6 +256,9 @@ body#login #login-users-help p .console {
 
 /* Page: 'Blog index'
    ------------------------------------------------------------------------- */
+#main{ 
+    bottom: 90px;
+}
 #main h1,
 #main p {
     margin-bottom: 0.5em

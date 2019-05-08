@@ -15,8 +15,7 @@ class ContactType extends AbstractType
             ->add('name')
             ->add('email')
             ->add('subject')
-            ->add('content')
-        ;
+            ->add('content');
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -29,6 +28,7 @@ class ContactType extends AbstractType
             // an arbitrary string used to generate the value of the token
             // using a different string for each form improves its security
             'csrf_token_id'   => 'contact_type',
+            'translation_domain' => 'forms',
         ]);
     }
 }

@@ -49,6 +49,7 @@ action.browse_app: 'Naviguer sur l''application'
 action.browse_admin: 'Naviguer sur l''admin'
 action.edit_user: 'Modifier l''utilisateur'
 action.change_password: 'Modifier le mot de passe'
+action.validate: 'Valider'
 label.title: Titre
 label.author: Auteur
 label.author_email: 'Mail de l''auteur'
