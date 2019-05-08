@@ -5,6 +5,7 @@ use App\Entity\Post;
 use App\Repository\PostRepositoryInterface;
 use App\Event\PostEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Entity\User;
 
 /**
  * Class Service
@@ -32,7 +33,8 @@ class PostService implements PostServiceInterface
      *
      * @param PostRepositoryInterface $postRepository
      */
-    public function __construct(PostRepositoryInterface $postRepository, EventDispatcherInterface $eventDispatcher){
+    public function __construct(PostRepositoryInterface $postRepository, EventDispatcherInterface $eventDispatcher)
+    {
         $this->postRepository = $postRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -59,4 +61,14 @@ class PostService implements PostServiceInterface
         return $this->postRepository->findById($idPost);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param User $user
+     * @return array
+     */
+    public function getPostsByUser(User $user): array
+    {
+        return $this->postRepository->findPostsByUser($user);
+    }
 }

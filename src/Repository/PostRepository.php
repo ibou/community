@@ -11,6 +11,7 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
 
 /**
  * @method Post|null find($id, $lockMode = null, $lockVersion = null)
@@ -64,6 +65,19 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
             ->getRepository(Post::class)
             ->find($id);
     }
+
+
+    public function findPostsByUser(User $user): array
+    {
+        $posts = $this->createQueryBuilder('p')
+            ->where('p.author = :author')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->setParameter('author', $user)
+            ->getQuery()
+            ->getResult();
+        return $posts;
+    }
+
     /**
      * Remove a post
      *

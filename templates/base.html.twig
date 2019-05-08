@@ -78,6 +78,11 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                                         <i class="fa fa-edit" aria-hidden="true"></i> {{ 'menu.user'|trans }}
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{ path('user_my_articles') }}" class="dropdown-item">
+                                        <i class="fa fa-edit" aria-hidden="true"></i> Mes articles
+                                    </a>
+                                </li>
                                 <li class="divider"></li>
                                 <li>
                                     <a href="{{ path('security_logout') }}" class="dropdown-item">
