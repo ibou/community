@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("", methods={"GET"}, name="admin")
+     * @Route("/lissdt", methods={"GET"}, name="admin")
      */
     public function index()
     {

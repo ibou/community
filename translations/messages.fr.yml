@@ -1,7 +1,7 @@
 flash.not.exist.email: 'n''existe pas dans notre base'
 action.remember_me: 'Se Souvenir de moi'
 login.account.title: 'Déjà membre'
-login.account.connect: 'Je me connect'
+login.account.connect: 'Je me connecte'
 new.account.title: 'Nouvel utilisateur'
 new.account.create: 'J''enregistre mon compte'
 note: NOTE

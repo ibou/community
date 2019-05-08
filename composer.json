@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "cocur/slugify": "^3.2",
+        "easycorp/easyadmin-bundle": "^2.1",
         "egulias/email-validator": "^2.1",
         "ruflin/elastica": "^6.0",
         "sensio/framework-extra-bundle": "^5.2",
