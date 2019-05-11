@@ -54,4 +54,8 @@ class PostLike
 
         return $this;
     }
+    public function __toString()
+    {
+        return 'post_like' . time();
+    }
 }

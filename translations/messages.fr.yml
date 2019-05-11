@@ -1,7 +1,7 @@
 flash.not.exist.email: 'n''existe pas dans notre base'
 action.remember_me: 'Se Souvenir de moi'
 login.account.title: 'Déjà membre'
-login.account.connect: 'Je me connect'
+login.account.connect: 'Je me connecte'
 new.account.title: 'Nouvel utilisateur'
 new.account.create: 'J''enregistre mon compte'
 note: NOTE
@@ -63,6 +63,9 @@ label.new_password_confirm: 'Confirmer le mot de passe'
 label.role: Rôle
 label.content: Contenu
 label.summary: Résumé
+Published at: 'Publié le'
+Title: 'Titre'
+Enabled: 'Actif'
 label.published_at: 'Publié le'
 label.tags: Tags
 label.actions: Actions
@@ -107,3 +110,8 @@ password.forgotten: 'Mot de passe oublié'
 flash.email.reset.sent: 'Un email de récuperation a été envoyé à votre adresse email'
 menu.newpost: 'Nouvelle question'
 menu.contact: 'Nous contacter'
+Firstname: 'Prénom'
+Lastname: 'Nom'
+Username: 'Pseudo'
+Lastlogin: 'Dernière connexion'
+Logincount: 'Nombre connexions'
