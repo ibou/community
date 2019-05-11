@@ -5,7 +5,7 @@ easy_admin:
         datetime: 'd/m/Y H:i:s'
    site_name: 'Back-Office - <em style="font-size: 80%;">Waxlen.com</em>' 
    design:
-        brand_color: '#MYHEXA'  
+        brand_color: '#1ABC9C' 
         menu:
             - { label: '' }
             - { entity: 'User', label: 'Utilisateurs', icon: 'users'} 
@@ -30,6 +30,10 @@ easy_admin:
                 title: 'Liste des questions posées !' 
                 fields: ['id','title', 'publishedAt',{ property: 'author', label: 'Auteur' }, 'enabled','tags']   
                 dql_filter: "entity.enabled=1"    
+                actions: 
+                    - {name: 'show', icon: 'eye', label: false, css_class: 'btn btn-success'}
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'} 
             show:
                 title: '%%entity_label%% (#%%entity_id%%)'
 
@@ -40,10 +44,25 @@ easy_admin:
                 title: 'Liste des questions posées !' 
                 fields: ['id','title', 'publishedAt',{ property: 'author', label: 'Auteur' }, 'enabled','tags']
                 dql_filter: "entity.enabled=0"    
+                actions: 
+                    - {name: 'show', icon: 'eye', label: false, css_class: 'btn btn-success'}
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'} 
             show:
                 title: '%%entity_label%% (#%%entity_id%%)'
 
         User:
             class: App\Entity\User
+            list:
+                actions: 
+                    - {name: 'show', icon: 'eye', label: false, css_class: 'btn btn-success'}
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: '-delete'}
         Tag:
             class: App\Entity\Tag
+            list:
+                actions: 
+                    - {name: 'show', icon: 'eye', label: false, css_class: 'btn btn-success'}
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'} 
+    
