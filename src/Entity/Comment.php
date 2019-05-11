@@ -42,12 +42,13 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children")
-     * @ORM\JoinColumn(nullable=true)     *
+     * @ORM\JoinColumn(nullable=true)     
+     * 
      */
     protected $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="parent", cascade={"remove"})
      */
     protected $children;
 
@@ -153,8 +154,8 @@ class Comment
         return $this;
     }
 
-    // public function __toString()
-    // {
-    //     return $this->content;
-    // }
+    public function __toString()
+    {
+        return $this->content;
+    }
 }

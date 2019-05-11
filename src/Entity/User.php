@@ -77,17 +77,17 @@ class User implements UserInterface, \Serializable
     private $logincount;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="author", cascade={"remove"})
      */
     private $posts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author", cascade={"remove"})
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PostLike", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\PostLike", mappedBy="user", cascade={"remove"})
      */
     private $likes;
 
@@ -99,12 +99,12 @@ class User implements UserInterface, \Serializable
         $this->likes = new ArrayCollection();
     }
 
-    public function getId(): ? int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEmail(): ? string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -140,7 +140,7 @@ class User implements UserInterface, \Serializable
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -168,7 +168,7 @@ class User implements UserInterface, \Serializable
         // $this->plainPassword = null;
     }
 
-    public function getFirstname(): ? string
+    public function getFirstname(): ?string
     {
         return $this->firstname;
     }
@@ -180,7 +180,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getLastname(): ? string
+    public function getLastname(): ?string
     {
         return $this->lastname;
     }
@@ -232,24 +232,24 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getLastlogin(): ? \DateTimeInterface
+    public function getLastlogin(): ?\DateTimeInterface
     {
         return $this->lastlogin;
     }
 
-    public function setLastlogin(? \DateTimeInterface $lastlogin): self
+    public function setLastlogin(?\DateTimeInterface $lastlogin): self
     {
         $this->lastlogin = $lastlogin;
 
         return $this;
     }
 
-    public function getLogincount(): ? int
+    public function getLogincount(): ?int
     {
         return $this->logincount;
     }
 
-    public function setLogincount(? int $logincount): self
+    public function setLogincount(?int $logincount): self
     {
         $this->logincount = $logincount;
 
@@ -392,5 +392,9 @@ class User implements UserInterface, \Serializable
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
         ];
+    }
+    public function __toString()
+    {
+        return $this->email;
     }
 }

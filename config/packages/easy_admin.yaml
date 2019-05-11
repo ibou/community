@@ -1,5 +1,49 @@
 easy_admin:
+   formats:
+        date:     'd/m/Y'
+        time:     'H:i'
+        datetime: 'd/m/Y H:i:s'
+   site_name: 'Back-Office - <em style="font-size: 80%;">Waxlen.com</em>' 
+   design:
+        brand_color: '#MYHEXA'  
+        menu:
+            - { label: '' }
+            - { entity: 'User', label: 'Utilisateurs', icon: 'users'} 
+            - { entity: 'Post', label: 'Articles ', icon: 'fa fa-edit',
+                children: ['Post', 'Post_IN']
+              } 
+            - { entity: 'Tag', icon: 'tags' }
+        assets:
+            favicon: '/assets/backend/favicon.png'
+            css:
+                # ...
+                - 'bundles/easyadmin/bootstrap-all.css'
+                - 'css/admin.css'
+            js:
+                - 'bundles/easyadmin/bootstrap-all.js'                 
    entities:
        # List the entity class name you want to manage
-       - App\Entity\Post
-       - App\Entity\User
+        Post:
+            class: App\Entity\Post
+            label: "Actifs" 
+            list:
+                title: 'Liste des questions posées !' 
+                fields: ['id','title', 'publishedAt',{ property: 'author', label: 'Auteur' }, 'enabled','tags']   
+                dql_filter: "entity.enabled=1"    
+            show:
+                title: '%%entity_label%% (#%%entity_id%%)'
+
+        Post_IN:
+            class: App\Entity\Post 
+            label: "Inactifs"
+            list:
+                title: 'Liste des questions posées !' 
+                fields: ['id','title', 'publishedAt',{ property: 'author', label: 'Auteur' }, 'enabled','tags']
+                dql_filter: "entity.enabled=0"    
+            show:
+                title: '%%entity_label%% (#%%entity_id%%)'
+
+        User:
+            class: App\Entity\User
+        Tag:
+            class: App\Entity\Tag

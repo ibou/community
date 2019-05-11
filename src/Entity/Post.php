@@ -46,7 +46,7 @@ class Post
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
@@ -60,12 +60,12 @@ class Post
     private $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="post", orphanRemoval=true,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="post", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PostLike", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="App\Entity\PostLike", mappedBy="post", cascade={"remove"})
      */
     private $likes;
 
@@ -335,5 +335,9 @@ class Post
         $this->id = $id;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->slug;
     }
 }
