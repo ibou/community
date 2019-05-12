@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : db
--- Généré le :  ven. 29 mars 2019 à 14:16
--- Version du serveur :  10.1.37-MariaDB-1~bionic
+-- Généré le :  Dim 12 mai 2019 à 14:59
+-- Version du serveur :  10.3.14-MariaDB-1:10.3.14+maria~bionic
 -- Version de PHP :  7.2.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -40,6 +40,34 @@ CREATE TABLE `comment` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `contact`
+--
+
+CREATE TABLE `contact` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject` varchar(110) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `password_reset`
+--
+
+CREATE TABLE `password_reset` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `selector` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expires` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `post`
 --
 
@@ -51,7 +79,7 @@ CREATE TABLE `post` (
   `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `published_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `enabled` tinyint(1) DEFAULT '0'
+  `enabled` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -59,8 +87,8 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`id`, `author_id`, `title`, `slug`, `content`, `published_at`, `created_at`, `enabled`) VALUES
-(1, 23, 'La liberté de changer de manière efficace', 'explicabo-voluptas-excepturi-aliquam-aut', 'Repellendus corrupti quaerat non aut reiciendis. Expedita earum quae voluptate dicta incidunt. Similique rerum architecto nam et reiciendis dolor. Et molestiae nihil deleniti alias similique doloribus possimus. Odio aut earum ratione. Suscipit hic et qui aut sunt illo. Id eveniet voluptatem modi qui. Quod alias iste voluptatem fuga repellendus. Et dolorem autem qui cumque et reprehenderit sed. Et eum ut eius earum enim. Aut voluptatibus voluptas ducimus quos illum. Laborum sed qui quis eos facilis voluptatem. Quaerat consectetur molestias quod libero reprehenderit fugit est. Dicta officia reiciendis nostrum laborum. A omnis enim quia fuga maiores fugit voluptatem. Earum voluptatem laboriosam a aut nihil animi rerum.', '2018-09-13 20:21:16', '2018-12-19 17:58:33', NULL),
-(2, 23, 'La liberté de changer de manière efficace', 'libre-liberte', 'voluptatem modi  reiciendis. us. Odio aut earum ratione. Suscipit hic et qui aut sunt illo. Id eveniet voluptatem modi Repellendus corrupti quaerat non aut ', '2018-09-19 20:21:16', '2018-12-18 17:58:33', 1);
+(1, 132, 'First titles test', 'first-titles-test', 'A content <b>un texte en gras </b>. Ceci est un est exemple de texte', '2019-04-22 02:22:22', '2019-04-22 02:22:22', 0),
+(568, 132, 'First titles test', 'first-titles-test', 'A content <b>un texte en gras </b>. Ceci est un est exemple de texte', '2019-04-22 02:22:22', '2019-04-22 02:22:22', 0);
 
 -- --------------------------------------------------------
 
@@ -85,6 +113,13 @@ CREATE TABLE `post_tag` (
   `tag_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `post_tag`
+--
+
+INSERT INTO `post_tag` (`post_id`, `tag_id`) VALUES
+(568, 109);
+
 -- --------------------------------------------------------
 
 --
@@ -96,6 +131,13 @@ CREATE TABLE `tag` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `tag`
+--
+
+INSERT INTO `tag` (`id`, `name`) VALUES
+(109, 'social');
+
 -- --------------------------------------------------------
 
 --
@@ -105,11 +147,11 @@ CREATE TABLE `tag` (
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `roles` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `firstname` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lastname` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `username` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `roles` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
   `lastlogin` datetime DEFAULT NULL,
   `logincount` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -118,9 +160,8 @@ CREATE TABLE `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `roles`, `password`, `firstname`, `lastname`, `username`, `lastlogin`, `logincount`) VALUES
-(1, 'iboudiallo84@gmail.com', 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', '$argon2i$v=19$m=1024,t=2,p=2$TEF6V1QzdlNZeWZtMGpiYQ$OJtoIN1REqG71AhvnrScU37y3A1q8PxucnPXlRSTCx8', 'Ibrahima', 'DIALLO D', 'ibou888', '2019-03-26 14:45:12', 20),
-(23, 'jane_admin@symfony.com', 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', '$argon2i$v=19$m=1024,t=2,p=2$Q1JvVmtKdkpqbW8xaVhnYw$qb3aJ5jooKSuidT+e2xmN5T45bOHzLiZjB9xYTCmtRk', 'Jane ', 'Doe', 'jane_admin', '2019-03-26 14:50:49', 1);
+INSERT INTO `user` (`id`, `email`, `password`, `firstname`, `lastname`, `username`, `roles`, `lastlogin`, `logincount`) VALUES
+(132, 'testiboudiallo@gmail.com', 'testiboudiallo', 'SuperTest', 'AdminTest', 'testiboudiallo', 'a:1:{i:0;s:16:\"ROLE_SUPER_ADMIN\";}', NULL, NULL);
 
 --
 -- Index pour les tables déchargées
@@ -134,6 +175,18 @@ ALTER TABLE `comment`
   ADD KEY `IDX_9474526CF675F31B` (`author_id`),
   ADD KEY `IDX_9474526C4B89032C` (`post_id`),
   ADD KEY `IDX_9474526C727ACA70` (`parent_id`);
+
+--
+-- Index pour la table `contact`
+--
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `password_reset`
+--
+ALTER TABLE `password_reset`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `post`
@@ -180,31 +233,43 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `comment`
 --
 ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5851;
+
+--
+-- AUTO_INCREMENT pour la table `contact`
+--
+ALTER TABLE `contact`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `password_reset`
+--
+ALTER TABLE `password_reset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=590;
 
 --
 -- AUTO_INCREMENT pour la table `post_like`
 --
 ALTER TABLE `post_like`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=901;
 
 --
 -- AUTO_INCREMENT pour la table `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
 
 --
 -- Contraintes pour les tables déchargées

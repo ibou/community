@@ -1,7 +1,9 @@
 #!/bin/bash
 
-echo Démarrage des containers...
+echo Stopping serveurs...
+sudo service apache2 stop && sudo service nginx stop
 
+echo Démarrage des containers...
 docker-compose down
 docker-compose up --build 
 

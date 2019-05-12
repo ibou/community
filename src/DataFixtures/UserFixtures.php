@@ -53,7 +53,7 @@ class UserFixtures extends Fixture
             $tag->setName($name);
 
             $manager->persist($tag);
-            $this->addReference('tag-'.$name, $tag);
+            $this->addReference('tag-' . $name, $tag);
         }
 
         $manager->flush();
@@ -102,6 +102,7 @@ class UserFixtures extends Fixture
                     $comment->setAuthor($this->getReference('ibou888'));
                 } else {
                     $comment->setAuthor($this->getReference('john_user'));
+                    $post->setEnabled(true);
                 }
                 $comment->setContent($faker->text(random_int(210, 395)));
                 $comment->setPublishedAt($faker->dateTimeBetween('-1 year', '-3 days'));
@@ -154,6 +155,8 @@ class UserFixtures extends Fixture
         shuffle($tagNames);
         $selectedTags = \array_slice($tagNames, 0, random_int(1, 3));
 
-        return array_map(function ($tagName) { return $this->getReference('tag-'.$tagName); }, $selectedTags);
+        return array_map(function ($tagName) {
+            return $this->getReference('tag-' . $tagName);
+        }, $selectedTags);
     }
 }

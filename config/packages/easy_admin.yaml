@@ -13,6 +13,7 @@ easy_admin:
                 children: ['Post', 'Post_IN']
               } 
             - { entity: 'Tag', icon: 'tags' }
+            - { label: 'Homepage - waxlen.com', route: 'homepage' }
         assets:
             favicon: '/assets/backend/favicon.png'
             css:
