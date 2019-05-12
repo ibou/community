@@ -78,6 +78,16 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         return $posts;
     }
 
+    public function findPostsByPopularity(): array
+    {
+        $posts = $this->createQueryBuilder('p')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->getQuery()
+            ->setMaxResults(6)
+            ->getResult();
+        return $posts;
+    }
+
     /**
      * Remove a post
      *

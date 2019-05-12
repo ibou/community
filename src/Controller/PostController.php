@@ -154,6 +154,14 @@ class PostController extends AbstractController
             'post' => $post,
         ]);
     }
+    public function linkedSubjectActives(): Response
+    {
+
+        $posts = $this->postService->getPostsByPopularity();
+        return $this->render('post/side-subjects-actives.html.twig', [
+            'posts' => $posts,
+        ]);
+    }
 
     private function _newFormComment()
     {

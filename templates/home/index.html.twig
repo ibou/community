@@ -106,5 +106,5 @@ this is done with the 'trick' of defining empty Twig blocks without any content
 </div>
 {% endblock %}
 {% block sidebar %}
-{{ parent() }}
+{{ render(controller('App\\Controller\\PostController::linkedSubjectActives', {  })) }}
 {% endblock %}

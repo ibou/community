@@ -71,4 +71,15 @@ class PostService implements PostServiceInterface
     {
         return $this->postRepository->findPostsByUser($user);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param User $user
+     * @return array
+     */
+    public function getPostsByPopularity(): array
+    {
+        return $this->postRepository->findPostsByPopularity();
+    }
 }
