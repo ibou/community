@@ -33,8 +33,7 @@ class ElasticReindexCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Rebuild the Index and populate it.')
-        ;
+            ->setDescription('Rebuild the Index and populate it.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
