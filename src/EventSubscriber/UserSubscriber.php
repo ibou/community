@@ -57,5 +57,8 @@ class UserSubscriber implements EventSubscriberInterface
         $this->sender->send('test@test.com', ['stoto@gmail.com'], 'email/references.html.twig', [
             'reference' => $reference
         ]);
+        $this->sender->send('test@test.com', ['stoto@gmailsd.com'], 'email/references.html.twig', [
+            'reference' => "TO DO HERERER"
+        ]);
     }
 }
