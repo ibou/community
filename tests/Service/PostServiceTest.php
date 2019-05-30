@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\PostRepositoryInterface;
 use App\Service\PostService;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+
 use App\Event\PostEvent;
 use function foo\func;
 
@@ -111,7 +112,7 @@ class PostServiceTest extends TestCase
 
         $postRepository->method('save');
 
-        $dispatcher = new EventDispatcher;
+        $dispatcher = new EventDispatcher();
 
         $dispatchedEvent = null;
 
@@ -122,7 +123,7 @@ class PostServiceTest extends TestCase
         $postService = new PostService($postRepository, $dispatcher);
         $postService->create($post);
 
-        $this->assertEquals($dispatchedEvent, new PostEvent($post));
+        $this->assertEquals( new PostEvent($post), $dispatchedEvent);
         $this->assertEquals($post, $dispatchedEvent->getPost());
 
     }

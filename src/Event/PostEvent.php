@@ -1,10 +1,10 @@
 <?php
 namespace App\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use App\Entity\Post;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-final class PostEvent extends Event
+final class PostEvent extends EventDispatcher
 {
 
     public const CREATED = 'post.created';

@@ -1,12 +1,13 @@
 <?php
 namespace App\Event;
 
-use App\Entity\User; 
-use Symfony\Component\EventDispatcher\Event;
+use App\Entity\User;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 /**
  * Ma class event
  */
-class UserEvent extends Event
+class UserEvent extends EventDispatcher
 {
      
     private $params; 
