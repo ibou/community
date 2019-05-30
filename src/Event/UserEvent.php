@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Event;
 
 use App\Entity\User;
@@ -9,8 +10,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class UserEvent extends EventDispatcher
 {
-     
-    private $params; 
+
+    private $params;
     /**
      * Undocumented variable
      *
@@ -30,6 +31,7 @@ class UserEvent extends EventDispatcher
     {
         return $this->user;
     }
+
     public function getParams()
     {
         return $this->params;
