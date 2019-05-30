@@ -38,7 +38,6 @@ class SendEmailCommand extends Command
         $arg1 = $input->getArgument('arg1');
 
         $io->note(sprintf('You passed an argument:'));
-
         $this->sendEmail();
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
     }
