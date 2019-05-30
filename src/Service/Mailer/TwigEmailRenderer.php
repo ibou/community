@@ -3,14 +3,13 @@ namespace App\Service\Mailer;
 
 use App\Service\Mailer\RenderedEmail;
 
-
 class TwigEmailRenderer implements EmailRendererInterface
 {
     /**
-     * @var \Twig\Environment
+     * @var \Twig_Environment
      */
     private $twig;
-    public function __construct(\Twig\Environment $twig)
+    public function __construct(\Twig_Environment $twig)
     {
         $this->twig = $twig;
     }
@@ -18,7 +17,6 @@ class TwigEmailRenderer implements EmailRendererInterface
     {
         $data = $this->twig->mergeGlobals($data);
         $template = $this->twig->loadTemplate($template);
-
         $subject = $template->renderBlock('subject', $data);
         $body = $template->renderBlock('body', $data);
         return new RenderedEmail($subject, $body);
