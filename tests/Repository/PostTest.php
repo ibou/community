@@ -83,8 +83,6 @@ class PostTest extends FixtureAwareTestCase
         $this->entityManager->flush();
     }
 
-
-
     protected function tearDown()
     {
         $this->postRepository = null;
