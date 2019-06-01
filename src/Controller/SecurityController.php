@@ -18,7 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-
 class SecurityController extends AbstractController
 {
     /**
@@ -47,10 +46,10 @@ class SecurityController extends AbstractController
         // throw new \Exception('This should never be reached!');
     }
 
-      /**
+    /**
      * @Route("/login/reset-password", name="resetpassword")
      */
-    public function resetPassword(Request $request,TranslatorInterface $translator, UserRepository $UserRepositroy, \Swift_Mailer $mailer, EventDispatcherInterface $dispatcher, GenerateLink $glink)
+    public function resetPassword(Request $request, TranslatorInterface $translator, UserRepository $UserRepositroy, \Swift_Mailer $mailer, EventDispatcherInterface $dispatcher, GenerateLink $glink)
     {
 
         // Check if user is logged and redirect to home page
@@ -65,33 +64,34 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form['email']->getData();
             $protocol = $request->isSecure() ? 'https://' : 'http://';
-            $hostName = $protocol.$request->getHttpHost();
+            $hostName = $protocol . $request->getHttpHost();
             $resetUrl = $glink->generateResetPasswordLink($hostName, $email, 'PT01H');
 
             if ($resetUrl) {
-                $user = $UserRepositroy->findOneBy([
-                    'email'=>$email
+                $user = $UserRepositroy->findOneBy(
+                    [
+                        'email' => $email
                     ]
                 );
 
-             $mailContent = [
-                'subject' => 'Community: Reset password',
-                'fromEmail' => 'community@comdesk.com',
-                'fromName' => 'Exchanges ideas ! ',
-                'toEmail' => $user->getEmail(),
-                'toName' => $user->getFirstname() . ' ' . $user->getLastname(),
-                'view' => $this->renderView(
-                    'email/resetPassword.html.twig',
-                    ['url' => $resetUrl, 'username' => $user->getFirstname() . ' ' . $user->getLastname()]
-                ),
-            ];
+                $mailContent = [
+                    'subject' => 'Community: Reset password',
+                    'fromEmail' => 'community@comdesk.com',
+                    'fromName' => 'Exchanges ideas ! ',
+                    'toEmail' => $user->getEmail(),
+                    'toName' => $user->getFirstname() . ' ' . $user->getLastname(),
+                    'view' => $this->renderView(
+                        'email/resetPassword.html.twig',
+                        ['url' => $resetUrl, 'username' => $user->getFirstname() . ' ' . $user->getLastname()]
+                    ),
+                ];
 
-            //Création de l'événement new user
-            $event = new UserEvent($user, $mailContent);
-            $dispatcher->dispatch(UserEvent::EMAIL_RESET_PASSWORD, $event);
-            $message = $translator->trans('flash.email.reset.sent');
-            $this->addFlash('success', "{$message} : " . $user->getEmail());
-              return $this->redirectToRoute('security_login');
+                //Création de l'événement new user
+                $event = new UserEvent($user, $mailContent);
+                $dispatcher->dispatch($event, UserEvent::EMAIL_RESET_PASSWORD);
+                $message = $translator->trans('flash.email.reset.sent');
+                $this->addFlash('success', "{$message} : " . $user->getEmail());
+                return $this->redirectToRoute('security_login');
             } else {
                 $message = $translator->trans('flash.not.exist.email');
                 $this->addFlash('warning', "Email {$email} {$message} ");
@@ -106,7 +106,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login/reset-password-checker", name="resetpasswordchecker")
      */
-    public function passwordResetCheck(Request $request, UserRepository $userRepos, PasswordResetRepository $passwordRepos, UserPasswordEncoderInterface $encoder) :Response
+    public function passwordResetCheck(Request $request, UserRepository $userRepos, PasswordResetRepository $passwordRepos, UserPasswordEncoderInterface $encoder): Response
     {
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('homepage');
@@ -119,18 +119,22 @@ class SecurityController extends AbstractController
         $form = $this->createForm(PasswordResetType::class, $PasswordReset);
         $form->handleRequest($request);
 
-        $resetPasswordObjet = $passwordRepos->findOneBy([
+        $resetPasswordObjet = $passwordRepos->findOneBy(
+            [
             'selector' => $selector,
             'token' => $token
-            ]);
+            ]
+        );
         if (count((array)$resetPasswordObjet) > 0) {
             $dataTimeNow = new \DateTime('NOW');
             if ($resetPasswordObjet->getExpires() > $dataTimeNow) {
                 $data = array('selector' => $selector, 'token' => $token);
                 if ($form->isSubmitted() && $form->isValid()) {
-                    $user = $userRepos->findOneBy([
+                    $user = $userRepos->findOneBy(
+                        [
                         'email' => $resetPasswordObjet->getEmail()
-                        ]);
+                        ]
+                    );
                     $newPassword = $form['newPassword']->getData();
                     // Get Current user object
 

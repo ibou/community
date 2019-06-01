@@ -21,6 +21,12 @@ class UserEvent extends EventDispatcher
 
     const EMAIL_RESET_PASSWORD = 'user.reset.password';
 
+    /**
+     * UserEvent constructor.
+     *
+     * @param User $user
+     * @param array $params
+     */
     public function __construct(User $user, array $params = [])
     {
         $this->user = $user;
