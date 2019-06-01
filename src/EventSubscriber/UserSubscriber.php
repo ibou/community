@@ -48,7 +48,6 @@ class UserSubscriber implements EventSubscriberInterface
             ->setTo($mailContent['toEmail'], $mailContent['toName'])
             ->setBody($mailContent['view'], 'text/html');
         $this->mailer->send($message);
-        $this->logger->info("####-------MAILDEV MESSAGE Un email de récuperation a été envoyé a votre adresse email :  (id:" . $user->getId() . ") : " . $user->getFirstname() . " " . $user->getEmail());
     }
 
     public function onSendEmailRef(): void
@@ -56,9 +55,6 @@ class UserSubscriber implements EventSubscriberInterface
         $reference = "un deux 355555";
         $this->sender->send('test@test.com', ['stoto@gmail.com'], 'email/references.html.twig', [
             'reference' => $reference
-        ]);
-        $this->sender->send('test@test.com', ['stoto@gmailsd.com'], 'email/references.html.twig', [
-            'reference' => "TO DO HERERER"
         ]);
     }
 }

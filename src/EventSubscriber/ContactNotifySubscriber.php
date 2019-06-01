@@ -3,7 +3,9 @@
 namespace App\EventSubscriber;
 
 use App\Event\Events;
+use App\Service\Mailer\Sender\SenderInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -12,19 +14,24 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ContactNotifySubscriber implements EventSubscriberInterface
 {
-    private $mailer;
-    private $template;
-    private $logger;
+    /**
+     * @var SenderInterface
+     */
     private $sender;
-    private $receiver;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $template, LoggerInterface $logger, $sender, $receiver)
+    /**
+     * @var ParameterBagInterface
+     */
+    private $params;
+    public function __construct(SenderInterface $sender, LoggerInterface $logger, ParameterBagInterface $params)
     {
-        $this->mailer = $mailer;
-        $this->template = $template;
-        $this->logger = $logger;
         $this->sender = $sender;
-        $this->receiver = $receiver;
+        $this->logger = $logger;
+        $this->params = $params;
     }
 
     public static function getSubscribedEvents(): array
@@ -37,25 +44,19 @@ class ContactNotifySubscriber implements EventSubscriberInterface
 
     public function onUserContact(GenericEvent $event)
     {
+        $hostname = $this->params->get('app.hostname');
         $contact = $event->getSubject();
-        $subject = 'Un email de contact vient de tomber !';
-        $mailContent = $event->getArguments();
-        $destinataires = explode(';', $this->receiver);
-        $message = (new \Swift_Message())
-            ->setSubject($subject)
-            ->setTo($destinataires, 'Admin Community Waxtan')
-            ->setFrom($this->sender, 'Service Community')
-            ->setBody($this->template->render(
-                'email/contact.html.twig',
-                [
-                    'url' => $mailContent['path'],
-                    'username' => 'Admin Community Waxtan',
-                    'contact' => $contact,
-                ]
-            ), 'text/html')
-        ;
+        $from = $this->params->get('app.notifications.email_sender');
+        $tos = $this->params->get('app.notifications.email_contact');
+        $destinataires = explode(';', $tos);
 
-        $this->mailer->send($message);
+        $this->sender->send($from, $destinataires, 'email/contact.html.twig', [
+            'contact' => $contact,
+            'hostname' => $hostname,
+            'username' => 'Admin Community Waxlen',
+            'email' => $contact->getEmail(),
+        ]);
+
         $this->logger->info("MESSAGE New email contact from {$contact->getEmail()}");
     }
 }

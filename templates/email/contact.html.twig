@@ -1,105 +1,54 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+{% extends 'email/base_email.html.twig' %}
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Confirmation inscription</title>
-</head>
+ {% block subject %}
+     Un utilisateur {{ email }} vient d'envoyer un email
+ {% endblock %}
+{% block main %}
+    {% block body %}
 
-<body bgcolor="#efefef" style="background-color:#efefef; font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#23353b; text-align:justify;">
+        <table width="640" border="0" cellspacing="0" cellpadding="0" align="center"
+               style="background-color:#FFFFFF;margin-top:20px;">
+            <tr>
+                <td width="15">&nbsp;</td>
+                <td width="610">
+                    Bonjour {{ username }},<br/>
+                    <p>
+                        Un utilisateur vient d'envoyer un email.
+                    </p>
+                    <table width="640" border="0" cellspacing="0" cellpadding="0" align="left"
+                           style="background-color:#FFFFFF;margin-top:20px;">
+                        <tr>
+                            <td width="15">&nbsp;</td>
+                            <td width="610">
+                                <h3>Synthèse</h3>
+                                <table>
+                                    <tr>
+                                        <td style="margin: 5px;" align="left">Nom :</td>
+                                        <td style="margin: 5px;">{{ contact.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="margin: 5px;" align="left">Email :</td>
+                                        <td style="margin: 5px;">{{ contact.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="margin: 5px;" align="left">Sujet :</td>
+                                        <td style="margin: 5px;">{{ contact.subject }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="margin: 5px;" align="left">Message :</td>
+                                        <td style="margin: 5px;">{{ contact.content }}</td>
+                                    </tr>
 
-    <table width="640" border="0" cellspacing="0" cellpadding="0" id="wrapper" style="background-color:#FFFFFF; margin-bottom:0px;margin-top:20px;"
-        align="center">
-        <tr>
-            <td> 
-                <table width="640" border="0" cellspacing="0" cellpadding="0" id="votre_confirmation" align="center"
-                    style="background-color:#FFFFFF;margin-top:20px;">
-                    <tr>
-                        <td width="15">&nbsp;</td>
-                        <td width="610">
-                            <table style="background-color:#007ac3;margin-top:20px;height: 40px;" align="center">
-                                <tr>
-                                    <td width="395" style="color:#FFFFFF; font-size:16px;padding-left:5px;">Un email de contact</td>
-                                    <td width="225"></td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td width="15">&nbsp;</td>
-                    </tr>
-                </table>
+                                </table>
+                            </td>
+                            <td width="15">&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
 
-
-                <table width="640" border="0" cellspacing="0" cellpadding="0" align="center" style="background-color:#FFFFFF;margin-top:20px;">
-                    <tr>
-                        <td width="15">&nbsp;</td>
-                        <td width="610">
-                            Bonjour {{username}},<br />
-                            <p>
-                                Un utilisateur vient d'envoyer un email.
-                            </p>
-                            <table width="640" border="0" cellspacing="0" cellpadding="0" align="left" style="background-color:#FFFFFF;margin-top:20px;">
-                                <tr>
-                                    <td width="15">&nbsp;</td>
-                                    <td width="610">
-                                        <h3>Synthèse</h3>
-                                        <table>
-                                            <tr>
-                                                <td style="margin: 5px;" align="left">Nom : </td><td style="margin: 5px;">{{contact.name}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="margin: 5px;" align="left">Email : </td><td style="margin: 5px;">{{contact.email}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="margin: 5px;" align="left">Sujet : </td><td style="margin: 5px;">{{contact.subject}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="margin: 5px;" align="left">Message : </td><td style="margin: 5px;">{{contact.content}}</td>
-                                            </tr>
-                                            
-                                        </table>
-                                    </td> 
-                                    <td width="15">&nbsp;</td>
-                                </tr>
-                            </table>
-                        </td>
-
-                        <td width="15">&nbsp;</td>
-                    </tr>
-                </table>
-
-                <table width="640" border="0" cellspacing="0" cellpadding="0" align="center" style="background-color:#FFFFFF;margin-top:20px;">
-                    <tr>
-                        <td width="15">&nbsp;</td>
-                        <td width="610">
-                            Team Tech ! <br /><br /> 
-                         </td>
-                        <td width="15">&nbsp;</td>
-                    </tr>
-                </table>
-
-                <table width="640" border="0" cellspacing="0" cellpadding="0" id="votre_confirmation" align="center"
-                    style="background-color:#FFFFFF; padding-bottom:15px;margin-top:20px;">
-
-                    <tr>
-                        <td width="15">&nbsp;</td>
-                        <td width="610">
-                            <table align="center" style="margin-top:20px;">
-                                <tr>
-                                    <td width="450">Confidentialité des données : conformément à la Loi Informatique et
-                                        Libertés du 6 Janvier 1978, vous disposez d’un droit d'accès et de
-                                        rectification des données vous concernant. Désabonnement</td>
-                                    <td width="170"></td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td width="15">&nbsp;</td>
-                    </tr>
-                </table>
-
-            </td>
-        </tr>
-    </table>
-
-</body>
-
-</html>
+                <td width="15">&nbsp;</td>
+            </tr>
+        </table>
+        host :  <a href="{{ hostname }}" target="_blank">{{ hostname }}</a>
+    {% endblock %}
+{% endblock %}

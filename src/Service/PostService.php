@@ -47,6 +47,7 @@ class PostService implements PostServiceInterface
     public function create(Post $post): void
     {
         $this->postRepository->save($post);
+
         $this->eventDispatcher->dispatch(new PostEvent($post), PostEvent::CREATED);
     }
 

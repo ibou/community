@@ -7,6 +7,7 @@ use App\Event\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Psr\Log\LoggerInterface;
+use Twig\Environment;
 
 /**
  * Envoi un mail de bienvenue à chaque creation d'un utilisateur.
@@ -19,7 +20,7 @@ class RegistrationNotifySubscriber implements EventSubscriberInterface
     private $app_hostname;
     private $logger;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $template, LoggerInterface $logger, $sender, $app_hostname)
+    public function __construct(\Swift_Mailer $mailer, Environment $template, LoggerInterface $logger, $sender, $app_hostname)
     {
         // On injecte notre expediteur et la classe pour envoyer des mails
         $this->mailer = $mailer;

@@ -27,13 +27,9 @@ class ContactController extends AbstractController
             $entityManager->persist($contact);
             $entityManager->flush();
 
-            $args = [
-                'path' => $this->getParameter('app.hostname'),
-            ];
 
             //On déclenche l'event
             $event = new GenericEvent($contact);
-            $event->setArguments($args);
             $eventDispatcher->dispatch(Events::USER_CONTACT, $event);
 
             $this->addFlash('info', 'Message envoyé avec succès');

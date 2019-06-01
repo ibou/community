@@ -21,7 +21,8 @@ class Sender implements SenderInterface
     }
     public function send(string $from, array $recipients, string $template, array $data): void
     {
-        $renderedEmail = $this->emailRenderer->render($template, $data);
-        $this->mailer->send($from, $recipients, $renderedEmail->subject(), $renderedEmail->body());
+        $renderedEmailBlock = $this->emailRenderer->render($template, $data);
+        $body = $this->emailRenderer->renderTempalte($template, $data);
+        $this->mailer->send($from, $recipients, $renderedEmailBlock->subject(), $body);
     }
 }
