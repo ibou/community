@@ -39,7 +39,6 @@ class PostSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            // le nom de l'event et le nom de la fonction qui sera déclenché
             PostEvent::CREATED => 'onPostCreated',
         ];
     }
@@ -49,9 +48,11 @@ class PostSubscriber implements EventSubscriberInterface
         $post = $event->getPost();
         $from = $this->params->get('app.notifications.email_sender');
         $hostname = $this->params->get('app.hostname');
+        $tos = $this->params->get('app.notifications.email_contact');
+        $recipients = explode(';', $tos);
 
 
-        $this->sender->send($from, ['contact@gmail.com'], 'email/new_post.html.twig', [
+        $this->sender->send($from, $recipients, 'email/new_post.html.twig', [
             'title' => $post->getTitle(),
             'content' => $post->getContent(),
             'hostname' => $hostname,

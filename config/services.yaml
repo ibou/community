@@ -38,13 +38,13 @@ services:
             $locales: '%app_locales%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\EventSubscriber\RegistrationNotifySubscriber:
+    # App\EventSubscriber\RegistrationNotifySubscriber:
         # le nom de la variable que l'on utilisera dans le service
-        $sender: '%app.notifications.email_sender%'
-        $app_hostname: '%app.hostname%'
+        # $sender: '%app.notifications.email_sender%'
+        # $app_hostname: '%app.hostname%'
 
-    App\EventSubscriber\ContactNotifySubscriber:
-        public: true
+    # App\EventSubscriber\ContactNotifySubscriber:
+    #     public: true
         # $sender: '%app.notifications.email_sender%'
         # $receiver: '%app.notifications.email_contact%'
     # App\EventListener\LoginListener:

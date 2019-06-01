@@ -35,7 +35,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $args = [
-                'path' => $this->getParameter('app.hostname').''.$this->generateUrl('security_login'),
+                'path' => $this->getParameter('app.hostname') . '' . $this->generateUrl('security_login'),
             ];
             //On déclenche l'event
             $event = new GenericEvent($user);

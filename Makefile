@@ -48,4 +48,6 @@ dev-db-reset:
 	$(DB) doctrine:schema:update --env=dev --force
 	$(DB) doctrine:fixtures:load --env=dev -n
 
-dev-init: dev-db-reset reindex 
+dev-init: dev-db-reset reindex
+
+dev-reset-data: update-db reload-data reindex

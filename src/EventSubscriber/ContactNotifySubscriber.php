@@ -48,9 +48,9 @@ class ContactNotifySubscriber implements EventSubscriberInterface
         $contact = $event->getSubject();
         $from = $this->params->get('app.notifications.email_sender');
         $tos = $this->params->get('app.notifications.email_contact');
-        $destinataires = explode(';', $tos);
+        $recipients = explode(';', $tos);
 
-        $this->sender->send($from, $destinataires, 'email/contact.html.twig', [
+        $this->sender->send($from, $recipients, 'email/contact.html.twig', [
             'contact' => $contact,
             'hostname' => $hostname,
             'username' => 'Admin Community Waxlen',

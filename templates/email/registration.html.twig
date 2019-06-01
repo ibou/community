@@ -1,94 +1,45 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+{% extends 'email/base_email.html.twig' %}
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Confirmation inscription</title>
-</head>
-
-<body bgcolor="#efefef" style="background-color:#efefef; font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#23353b; text-align:justify;">
-
-    <table width="640" border="0" cellspacing="0" cellpadding="0" id="wrapper" style="background-color:#FFFFFF; margin-bottom:0px;margin-top:20px;"
-        align="center">
+ {% block subject %}
+     Activation de votre compte !
+ {% endblock %}
+{% block main %}
+    {% block body %}
+    <table border="0" cellspacing="0" cellpadding="0" align="center" style="background-color:#FFFFFF;margin-top:20px;">
         <tr>
-            <td> 
-                <table width="640" border="0" cellspacing="0" cellpadding="0" id="votre_confirmation" align="center"
-                    style="background-color:#FFFFFF;margin-top:20px;">
-                    <tr>
-                        <td width="15">&nbsp;</td>
-                        <td width="610">
-                            <table style="background-color:#007ac3;margin-top:20px;height: 40px;" align="center">
-                                <tr>
-                                    <td width="395" style="color:#FFFFFF; font-size:16px;padding-left:5px;">Votre compte est activé</td>
-                                    <td width="225"></td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td width="15">&nbsp;</td>
-                    </tr>
+            <td width="15">&nbsp;</td>
+            <td width="610">
+                Bonjour {{email}},<br />
+                <p>
+                    Votre compte a été créé avec succès !
+                </p>
+                <table style="font-weight:bold; font-size:9px;  color:#0079bf; margin-bottom:20px; border-radius:6px; display:inline-block; margin:0px auto 20px; border-collapse:collapse!important; max-width:100%!important; background:#007ac3!important"
+                    cellspacing="0" cellpadding="0" border="0" bgcolor="#61BD4F" align="center">
+                    <tbody>
+                        <tr>
+                            <td class="x_emailButtonContent" style="padding:15px 10px; vertical-align:middle"
+                                valign="middle" align="center">
+                                <a href="{{ hostname }}{{ path('security_login')}}" style="font-size:14px; font-weight:bold; line-height:15px; text-decoration:none; color:#FFFFFF">
+                                    <font color="#FFFFFF"> →Go ! </font>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-
-
-                <table width="640" border="0" cellspacing="0" cellpadding="0" align="center" style="background-color:#FFFFFF;margin-top:20px;">
-                    <tr>
-                        <td width="15">&nbsp;</td>
-                        <td width="610">
-                            Bonjour {{username}},<br />
-                            <p>
-                                Votre compte a été créé avec succès !
-                            </p>
-                            <table style="font-weight:bold; font-size:9px;  color:#0079bf; margin-bottom:20px; border-radius:6px; display:inline-block; margin:0px auto 20px; border-collapse:collapse!important; max-width:100%!important; background:#007ac3!important"
-                                cellspacing="0" cellpadding="0" border="0" bgcolor="#61BD4F" align="center">
-                                <tbody>
-                                    <tr>
-                                        <td class="x_emailButtonContent" style="padding:15px 10px; vertical-align:middle"
-                                            valign="middle" align="center">
-                                            <a href="{{ url }}" style="font-size:14px; font-weight:bold; line-height:15px; text-decoration:none; color:#FFFFFF">
-                                                <font color="#FFFFFF"> →Go ! </font>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-
-                        <td width="15">&nbsp;</td>
-                    </tr>
-                </table>
-
-                <table width="640" border="0" cellspacing="0" cellpadding="0" align="center" style="background-color:#FFFFFF;margin-top:20px;">
-                    <tr>
-                        <td width="15">&nbsp;</td>
-                        <td width="610">
-                            Nous vous remercions pour votre confiance. <br /><br /> 
-                         </td>
-                        <td width="15">&nbsp;</td>
-                    </tr>
-                </table>
-
-                <table width="640" border="0" cellspacing="0" cellpadding="0" id="votre_confirmation" align="center"
-                    style="background-color:#FFFFFF; padding-bottom:15px;margin-top:20px;">
-
-                    <tr>
-                        <td width="15">&nbsp;</td>
-                        <td width="610">
-                            <table align="center" style="margin-top:20px;">
-                                <tr>
-                                    <td width="450">Confidentialité des données : conformément à la Loi Informatique et
-                                        Libertés du 6 Janvier 1978, vous disposez d’un droit d'accès et de
-                                        rectification des données vous concernant. Désabonnement</td>
-                                    <td width="170"></td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td width="15">&nbsp;</td>
-                    </tr>
-                </table>
-
             </td>
+
+            <td width="15">&nbsp;</td>
         </tr>
     </table>
 
-</body>
-
-</html>
+    <table width="640" border="0" cellspacing="0" cellpadding="0" align="center" style="background-color:#FFFFFF;margin-top:20px;">
+        <tr>
+            <td width="15">&nbsp;</td>
+            <td width="610">
+                Nous vous remercions pour votre confiance. <br /><br /> 
+             </td>
+            <td width="15">&nbsp;</td>
+        </tr>
+    </table> 
+    {% endblock %}
+{% endblock %}
