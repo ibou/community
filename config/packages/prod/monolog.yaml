@@ -5,10 +5,8 @@ monolog:
             action_level: error
             level: debug
             handler: nested
-            max_files: 10
-            # excluded_http_codes: [404]
-                # regex: exclude all 404 errors from the logs
-                # - ^/
+            max_files: 10 
+            
         nested:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
