@@ -75,8 +75,7 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "security-checker security:check": "script"
         },
-        "post-install-cmd": [
-            "bash contrib/setup.sh",
+        "post-install-cmd": [ 
             "@auto-scripts"
         ],
         "post-update-cmd": [
