@@ -8,7 +8,7 @@ monolog:
             max_files: 10
             # excluded_http_codes: [404]
                 # regex: exclude all 404 errors from the logs
-                - ^/
+                # - ^/
         nested:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
