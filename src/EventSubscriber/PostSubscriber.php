@@ -60,6 +60,6 @@ class PostSubscriber implements EventSubscriberInterface
             'username' => $post->getAuthor()->getUsername()
         ]);
 
-        $this->logger->info("A new post created : " . $post->getSlug());
+        $this->logger->info("A new post created : " . $post->getUuid());
     }
 }

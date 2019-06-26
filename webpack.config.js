@@ -17,6 +17,7 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
+    .addEntry('client/js/app', './client/js/app.js')
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/login', './assets/js/login.js')
     .addEntry('js/comments_likes', './assets/js/comments_likes.js')
@@ -46,6 +47,7 @@ Encore
 
     // enables Sass/SCSS support
     .enableSassLoader()
+    .enableReactPreset()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

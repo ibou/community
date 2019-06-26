@@ -7,6 +7,6 @@
          A new post with title {{ title }} was created with the content : {{ content }}.
          By <b>{{ username }}</b>
          <br/>
-         host :  <a href="{{ hostname }}{{ path('post_show', {slug: post.slug}) }}" target="_blank">{{ hostname }}</a>
+         host :  <a href="{{ hostname }}{{ path('post_show', {uuid: post.uuid}) }}" target="_blank">{{ hostname }}</a>
      {% endblock %}
  {% endblock %}

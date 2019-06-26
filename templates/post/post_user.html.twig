@@ -15,7 +15,7 @@
         <article class="post">
             <div class='alert alert-dismissible alert-gris'>
                 <h4>
-                    <a href="{{ path('post_show', {slug: post.slug}) }}">
+                    <a href="{{ path('post_show', {uuid: post.uuid}) }}">
                     {{ post.title|raw }}
                     </a>
                 </h4>
@@ -31,7 +31,7 @@
                 <div class="text-black">
                     {{ post.content|raw|striptags|slice(0, 130) ~ "..." }}
                 </div>
-                <a href="{{ path('post_show', {slug: post.slug}) }}">
+                <a href="{{ path('post_show', {uuid: post.uuid}) }}">
                     (voir plus)
                 </a>
                 <hr>

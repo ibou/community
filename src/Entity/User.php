@@ -381,7 +381,7 @@ class User implements UserInterface, \Serializable
 
     public function getUserInfosName()
     {
-        return "{$this->getFirstname()} - {$this->getLastname()}";
+        return trim($this->getFirstname())." ".trim($this->getLastname());
     }
 
     public function getUserInfos()
@@ -391,6 +391,7 @@ class User implements UserInterface, \Serializable
             'email' => $this->email,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
+            'full_name' => $this->getUserInfosName(),
         ];
     }
     public function __toString()

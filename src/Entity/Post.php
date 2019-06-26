@@ -6,9 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
+ * @UniqueEntity("uuid")
  */
 class Post
 {
@@ -19,6 +22,11 @@ class Post
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(name="uuid", type="string", length=100)
+     */
+    private $uuid;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -75,6 +83,7 @@ class Post
     private $enabled = false;
     public function __construct()
     {
+        $this->uuid = Uuid::uuid4();
         $this->publishedAt = new \DateTime();
         $this->createdAt = new \DateTime();
         $this->tags = new ArrayCollection();
@@ -82,6 +91,17 @@ class Post
         $this->likes = new ArrayCollection();
     }
 
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid): self
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -228,7 +248,7 @@ class Post
 
     public function getCommentsLevelOne(): ?self
     {
-        foreach ($this->comments as  $comment) {
+        foreach ($this->comments as $comment) {
             if ($comment->getParent() !== null) {
                 $this->removeComment($comment);
             }
@@ -340,6 +360,6 @@ class Post
     }
     public function __toString()
     {
-        return $this->slug;
+        return $this->uuid;
     }
 }

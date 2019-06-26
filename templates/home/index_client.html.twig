@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'homepage' %}
+
+{#
+the homepage is a special page which displays neither a header nor a footer.
+this is done with the 'trick' of defining empty Twig blocks without any content
+#}
+{% block title %} {{ parent() }} : Accueil {% endblock title %}
+
+{% block main %}
+
+    <div class="row">
+        <h1>Menus</h1>
+        <div id="root"></div>
+    </div>
+{% endblock %}
+{% block sidebar %}
+    {{ render(controller('App\\Controller\\PostController::linkedSubjectActives', {  })) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('client/js/app') }}
+{% endblock %}

@@ -45,12 +45,13 @@ class ArticleIndexer
                 'content' => $post->getContent(),
                 'comments' => $comments,
                 'slug' => $post->getSlug(),
+                'uuid' => $post->getUuid(),
                 'numberLikes' => $post->numberLikes(),
                 'likes' => $post->getLikes(),
                 'likesUser' => $post->likesUser(),
 
                 // Not indexed but needed for display
-                'url' => $this->router->generate('post_show', ['slug' => $post->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH),
+                'url' => $this->router->generate('post_show', ['uuid' => $post->getUuid()], UrlGeneratorInterface::ABSOLUTE_PATH),
                 'url_post' => $this->router->generate('post_index', [], UrlGeneratorInterface::ABSOLUTE_PATH),
                 'publishedAt' => $post->getPublishedAt()->format('c'),
             ],

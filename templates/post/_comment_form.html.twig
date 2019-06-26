@@ -10,7 +10,7 @@
         </div>
         <div class="col">
             <input id="parent_{{parent_id}}" type="hidden" value="{{parent_id}}" name="parent">
-            <input id="url" type="hidden" value="{{path('comment_new', {'postSlug': post.slug})}}" name="path"> 
+            <input id="url" type="hidden" value="{{path('comment_new', {'postUuid': post.uuid})}}" name="path"> 
             <button class="btn btn-primary publish-comment" type="submit">
                 <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ 'action.publish_comment'|trans }}
             </button>

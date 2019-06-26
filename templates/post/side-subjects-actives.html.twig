@@ -7,7 +7,7 @@
             {% for post in posts %}
             
             <p>
-                <a href="{{ path('post_show', {slug: post.slug}) }}">
+                <a href="{{ path('post_show_client', {uuid: post.uuid}) }}">
                     {{post.title}}
                 </a>
             </p>

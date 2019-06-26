@@ -30,6 +30,7 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use App\Utils\DateTimeFrench;
 use App\Repository\UserRepository;
 use App\Service\PostServiceInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/posts")
@@ -65,7 +66,9 @@ class PostController extends AbstractController
         $queryTag = $request->query->get('tag');
         $queryTags = $request->query->get('tags');
         if ($request->query->has('tag')) {
-            $tag = $tags->findOneBy(['name' => $queryTag]);
+            $tag = $tags->findOneBy([
+                'name' => $queryTag,
+            ]);
         }
         $currentRoute = $request->attributes->get('_route');
         $page = null !== $request->attributes->get('page') ? $request->attributes->get('page') : 1;
@@ -73,7 +76,6 @@ class PostController extends AbstractController
         if ($request->query->has('query')) {
             $limit = $request->query->get('limit', 15);
             $tags = $request->query->get('tags', false);
-            if (false !== $tags) { }
             $search = new Search($client, $query, $tags);
             $search->setLimit(500);
             $search->setPage($page);
@@ -98,7 +100,7 @@ class PostController extends AbstractController
      * @Route("/new", name="post_new", methods={"GET","POST"})
      * @IsGranted("ROLE_USER", statusCode=403, message="Vous n'êtes pas habilité à consulter cette page, merci de vous authentifier avant !")
      */
-    public function Postnew(Request $request): Response
+    public function postNew(Request $request): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
@@ -119,21 +121,60 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/article/{slug}", methods={"GET"}, name="post_show")
+     * @Route("/article/{uuid}", methods={"GET"}, name="post_show")
      *
      * NOTE: The $post controller argument is automatically injected by Symfony
-     * after performing a database query looking for a Post with the 'slug'
+     * after performing a database query looking for a Post with the 'uuid'
      * value given in the route.
      * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html
      */
     public function postShow(Post $post): Response
     {
-
         return $this->render('post/post_show.html.twig', [
             'post' => $post,
             'form' => $this->_newFormComment(),
         ]);
     }
+    /**
+     * @Route("/article/client/uui={uuid}", methods={"GET"}, name="post_show_client")
+     *
+     * NOTE: The $post controller argument is automatically injected by Symfony
+     * after performing a database query looking for a Post with the 'uuid'
+     * value given in the route.
+     * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html
+     */
+    public function postShowClient(): Response
+    {
+        return $this->render('post/post_show_client.html.twig', []);
+    }
+
+    /**
+     * @Route("/data/article/{uuid}", name="client.data.article")
+     */
+    public function data(Request $request, Post $post)
+    {
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+
+        $serializer = new Serializer($normalizers, $encoders);
+
+        if (!$post) {
+            return new Response($serializer->serialize([], 'json'), RESPONSE::HTTP_OK);
+        }
+        $data = [
+            'uuid' => $post->getUuid(),
+            'title' => $post->getTitle(),
+            'content' => $post->getContent(),
+            'createdAt' => $post->getCreatedAt(),
+            'user' => $post->getAuthor()->getUserInfos(),
+            'usernameinfos' => $post->getAuthor()->getUserInfosName(),
+        ];
+
+        return new Response($serializer->serialize($data, 'json'), RESPONSE::HTTP_OK);
+    }
+
+
     /**
      * Undocumented function
      * @Route("/mes-articles", methods={"GET"}, name="user_my_articles")
@@ -141,7 +182,6 @@ class PostController extends AbstractController
      */
     public function postsUser(): Response
     {
-
         $postOfUser = $this->postService->getPostsByUser($this->getUser());
         return $this->render('post/post_user.html.twig', [
             'posts' => $postOfUser,
@@ -156,7 +196,6 @@ class PostController extends AbstractController
     }
     public function linkedSubjectActives(): Response
     {
-
         $posts = $this->postService->getPostsByPopularity();
         return $this->render('post/side-subjects-actives.html.twig', [
             'posts' => $posts,
@@ -191,9 +230,9 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/comment/{postSlug}/new", methods={"POST"}, name="comment_new")
+     * @Route("/comment/{postUuid}/new", methods={"POST"}, name="comment_new")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
-     * @ParamConverter("post", options={"mapping": {"postSlug": "slug"}})
+     * @ParamConverter("post", options={"mapping": {"postUuid": "uuid"}})
      *
      * NOTE: The ParamConverter mapping is required because the route parameter
      * (postSlug) doesn't match any of the Doctrine entity properties (slug).
@@ -224,7 +263,7 @@ class PostController extends AbstractController
             $date_french = new DateTimeFrench($comment->getPublishedAt()->format('c'));
             $date_french->setFormat('j F Y à H:i:s');
             $data = [
-                'slug' => $post->getSlug(),
+                'uuid' => $post->getUuid(),
                 'user' => $user->getUserInfos(),
                 'comment' => $comment->getContent(),
                 'publishedAt' => $date_french->getFormatedDate(),
@@ -239,7 +278,7 @@ class PostController extends AbstractController
             return new Response($serializer->serialize($data, 'json'), 201);
         }
 
-        return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+        return $this->redirectToRoute('post_show', ['uuid' => $post->getUuid()]);
     }
 
     /**

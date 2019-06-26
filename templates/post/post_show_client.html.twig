@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+
+{% endblock %}
+
+{% block body_id 'blog_post_show' %}
+
+{% block main %}
+    <div class="row">
+        <h1>Post show client</h1>
+        <div id="root"></div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('client/js/app') }}
+{% endblock %}
