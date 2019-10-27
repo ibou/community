@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo Stopping serveurs...
-sudo service apache2 stop && sudo service nginx stop
+# echo Stopping serveurs...
+sudo service apache2 stop && sudo service mysql stop
 
 echo Démarrage des containers...
 docker-compose down
