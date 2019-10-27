@@ -36,7 +36,7 @@ update-db:
 	$(CONSOLE) cache:clear
 
 reload-data:
-	$(DB) doctrine:fixtures:load
+	$(DB) doctrine:fixtures:load --env=dev -n
 
 reindex:
 	$(DB) elastic:reindex

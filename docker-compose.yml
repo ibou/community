@@ -13,33 +13,44 @@ services:
         environment:
           - ALLOW_OVERRIDE=true
         links:
-          - localdb:db
-          - maildev:maildev
-          - elasticsearch:elasticsearch
-        depends_on:
-          - localdb
+          - db
+          - maildev
+          - elasticsearch
+        networks:
+          - default
+        # depends_on:
+        #   - db
 
-    localdb:
-        image: mariadb:10.3
+    db:
+        image: mysql:5.7.13
         container_name: localdb
+        ports:
+          - "3306:3306"
         volumes:
-            - /var/data/community:/var/lib/mysql
+            - ./var/data/community:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: community
             MYSQL_USER: root
             MYSQL_PASSWORD: root
+        networks:
+          - default
+        restart: always
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
+        restart: always
         container_name: sf4_phpmyadmin
         ports:
             - 8000:80
         links:
-            - localdb:db
+            - db
         environment:
-            - PMA_USER=root
-            - PMA_PASSWORD=root
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: root
+        depends_on:
+          - db
 
     maildev:
         image: djfarrelly/maildev
@@ -61,3 +72,12 @@ services:
                     hard: -1
             ports:
                 - 9200:9200
+    kibana:
+      container_name: kibana
+      image: docker.elastic.co/kibana/kibana:6.3.2
+      environment:
+          ELASTICSEARCH_URL: http://localhost:9200
+      ports:
+        - "5601:5601" 
+      networks:
+        - default
