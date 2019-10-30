@@ -11,7 +11,7 @@
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 //  var $ = require('jquery');
 // import $ from 'jquery'; 
-global.$ = global.jQuery = $;
+// global.$ = global.jQuery = $;
 import select2 from 'select2';
 //Hook up select2 to jQuery 
 import 'bootstrap/js/dist/tooltip';

@@ -1,4 +1,5 @@
 var Encore = require('@symfony/webpack-encore');
+var CopyWebpackPlugin = require('copy-webpack-plugin'); 
 
 Encore
     // directory where compiled assets will be stored
@@ -26,8 +27,12 @@ Encore
     .addStyleEntry('css/admin', ['./assets/scss/admin.scss'])
     .addStyleEntry('css/search', ['./assets/scss/search.scss'])
     .addStyleEntry('css/login', ['./assets/scss/login.scss'])
-    .splitEntryChunks()
-    .enableSingleRuntimeChunk()
+    .addPlugin(new CopyWebpackPlugin([
+        { from: './assets/images', to: 'images' }
+    ]))
+    // .splitEntryChunks()
+    .enableSingleRuntimeChunk() 
+    .enableIntegrityHashes(Encore.isProduction())
     // .disableSingleRuntimeChunk()
 
 
@@ -51,7 +56,7 @@ Encore
     //.enableTypeScriptLoader()
 
     // uncomment if you're having problems with a jQuery plugin
-    .autoProvidejQuery()
+    .autoProvidejQuery() 
     ;
 
 module.exports = Encore.getWebpackConfig();
