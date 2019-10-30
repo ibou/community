@@ -27,6 +27,9 @@ $ ./stop.sh
 ```bash
 sudo nano /etc/hosts
 ```
+ajouter la ligne
+>127.0.0.1    sf-commulity-localhost
+
 
 ```
 $ composer install
@@ -35,8 +38,7 @@ $ yarn encore dev ou ./node_modules/.bin/encore dev
 
 ```
 
-ajouter la ligne
->127.0.0.1    sf-commulity-localhost
+
  
 >Aller à [http://sf-commulity-localhost](http://sf-commulity-localhost)
 
@@ -44,20 +46,19 @@ ajouter la ligne
 
 Créer une nouvelle base de données "community" dans http://localhost:8000
 
+### Lire le fichier des commande dans makefile
 
-```
-$ bin/run-short-command.sh [commande_name] 
-
+``` 
+make dev-init
 ```
 
 ### Pour les test unitaire
-Créer une nouvelle base de données "test_community" dans http://localhost:8000
+ 
 
 importer la base de test à partir du fichier sql : data/sql/test_community.sql
 
-```
-$ bin/run-short-command.sh dotests 
-
+``` 
+make test
 ```
 
 
