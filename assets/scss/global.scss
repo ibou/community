@@ -1,0 +1,10 @@
+$black-color: rgb(53, 47, 47);
+
+.navbar{
+    padding: 0px !important;
+    background-color: #fff !important;
+}
+.nav-link, .black{
+    color: $black-color !important;
+    font-weight: bold;
+}

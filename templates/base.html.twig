@@ -13,6 +13,7 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
 
     {% block stylesheets %}
     {{ encore_entry_link_tags('css/app') }}
+    {{ encore_entry_link_tags('css/global') }}
     {% endblock %}
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -22,13 +23,14 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
 
     {% block header %}
     <header>
-        <div class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation">
+        <div class="navbar navbar-expand-lg navbar-dark bg-light" role="navigation">
             <div class="container">
-                <img class="img-fluid-logo" src="{{ asset('build/images/logo-waxlen-original.jpg') }}" rel="siège non réservé" />
-                <div class="navbar-header col-md-2 col-lg-2">
-                    <a class="navbar-brand" href="{{ path('homepage') }}">
+                <div class="navbar-header">
+                    <a class="navbar-brand black" href="{{ path('homepage') }}">
+                 <img class="img-fluid-logo" src="{{ asset('build/images/logo-waxlen-original.jpg') }}" rel="siège non réservé" />
                         Community
                     </a>
+                    
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
                         aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -57,7 +59,6 @@ See https://symfony.com/doc/current/book/templating.html#template-inheritance-an
                             </a>
                         </li>
                         {% endif %}
-
 
                         <li>
                             <a href="{{ path('post_index_paginated_search') }}" class="nav-link"> <i class="fa fa-search"></i> {{

@@ -24,6 +24,7 @@ Encore
     .addEntry('js/comments_publish', './assets/js/comments_publish.js')
     .addEntry('js/search', './assets/js/search.js')
     .addStyleEntry('css/app', ['./assets/scss/app.scss'])
+    .addStyleEntry('css/global', ['./assets/scss/global.scss'])
     .addStyleEntry('css/admin', ['./assets/scss/admin.scss'])
     .addStyleEntry('css/search', ['./assets/scss/search.scss'])
     .addStyleEntry('css/login', ['./assets/scss/login.scss'])
