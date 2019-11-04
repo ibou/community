@@ -5,6 +5,9 @@ easy_admin:
         datetime: 'd/m/Y H:i:s'
    site_name: 'Back-Office - <em style="font-size: 80%;">Waxlen.com</em>' 
    design:
+        form_theme:
+        - '@EasyAdmin/form/bootstrap_4.html.twig'
+        - '@VichUploader/Form/fields.html.twig'
         brand_color: '#1ABC9C' 
         menu:
             - { label: '' }
@@ -13,6 +16,7 @@ easy_admin:
                 children: ['Post', 'Post_IN']
               } 
             - { entity: 'Tag', icon: 'tags' }
+            - { entity: 'Theme', icon: 'edit' }
             - { label: 'Homepage - waxlen.com', route: 'homepage' }
         assets:
             favicon: '/assets/backend/favicon.png'
@@ -67,3 +71,18 @@ easy_admin:
                     - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
                     - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'} 
     
+        Theme:
+            class: App\Entity\Theme
+            label: "Themes"
+            list:
+                fields:
+                    - { property: 'name' }
+                    - { property: 'slug' } 
+                    - { property: 'image', type: 'image', base_path: '%app.path.theme_images%' }
+            show:
+                fields:
+                    - { property: 'image', type: 'image', base_path: '%app.path.theme_images%' }
+            form:
+                title:  'Ajouter un nouveau thème'
+                fields: ['name','slug',{ property: 'imageFile', type: 'vich_image' } ]
+                 
