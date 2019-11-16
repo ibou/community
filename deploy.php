@@ -5,7 +5,7 @@ namespace Deployer;
 require 'recipe/symfony4.php';
 
 // Project name
-set('application', 'deployed_community');
+set('application', 'dev_community');
 
 // Project repository
 set('repository', 'git@github.com:ibou/community.git');
@@ -22,7 +22,7 @@ add('writable_dirs', []);
 
 
 host('root@51.38.234.212')
-    ->set('deploy_path', '/var/www/{{application}}');
+    ->set('deploy_path', '/opt/www/{{application}}');
 
 // Tasks
 
