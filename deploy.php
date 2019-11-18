@@ -14,7 +14,7 @@ set('repository', 'git@github.com:ibou/community.git');
 set('git_tty', true);
 set('keep_releases', 3);
 // Shared files/dirs between deploys
-add('shared_files', []);
+add('shared_files', ['.env']);
 add('shared_dirs', []);
 
 // Writable dirs by web server
@@ -27,7 +27,7 @@ host('root@51.38.234.212')
 // Tasks
 
 task('build', function () {
-    run('cd {{release_path}} && composer install --no-dev --optimize-autoloader');
+    run('cd {{release_path}} && APP_ENV=prod composer install --no-dev --optimize-autoloader');
     run('cd {{release_path}} && npm install');
     run('cd {{release_path}} && ./node_modules/.bin/encore production');
     // run('cd {{release_path}} && composer install --no-dev --optimize-autoloader && npm install && ./node_modules/.bin/encore production');
