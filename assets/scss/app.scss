@@ -370,3 +370,8 @@ body#blog_search .post-metadata {
 .remove-like {
     &::before { content: none; }
 }
+
+.img-fluid-logo{
+    height: 80px;
+    width: 110px;
+}

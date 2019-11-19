@@ -1,0 +1,14 @@
+$black-color: rgb(53, 47, 47);
+$navbar-dark-color: black; 
+.navbar{
+    padding: 0px !important;
+    background-color: #fff !important;
+}
+.nav-link, .black{
+    color: $black-color !important;
+    font-weight: bold;
+}
+.navbar-dark .navbar-toggler {
+    color: $navbar-dark-color !important;
+    border-color: $navbar-dark-color !important;
+}

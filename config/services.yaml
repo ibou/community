@@ -10,6 +10,7 @@ parameters:
     app.notifications.email_sender: service.community@waxlen.com
     app.notifications.email_contact: 'contact.community@waxlen.com'
     app.hostname: '%env(HOSTNAME_URL)%'
+    app.path.theme_images: /uploads/images/themes
 services:
     # default configuration for services in *this* file
     _defaults:

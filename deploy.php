@@ -5,7 +5,7 @@ namespace Deployer;
 require 'recipe/symfony4.php';
 
 // Project name
-set('application', 'deployed_community');
+set('application', 'dev_community');
 
 // Project repository
 set('repository', 'git@github.com:ibou/community.git');
@@ -14,7 +14,7 @@ set('repository', 'git@github.com:ibou/community.git');
 set('git_tty', true);
 set('keep_releases', 3);
 // Shared files/dirs between deploys
-add('shared_files', []);
+add('shared_files', ['.env']);
 add('shared_dirs', []);
 
 // Writable dirs by web server
@@ -22,12 +22,12 @@ add('writable_dirs', []);
 
 
 host('root@51.38.234.212')
-    ->set('deploy_path', '/var/www/{{application}}');
+    ->set('deploy_path', '/opt/www/{{application}}');
 
 // Tasks
 
 task('build', function () {
-    run('cd {{release_path}} && composer install --no-dev --optimize-autoloader');
+    run('cd {{release_path}} && APP_ENV=prod composer install --no-dev --optimize-autoloader');
     run('cd {{release_path}} && npm install');
     run('cd {{release_path}} && ./node_modules/.bin/encore production');
     // run('cd {{release_path}} && composer install --no-dev --optimize-autoloader && npm install && ./node_modules/.bin/encore production');
@@ -66,7 +66,7 @@ task('release', [
 after('deploy:symlink', 'release');
 task('database:migrate', function () {
     run('{{bin/console}} doctrine:schema:update --force');
-    run('{{bin/console}} elastic:reindex');
+    // run('{{bin/console}} elastic:reindex');
 })->desc('Migrate database');
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
