@@ -66,7 +66,7 @@ task('release', [
 after('deploy:symlink', 'release');
 task('database:migrate', function () {
     run('{{bin/console}} doctrine:schema:update --force');
-    run('{{bin/console}} elastic:reindex');
+    // run('{{bin/console}} elastic:reindex');
 })->desc('Migrate database');
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
